@@ -28,7 +28,7 @@ public:
 		return (long) (pSeconds * S_TO_US);
 	}
 
-	static uint32 micros() {
+	static int micros() {
 		return micros();
 	}
 

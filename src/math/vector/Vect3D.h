@@ -79,12 +79,12 @@ public:
 		_z = array[2];
 		return (*this);
 	}
-	Vect3D operator=(int16 array[]) {
-		_x = (float) array[0];
-		_y = (float) array[1];
-		_z = (float) array[2];
-		return (*this);
-	}
+//	Vect3D operator=(int16 array[]) {
+//		_x = (float) array[0];
+//		_y = (float) array[1];
+//		_z = (float) array[2];
+//		return (*this);
+//	}
 	Vect3D operator+=(Vect3D vect)	{
 		_x += vect._x;
 		_y += vect._y;
@@ -136,11 +136,11 @@ public:
 		Vect3D zero(0.0, 0.0, 0.0);
 		return zero;
 	}
-	static Vect3D fromInt16Array(int16 array[])
-	{
-		Vect3D e((float) array[0], (float) array[1], (float) array[2]);
-		return e;
-	}
+//	static Vect3D fromInt16Array(int16 array[])
+//	{
+//		Vect3D e((float) array[0], (float) array[1], (float) array[2]);
+//		return e;
+//	}
 };
 
 #endif /* MATH_VECTOR_VECT3D_H_ */

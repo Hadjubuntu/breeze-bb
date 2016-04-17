@@ -8,7 +8,7 @@
 #ifndef HAL_HALTYPES_H_
 #define HAL_HALTYPES_H_
 
-#include "../../../libmaple/include/libmaple/libmaple_types.h"
+//#include "../../../libmaple/include/libmaple/libmaple_types.h"
 
 class HalTypes {
 public:

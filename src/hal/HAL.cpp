@@ -8,7 +8,6 @@
  *      Author: Adrien HADJ-SALAH
  */
 
-#include <wirish/wirish.h>
 #include "HAL.h"
 
 HAL::HAL() {
@@ -18,10 +17,10 @@ HAL::HAL() {
 
 void HAL::delayMs(unsigned long pDtMs)
 {
-	delay(pDtMs);
+//	FIXME for beaglebone delay(pDtMs);
 }
 
 void HAL::delayUs(unsigned long pDtUs)
 {
-	delayMicroseconds(pDtUs);
+	//	FIXME for beaglebone 	delayMicroseconds(pDtUs);
 }

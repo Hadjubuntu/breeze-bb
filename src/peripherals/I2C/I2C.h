@@ -12,17 +12,17 @@
 
 class I2C {
 private:
-	uint8 _deviceAddr;
+	short _deviceAddr;
 
 public:
-	I2C(uint8 deviceAddr) : _deviceAddr(deviceAddr) {
+	I2C(short deviceAddr) : _deviceAddr(deviceAddr) {
 //		reset();
 	}
 
 	/**
 	 * Write to specific device at address
 	 */
-	int writeTo(uint8 addr, uint8 val);
+	int writeTo(short addr, short val);
 
 	/**
 	 * Read data from I2C address for a specific device
@@ -30,14 +30,14 @@ public:
 	 * @param nbBytes Number of bytes
 	 * @param msgData output data
 	 */
-	int readFrom(uint8 addr, uint8 nbBytes, uint8 *msgData);
+	int readFrom(short addr, short nbBytes, short *msgData);
 
 
 	void reset();
 
 
 	/** Return instance */
-	static I2C getInstance(uint8 deviceAddr) {
+	static I2C getInstance(short deviceAddr) {
 		I2C instance(deviceAddr);
 		return instance;
 	}

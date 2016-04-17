@@ -29,7 +29,7 @@
 class Baro : public Processing {
 private:
 	I2C _i2c;
-	uint8 _dev_address;
+	short _dev_address;
 
 	bool _firstMeasure;
 	long        _uncompensatedPressure;
@@ -42,15 +42,15 @@ private:
 
 	long b5;
 
-	uint32                           _last_update; // in us
-	uint8                            _pressure_samples;
+	int                           _last_update; // in us
+	short                            _pressure_samples;
 	// State machine
 	// Internal calibration registers
-	int16                        ac1, ac2, ac3, b1, b2, mb, mc, md;
-	uint16                       ac4, ac5, ac6;
+	int                        ac1, ac2, ac3, b1, b2, mb, mc, md;
+	int                       ac4, ac5, ac6;
 
 
-	uint32                       _retry_time;
+	int                       _retry_time;
 
 	int _state;
 

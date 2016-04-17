@@ -11,7 +11,6 @@
 #ifndef PERIPHERALS_HAL_HAL_H_
 #define PERIPHERALS_HAL_HAL_H_
 
-#include <wirish/wirish.h>
 
 
 class HAL {
