@@ -35,31 +35,31 @@ GLOBAL_ASFLAGS  := -x assembler-with-cpp $(TARGET_FLAGS)
 ##
 
 #Own Breeze librairies
-#LIBMAPLE_MODULES += $(SRCROOT)/src/math/common
-#LIBMAPLE_MODULES += $(SRCROOT)/src/math/pid
-#LIBMAPLE_MODULES += $(SRCROOT)/src/math/time
-#LIBMAPLE_MODULES += $(SRCROOT)/src/math/vector
-#LIBMAPLE_MODULES += $(SRCROOT)/src/math/filter
-#LIBMAPLE_MODULES += $(SRCROOT)/src/data/conf
-#LIBMAPLE_MODULES += $(SRCROOT)/src/hal
-#LIBMAPLE_MODULES += $(SRCROOT)/src/peripherals/I2C
-#LIBMAPLE_MODULES += $(SRCROOT)/src/peripherals/sensor
-#LIBMAPLE_MODULES += $(SRCROOT)/src/peripherals/IMU
-#LIBMAPLE_MODULES += $(SRCROOT)/src/processing/ahrs
-#LIBMAPLE_MODULES += $(SRCROOT)/src/processing/actuator
-#LIBMAPLE_MODULES += $(SRCROOT)/src/processing/flightstabilization
-#LIBMAPLE_MODULES += $(SRCROOT)/src/processing/link
-#LIBMAPLE_MODULES += $(SRCROOT)/src/processing/nav/sonar
-#LIBMAPLE_MODULES += $(SRCROOT)/src/core
-#LIBMAPLE_MODULES += $(SRCROOT)/src/link
+#BREEZE_MODULES += $(SRCROOT)/src/math/common
+#BREEZE_MODULES += $(SRCROOT)/src/math/pid
+#BREEZE_MODULES += $(SRCROOT)/src/math/time
+#BREEZE_MODULES += $(SRCROOT)/src/math/vector
+#BREEZE_MODULES += $(SRCROOT)/src/math/filter
+#BREEZE_MODULES += $(SRCROOT)/src/data/conf
+#BREEZE_MODULES += $(SRCROOT)/src/hal
+#BREEZE_MODULES += $(SRCROOT)/src/peripherals/I2C
+#BREEZE_MODULES += $(SRCROOT)/src/peripherals/sensor
+#BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU
+#BREEZE_MODULES += $(SRCROOT)/src/processing/ahrs
+#BREEZE_MODULES += $(SRCROOT)/src/processing/actuator
+#BREEZE_MODULES += $(SRCROOT)/src/processing/flightstabilization
+#BREEZE_MODULES += $(SRCROOT)/src/processing/link
+#BREEZE_MODULES += $(SRCROOT)/src/processing/nav/sonar
+#BREEZE_MODULES += $(SRCROOT)/src/core
+#BREEZE_MODULES += $(SRCROOT)/src/link
 
 # User modules:
 ifneq ($(USER_MODULES),)
-LIBMAPLE_MODULES += $(USER_MODULES)
+BREEZE_MODULES += $(USER_MODULES)
 endif
 
 # Call each module's rules.mk:
-$(foreach m,$(LIBMAPLE_MODULES),$(eval $(call LIBMAPLE_MODULE_template,$(m))))
+$(foreach m,$(BREEZE_MODULES),$(eval $(call LIBMAPLE_MODULE_template,$(m))))
 
 ##
 ## Targets
