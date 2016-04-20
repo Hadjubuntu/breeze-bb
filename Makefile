@@ -70,19 +70,28 @@ include $(SRCROOT)/build-targets.mk
 
 .PHONY: install sketch clean help
 
-
-sketch: clean build-check MSG_INFO $(BUILD_PATH)/$(BOARD).bin
+sketch: clean install
 
 all: sketch
 
+install:  $(BUILD_PATH)/main.o $(BUILD_PATH)/Brain.o $(BUILD_PATH)/History.o $(BUILD_PATH)/Logger.o $(BUILD_PATH)/Processing.o
 
-
-install: $(BUILD_PATH)/main.o main
-	g++ -o main $(BUILD_PATH)/main.o
+$(BUILD_PATH)/Brain.o:
+	g++ -o $(BUILD_PATH)/Brain.o -c src/core/Brain.cpp $(GLOBAL_CXXFLAGS)
+$(BUILD_PATH)/History.o:
+	g++ -o $(BUILD_PATH)/History.o -c src/core/History.cpp $(GLOBAL_CXXFLAGS)
+$(BUILD_PATH)/Logger.o:
+	g++ -o $(BUILD_PATH)/Logger.o -c src/core/Logger.cpp $(GLOBAL_CXXFLAGS)
+$(BUILD_PATH)/Processing.o:
+	g++ -o $(BUILD_PATH)/Processing.o -c src/core/Processing.cpp $(GLOBAL_CXXFLAGS)
+	
+	#--------------------------------
+# TODO : http://stackoverflow.com/questions/15652264/makefile-which-can-generate-all-object-files-in-a-specific-path
 
 clean:
 	rm -rf build/*
-	rm main
+	rm -f main
+	rm -f *.o
 
 
 help:

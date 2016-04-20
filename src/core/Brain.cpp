@@ -6,7 +6,6 @@
  *      Author: adrien
  */
 #include <stdio.h>
-#include <wirish/wirish.h>
 #include "../core/Brain.h"
 #include "../hal/i2c.h"
 #include "../hal/HAL.h"
@@ -18,13 +17,13 @@
 
 Brain::Brain() : _referenceDate(Date::zero()), _commands(History<int>::getDefault()) {
 	_tickId = 0;
-	_referenceDate.setTimElapsedSinceStartUs(micros());
+//	FIXME _referenceDate.setTimElapsedSinceStartUs(micros());
 }
 
 void Brain::enableI2C()
 {
 	// Initialize I2C com
-	i2c_master_enable(I2C1, I2C_FAST_MODE);
+//	i2c_master_enable(I2C1, I2C_FAST_MODE);
 }
 
 void Brain::initProcessings()

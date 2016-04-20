@@ -7,7 +7,7 @@
 #ifndef HAL_I2C_H_
 #define HAL_I2C_H_
 
-#include <libmaple/i2c.h>
+//#include <libmaple/i2c.h>
 
 
 class i2c {
