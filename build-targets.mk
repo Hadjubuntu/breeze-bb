@@ -5,6 +5,10 @@ $(BUILD_PATH)/main.o: $(SRCROOT)/main.cpp
 
 .PHONY: library
 
+$(BUILD_PATH)/breezebb: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o
+	 $(CXX) -o $@ $(TGT_BIN) $(BUILD_PATH)/main.o
+
+
 $(BUILDDIRS):
 	@mkdir -p $@
 

@@ -77,7 +77,7 @@ all: sketch
 
 #SRC = $(BUILD_PATH)/src/core/Brain.cpp \ $(BUILD_PATH)/src/core/History.cpp
 #OBJ = $(patsubst $(BUILD_PATH)/%.c,$(BUILD_PATH)/%.o,$(SRC))
-install: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o
+install: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o $(BUILD_PATH)/breezebb
     
 #$(BUILD_PATH)/%.o:%.cpp
 #	g++  $(GLOBAL_CXXFLAGS) -c $< -o $@
