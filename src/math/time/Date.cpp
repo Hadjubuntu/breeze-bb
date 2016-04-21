@@ -30,6 +30,7 @@ float Date::durationFrom(Date& date)
 
 Date Date::now()
 {
-	Date e(micros());
+	// FIXME micros()
+	Date e(0);
 	return e;
 }

@@ -17,33 +17,34 @@ RfControler::RfControler() : Processing()
 }
 
 void RfControler::receiveNewPackets() {
-	if (RfSerial.available() > 0) {
-		char inChar = (char) (RfSerial.read());
-		// If incoming character is a new line, then the packet is stored
-		//----------------------------------------------------------
-		if (inChar == _endPacketChar)
-		{
-			vector<string> datas = StrUtils::explode(_incomingPacket, '|');
-
-			if (datas.size() >= 1)
-			{
-				string payload = "";
-				if (datas.size() > 1) {
-					payload = datas[1];
-				}
-				// Add packet to history
-				RfPacket e(Date::now(), datas[0], payload);
-				_receivedPackets.push_back(e);
-			}
-
-			// Reset incoming packet
-			_incomingPacket.clear();
-		} else        // Otherwise append new char to current incoming packet
-		{
-			// Push back character to string
-			_incomingPacket += inChar;
-		}
-	}
+	//FIXME
+//	if (RfSerial.available() > 0) {
+//		char inChar = (char) (RfSerial.read());
+//		// If incoming character is a new line, then the packet is stored
+//		//----------------------------------------------------------
+//		if (inChar == _endPacketChar)
+//		{
+//			vector<string> datas = StrUtils::explode(_incomingPacket, '|');
+//
+//			if (datas.size() >= 1)
+//			{
+//				string payload = "";
+//				if (datas.size() > 1) {
+//					payload = datas[1];
+//				}
+//				// Add packet to history
+//				RfPacket e(Date::now(), datas[0], payload);
+//				_receivedPackets.push_back(e);
+//			}
+//
+//			// Reset incoming packet
+//			_incomingPacket.clear();
+//		} else        // Otherwise append new char to current incoming packet
+//		{
+//			// Push back character to string
+//			_incomingPacket += inChar;
+//		}
+//	}
 }
 
 void RfControler::sendPackets()

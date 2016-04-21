@@ -74,17 +74,27 @@ sketch: clean install
 
 all: sketch
 
-install:  $(BUILD_PATH)/main.o $(BUILD_PATH)/Brain.o $(BUILD_PATH)/History.o $(BUILD_PATH)/Logger.o $(BUILD_PATH)/Processing.o
 
-$(BUILD_PATH)/Brain.o:
-	g++ -o $(BUILD_PATH)/Brain.o -c src/core/Brain.cpp $(GLOBAL_CXXFLAGS)
-$(BUILD_PATH)/History.o:
-	g++ -o $(BUILD_PATH)/History.o -c src/core/History.cpp $(GLOBAL_CXXFLAGS)
-$(BUILD_PATH)/Logger.o:
-	g++ -o $(BUILD_PATH)/Logger.o -c src/core/Logger.cpp $(GLOBAL_CXXFLAGS)
-$(BUILD_PATH)/Processing.o:
-	g++ -o $(BUILD_PATH)/Processing.o -c src/core/Processing.cpp $(GLOBAL_CXXFLAGS)
-	
+#SRC = $(BUILD_PATH)/src/core/Brain.cpp \ $(BUILD_PATH)/src/core/History.cpp
+#OBJ = $(patsubst $(BUILD_PATH)/%.c,$(BUILD_PATH)/%.o,$(SRC))
+install: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o
+    
+#$(BUILD_PATH)/%.o:%.cpp
+#	g++  $(GLOBAL_CXXFLAGS) -c $< -o $@
+#	
+#%.cpp:
+#	g++  $(GLOBAL_CXXFLAGS) -c $< $@
+
+
+#$(BUILD_PATH)/Brain.o:
+#	g++ -o $(BUILD_PATH)/Brain.o -c src/core/Brain.cpp $(GLOBAL_CXXFLAGS)
+#$(BUILD_PATH)/History.o:
+#	g++ -o $(BUILD_PATH)/History.o -c src/core/History.cpp $(GLOBAL_CXXFLAGS)
+#$(BUILD_PATH)/Logger.o:
+#	g++ -o $(BUILD_PATH)/Logger.o -c src/core/Logger.cpp $(GLOBAL_CXXFLAGS)
+#$(BUILD_PATH)/Processing.o:
+#	g++ -o $(BUILD_PATH)/Processing.o -c src/core/Processing.cpp $(GLOBAL_CXXFLAGS)
+
 	#--------------------------------
 # TODO : http://stackoverflow.com/questions/15652264/makefile-which-can-generate-all-object-files-in-a-specific-path
 
@@ -96,4 +106,6 @@ clean:
 
 help:
 	@echo ""
+	@echo $(TGT_BIN)
+	@echo $(BUILDDIRS)
 	@echo "TBC"

@@ -193,7 +193,7 @@ void FlightStabilization::stabilizeAltitude()
 float FlightStabilization::boostThrottleCompensateTiltAngle(float throttle)
 {
 	Vect3D rpy = _currentAttitude.toRollPitchYawVect3D();
-	float combinedTilt = abs(cos(rpy.getX()) * cos(rpy.getY()));
+	float combinedTilt = FastMath::fabs(FastMath::cos(rpy.getX()) * FastMath::cos(rpy.getY()));
 	float factor = 1.0;
 
 	if (isSafeToUseBoost(throttle, combinedTilt))

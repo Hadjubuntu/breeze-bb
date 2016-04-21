@@ -12,6 +12,15 @@
 
 float gyro_correct_int[3];
 
+
+// FIXME !!!!!!!!!!!
+float fabs(float x) {
+	return x;
+}
+bool isnan(double x) {
+	return false;
+}
+
 /**
  * Constructor
  */
@@ -132,7 +141,7 @@ void AHRS::process()
 
 	// If quaternion has become inappropriately short or is nan reinit.
 	// THIS SHOULD NEVER ACTUALLY HAPPEN
-	if ((fabsf(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
+	if ((fabs(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
 		_attitude = Quaternion::zero();
 		logger.error("inv_qmag > 1e3f");
 	} else {

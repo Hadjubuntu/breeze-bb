@@ -22,17 +22,19 @@ Timer4 	5 	9 	14 	24
  */
 
 
+
 // This picks the smallest prescaler that allows an overflow < 2^16.
+#define CYCLES_PER_MICROSECOND 100000000000000 // TODO FIXME
 #define MAX_OVERFLOW    ((1 << 16) - 1)
 #define CYC_MSEC        (1000 * CYCLES_PER_MICROSECOND)
 #define TAU_MSEC        20
 #define TAU_USEC        (TAU_MSEC * 1000)
 #define TAU_CYC         (TAU_MSEC * CYC_MSEC)
 #define SERVO_PRESCALER (TAU_CYC / MAX_OVERFLOW + 1)
-#define SERVO_OVERFLOW  ((uint16)round((double)TAU_CYC / SERVO_PRESCALER))
+#define SERVO_OVERFLOW  ((int)round((double)TAU_CYC / SERVO_PRESCALER))
 
 // Unit conversions
-#define US_TO_COMPARE(us) ((uint16)map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
+#define US_TO_COMPARE(us) ((int)map((us), 0, TAU_USEC, 0, SERVO_OVERFLOW))
 #define COMPARE_TO_US(c)  ((uint32)map((c), 0, SERVO_OVERFLOW, 0, TAU_USEC))
 
 #define HZ_TO_US(f) (1000000.0f/f)
@@ -96,27 +98,27 @@ void ActuatorControl::init()
 	// Prepare all pin output
 	// -----------------------
 	// Timer 3 for motors at 480 Hz
-	pinMode(D28, PWM);
-	pinMode(D27, PWM);
-	pinMode(D11, PWM);
-	pinMode(D12, PWM);
-
-	// Timer 4 for servos at 50 Hz
-	pinMode(D14, PWM);
-	//	pinMode(D24, PWM);
-	//	pinMode(D5, PWM);
-	//	pinMode(D9, PWM);
-
-
-	// Set frequency for timers
-	Timer3.setPeriod((uint32) HZ_TO_US(490)); // 490 Hz
-	Timer4.setPeriod(20000); // 20000 microseconds = 50hz refresh
-
-	// For multicopter only
-	pwmWrite(D28, levelToCtrl(0));
-	pwmWrite(D27, levelToCtrl(0));
-	pwmWrite(D11, levelToCtrl(0));
-	pwmWrite(D12, levelToCtrl(0));
+//	pinMode(D28, PWM);
+//	pinMode(D27, PWM);
+//	pinMode(D11, PWM);
+//	pinMode(D12, PWM);
+//
+//	// Timer 4 for servos at 50 Hz
+//	pinMode(D14, PWM);
+//	//	pinMode(D24, PWM);
+//	//	pinMode(D5, PWM);
+//	//	pinMode(D9, PWM);
+//
+//
+//	// Set frequency for timers
+//	Timer3.setPeriod((uint32) HZ_TO_US(490)); // 490 Hz
+//	Timer4.setPeriod(20000); // 20000 microseconds = 50hz refresh
+//
+//	// For multicopter only
+//	pwmWrite(D28, levelToCtrl(0));
+//	pwmWrite(D27, levelToCtrl(0));
+//	pwmWrite(D11, levelToCtrl(0));
+//	pwmWrite(D12, levelToCtrl(0));
 
 	// Initialize motor repartition especially for Ycopter
 	initMotorRepartition();
@@ -161,7 +163,7 @@ int ActuatorControl::getCommandNmToSignalUs(float commandNm, float nmToDeltaSign
 void ActuatorControl::processFixedWing(unsigned short int  throttle)
 {
 	// Motors - write pulse
-	pwmWrite(D28, US_TO_COMPARE(throttle));
+//	pwmWrite(D28, US_TO_COMPARE(throttle));
 
 	// Servos - write pulse
 	// -----------------------
@@ -227,16 +229,16 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	}
 
 	// Write pulse for motors
-	pwmWrite(D28, levelToCtrl(motorX[0]));
-	pwmWrite(D27, levelToCtrl(motorX[1]));
-	pwmWrite(D11, levelToCtrl(motorX[2]));
-
-	if (nbMotors == 4)
-	{
-		pwmWrite(D12, levelToCtrl(motorX[3]));
-	}
-	else {
-		// Signal goes from 650 to 2250 ms TODO use conf parameter here
-		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
-	}
+//	pwmWrite(D28, levelToCtrl(motorX[0]));
+//	pwmWrite(D27, levelToCtrl(motorX[1]));
+//	pwmWrite(D11, levelToCtrl(motorX[2]));
+//
+//	if (nbMotors == 4)
+//	{
+//		pwmWrite(D12, levelToCtrl(motorX[3]));
+//	}
+//	else {
+//		// Signal goes from 650 to 2250 ms TODO use conf parameter here
+//		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
+//	}
 }

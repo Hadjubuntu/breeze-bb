@@ -33,22 +33,22 @@
 class RadioSbus {
 public:
 	Date lastUpdate;
-	uint8_t sbusData[25];
-	int16_t channelsCalib[18];
-	int16_t channels[18];
-	int16_t servos[18];
-	uint8_t  failsafe_status;
+	short sbusData[25];
+	int channelsCalib[18];
+	int channels[18];
+	int servos[18];
+	short  failsafe_status;
 	int sbus_passthrough;
 	int toChannels;
 
 
 	RadioSbus();
 	void begin(void);
-	int16_t Channel(uint8_t ch);
-	uint8_t DigiChannel(uint8_t ch);
-	void Servo(uint8_t ch, int16_t position);
-	void DigiServo(uint8_t ch, uint8_t position);
-	uint8_t Failsafe(void);
+	int Channel(short ch);
+	short DigiChannel(short ch);
+	void Servo(short ch, int position);
+	void DigiServo(short ch, short position);
+	short Failsafe(void);
 	void PassthroughSet(int mode);
 	int PassthroughRet(void);
 	void UpdateChannels(void);
@@ -58,8 +58,8 @@ public:
 		return (Date::now().durationFrom(lastUpdate) > 1.0);
 	}
 
-	float getChannelNormed(uint8_t ch) {
-		int16_t channelValue = RADIO_OFFSET;
+	float getChannelNormed(short ch) {
+		int channelValue = RADIO_OFFSET;
 
 		if (!isComLost()) {
 			channelValue = Channel(ch);
@@ -68,14 +68,14 @@ public:
 	}
 
 private:
-	uint8_t byte_in_sbus;
-	uint8_t bit_in_sbus;
-	uint8_t ch;
-	uint8_t bit_in_channel;
-	uint8_t bit_in_servo;
-	uint8_t inBuffer[25];
+	short byte_in_sbus;
+	short bit_in_sbus;
+	short ch;
+	short bit_in_channel;
+	short bit_in_servo;
+	short inBuffer[25];
 	int bufferIndex;
-	uint8_t inData;
+	short inData;
 	int feedState;
 
 };

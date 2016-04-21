@@ -55,18 +55,18 @@ void Gyro::init()
 void Gyro::update()
 {
 	// Read raw data
-	uint8 buff[6];
+	short buff[6];
 
 	_i2c.readFrom(GYRO_REG_ADDR, 6, buff);
 
 	// Convention : positive when rolling left, pitching down
-	int16 result[3];
-	result[1] = -((((int16) buff[0]) << 8) | buff[1]) ;
-	result[0] = -((((int16) buff[2]) << 8) | buff[3]) ;
-	result[2] = -((((int16) buff[4]) << 8) | buff[5]) ;
+	int result[3];
+	result[1] = -((((int) buff[0]) << 8) | buff[1]) ;
+	result[0] = -((((int) buff[2]) << 8) | buff[3]) ;
+	result[2] = -((((int) buff[4]) << 8) | buff[5]) ;
 
 	// Create gyro vector from raw data
-	Vect3D cGyro = Vect3D::fromInt16Array(result);
+	Vect3D cGyro(result[0], result[1], result[2]);
 
 	// Scale gyro from LSB to deg/s
 	cGyro *= GYRO_LSB_TO_DEGS;

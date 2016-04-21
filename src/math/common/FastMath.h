@@ -8,6 +8,14 @@
 #ifndef MATH_COMMON_FASTMATH_H_
 #define MATH_COMMON_FASTMATH_H_
 
+// TODO FIXME
+#define PI 3.14
+static inline long map(long value, long fromStart, long fromEnd,
+                long toStart, long toEnd) {
+    return (value - fromStart) * (toEnd - toStart) / (fromEnd - fromStart) +
+        toStart;
+}
+
 #define min(a,b) ((a)<(b)?(a):(b))
 //#define max(a,b) ((a)>(b)?(a):(b))
 #define Bound(_x, _min, _max) { if (_x > (_max)) _x = (_max); else if (_x < (_min)) _x = (_min); }
@@ -33,6 +41,8 @@ public:
 	static float constrainAngleZeroToTwoPi(float);
 	static float constrainAngleMinusPiPlusPi(float);
 	static float fabs(float);
+	static float pow(float, float);
+	static float cos(float);
 };
 
 #endif /* MATH_COMMON_FASTMATH_H_ */

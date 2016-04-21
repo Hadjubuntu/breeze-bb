@@ -14,11 +14,11 @@
  */
 void Accelerometer::init()
 {
-	uint8 buff[1];
+	short buff[1];
 	_i2c.readFrom(0x00, 1, buff);
 
 	// now we check msg_data for our 0xE5 magic number
-	uint8 dev_id = buff[0];
+	short dev_id = buff[0];
 
 
 	if (dev_id != XL345_DEVID)
@@ -98,17 +98,17 @@ void Accelerometer::calibration()
 void Accelerometer::update()
 {
 	// Retrieve raw data from I2C
-	uint8 buff[A_TO_READ];
+	short buff[A_TO_READ];
 
 	_i2c.readFrom(ADXLREG_DATAX0, A_TO_READ, buff);
 
-	int16 result[3];
-	result[1] = -((((int16) buff[1]) << 8) | buff[0]) ;
-	result[0] = -((((int16) buff[3]) << 8) | buff[2]) ;
-	result[2] = -((((int16) buff[5]) << 8) | buff[4]) ;
+	int result[3];
+	result[1] = -((((int) buff[1]) << 8) | buff[0]) ;
+	result[0] = -((((int) buff[3]) << 8) | buff[2]) ;
+	result[2] = -((((int) buff[5]) << 8) | buff[4]) ;
 
 	// Create vector 3D from array of int16
-	Vect3D cAcc = Vect3D::fromInt16Array(result);
+	Vect3D cAcc(result[0], result[1], result[2]);
 
 	// Apply scale factor from LSB to g
 	cAcc *= ACC_SENSITIVITY;

@@ -11,6 +11,7 @@
 #include "FastMath.h"
 
 
+
 FastMath::FastMath() {
 
 }
@@ -100,8 +101,19 @@ float FastMath::constrainAngleMinusPiPlusPi(float x)
 
 float FastMath::fabs(float x)
 {
-	return abs(x);
+	if (x >= 0.0) {
+		return x;
+	}
+	else {
+		return -x;
+	}
 }
 
+float pow(float a, float power) {
+	return pow(a, power);
+}
 
-
+float cos(float x)
+{
+	return cos(x);
+}

@@ -7,6 +7,7 @@
  */
 #include <stdio.h>
 #include "../../hal/HAL.h"
+#include "../../math/common/FastMath.h"
 #include "Baro.h"
 
 Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
@@ -36,7 +37,7 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 
 void Baro::init()
 {
-	uint8_t buff[22];
+	short buff[22];
 
 
 	// We read the calibration data registers
@@ -91,7 +92,7 @@ void Baro::callback()
 {
 	if (_state == 1)
 	{
-		uint8 Data[2];
+		short Data[2];
 		_i2c.readFrom(0xF6, 2, Data);
 		_uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
 		_state = 3;
@@ -99,7 +100,7 @@ void Baro::callback()
 	}
 	else if (_state == 5)
 	{
-		uint8 Data[3];
+		short Data[3];
 		_i2c.readFrom(0xF6, 3, Data);
 		_uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
 		_state = 6;
@@ -189,6 +190,6 @@ void Baro::calculateAltitude()
 
 		// Calculate altitude from difference of pressure
 		float diffPressure = ((float)_truePressure / (float)GroundPressure);
-		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - pow(diffPressure, 0.190295));
+		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::pow(diffPressure, 0.190295));
 	}
 }

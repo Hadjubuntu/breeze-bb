@@ -9,7 +9,7 @@
 #include "../hal/HAL.h"
 #include "RadioSbus.h"
 
-#define port Serial1
+#define port
 
 /**
  * Default constructor
@@ -20,13 +20,13 @@ RadioSbus::RadioSbus() : lastUpdate(Date::now())
 }
 
 void RadioSbus::begin(){
-	uint8_t loc_sbusData[25] = {
+	short loc_sbusData[25] = {
 			0x0f,0x01,0x04,0x20,0x00,0xff,0x07,0x40,0x00,0x02,0x10,0x80,0x2c,0x64,0x21,0x0b,0x59,0x08,0x40,0x00,0x02,0x10,0x80,0x00,0x00};
-	int16_t loc_channels[18]  = {
+	int loc_channels[18]  = {
 			1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,0,0};
-	int16_t loc_servos[18]    = {
+	int loc_servos[18]    = {
 			1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,1023,0,0};
-	port.begin(BAUDRATE);
+//	FIXME port.begin(BAUDRATE);
 
 	memcpy(sbusData,loc_sbusData,25);
 	memcpy(channels,loc_channels,18);
@@ -44,7 +44,7 @@ void RadioSbus::begin(){
 	}
 }
 
-int16_t RadioSbus::Channel(uint8_t ch) {
+int RadioSbus::Channel(short ch) {
 	// Read channel data
 	if ((ch>0)&&(ch<=16)){
 		return channels[ch-1];
@@ -53,7 +53,7 @@ int16_t RadioSbus::Channel(uint8_t ch) {
 		return 1023;
 	}
 }
-uint8_t RadioSbus::DigiChannel(uint8_t ch) {
+short RadioSbus::DigiChannel(short ch) {
 	// Read digital channel data
 	if ((ch>0) && (ch<=2)) {
 		return channels[15+ch];
@@ -62,7 +62,7 @@ uint8_t RadioSbus::DigiChannel(uint8_t ch) {
 		return 0;
 	}
 }
-void RadioSbus::Servo(uint8_t ch, int16_t position) {
+void RadioSbus::Servo(short ch, int position) {
 	// Set servo position
 	if ((ch>0)&&(ch<=16)) {
 		if (position>2048) {
@@ -71,7 +71,7 @@ void RadioSbus::Servo(uint8_t ch, int16_t position) {
 		servos[ch-1] = position;
 	}
 }
-void RadioSbus::DigiServo(uint8_t ch, uint8_t position) {
+void RadioSbus::DigiServo(short ch, short position) {
 	// Set digital servo position
 	if ((ch>0) && (ch<=2)) {
 		if (position>1) {
@@ -80,7 +80,7 @@ void RadioSbus::DigiServo(uint8_t ch, uint8_t position) {
 		servos[15+ch] = position;
 	}
 }
-uint8_t RadioSbus::Failsafe(void) {
+short RadioSbus::Failsafe(void) {
 	return failsafe_status;
 }
 
@@ -140,43 +140,44 @@ void RadioSbus::UpdateChannels(void)
 
 }
 void RadioSbus::FeedLine(void){
-	if (port.available() > 24) {
-		while(port.available() > 0) {
-			inData = port.read();
-
-
-			switch (feedState){
-			case 0:
-				if (inData != 0x0f){
-					while(port.available() > 0){//read the contents of in buffer this should resync the transmission
-						inData = port.read();
-					}
-					return;
-				}
-				else{
-					bufferIndex = 0;
-					inBuffer[bufferIndex] = inData;
-					inBuffer[24] = 0xff;
-					feedState = 1;
-				}
-				break;
-			case 1:
-				bufferIndex ++;
-				inBuffer[bufferIndex] = inData;
-				if (bufferIndex < 24 && port.available() == 0) {
-					feedState = 0;
-				}
-				if (bufferIndex == 24) {
-					feedState = 0;
-					if (inBuffer[0]==0x0f && inBuffer[24] == 0x00) {
-						// Copy data
-						memcpy(sbusData,inBuffer,25);
-						toChannels = 1;
-					}
-				}
-				break;
-			}
-		}
-	}
+	//FIXME
+//	if (port.available() > 24) {
+//		while(port.available() > 0) {
+//			inData = port.read();
+//
+//
+//			switch (feedState){
+//			case 0:
+//				if (inData != 0x0f){
+//					while(port.available() > 0){//read the contents of in buffer this should resync the transmission
+//						inData = port.read();
+//					}
+//					return;
+//				}
+//				else{
+//					bufferIndex = 0;
+//					inBuffer[bufferIndex] = inData;
+//					inBuffer[24] = 0xff;
+//					feedState = 1;
+//				}
+//				break;
+//			case 1:
+//				bufferIndex ++;
+//				inBuffer[bufferIndex] = inData;
+//				if (bufferIndex < 24 && port.available() == 0) {
+//					feedState = 0;
+//				}
+//				if (bufferIndex == 24) {
+//					feedState = 0;
+//					if (inBuffer[0]==0x0f && inBuffer[24] == 0x00) {
+//						// Copy data
+//						memcpy(sbusData,inBuffer,25);
+//						toChannels = 1;
+//					}
+//				}
+//				break;
+//			}
+//		}
+//	}
 }
 
