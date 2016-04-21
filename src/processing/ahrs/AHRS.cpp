@@ -13,10 +13,7 @@
 float gyro_correct_int[3];
 
 
-// FIXME !!!!!!!!!!!
-float fabs(float x) {
-	return x;
-}
+
 bool isnan(double x) {
 	return false;
 }
@@ -141,7 +138,7 @@ void AHRS::process()
 
 	// If quaternion has become inappropriately short or is nan reinit.
 	// THIS SHOULD NEVER ACTUALLY HAPPEN
-	if ((fabs(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
+	if ((FastMath::fabs(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
 		_attitude = Quaternion::zero();
 		logger.error("inv_qmag > 1e3f");
 	} else {
@@ -180,11 +177,11 @@ void AHRS::computeVz()
 	_analyzedAccZ = acc_Ef.getZ() - _meanAccZ;
 
 	// Filter low value with no-tolerance (set value to zero)
-	if (fabs(_analyzedAccZ) < 0.05) {
+	if (FastMath::fabs(_analyzedAccZ) < 0.05) {
 		_analyzedAccZ = 0.0;
 	}
 	// Filter low value with tolerance
-	else if (fabs(_analyzedAccZ) < 0.1) {
+	else if (FastMath::fabs(_analyzedAccZ) < 0.1) {
 		_analyzedAccZ = _analyzedAccZ / 4.0;
 	}
 

@@ -17,7 +17,7 @@
 
 Brain::Brain() : _referenceDate(Date::zero()), _commands(History<int>::getDefault()) {
 	_tickId = 0;
-//	FIXME _referenceDate.setTimElapsedSinceStartUs(micros());
+	_referenceDate.setTimElapsedSinceStartUs(Date::micros());
 }
 
 void Brain::enableI2C()

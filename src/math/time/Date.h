@@ -57,6 +57,7 @@ public:
 
 	static Date now();
 
+	static long micros();
 
 
 };

@@ -69,9 +69,78 @@ void calibration()
 	}
 }
 
+void setup()
+{
+	// Add dependency (TODO delete this, brain as singleton, call for processing from brain)
+	//---------------------
+	Conf::getInstance().setRfControler(&rfControler);
+
+	// Initialize brain
+	//---------------------
+	uavBrain.enableI2C();
+
+	// Add processings
+	//----------------------
+	uavBrain.addProcessing(&baro);
+	uavBrain.addProcessing(&ahrs);
+	uavBrain.addProcessing(&rfControler);
+	uavBrain.addProcessing(&rfRouter);
+	uavBrain.addProcessing(&radioControler);
+	uavBrain.addProcessing(&flightControl);
+	uavBrain.addProcessing(&sonar);
+	uavBrain.addProcessing(&flightStabilization); // FIXME
+	uavBrain.addProcessing(&actuatorControl);
+	uavBrain.addProcessing(&telemetry);
+
+	// Initialize all processings
+	//----------------------
+	uavBrain.initProcessings();
+
+	// Calibration on AHRS
+	//----------------------
+	calibration();
+}
+
+void loop()
+{
+	// Call brain loop function to udpate the processings
+	// ----
+	uavBrain.loop();
+
+	// Prints infos
+	// ----
+	if (uavBrain.getTickId() % 2000 == 0)
+	{
+		float rpy[3];
+		ahrs.getAttitude().toRollPitchYaw(rpy);
+
+		char str[90];
+
+		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
+				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
+				baro.getAltitudeMeters()*100.0f,
+				sonar.getOutput(),
+				flightStabilization.getErrorAltitude()) ;
+
+		RfPacket packet(Date::now(), "LOG", str);
+		rfControler.addPacketToSend(packet);
+	}
+}
 
 int main()
 {
-	printf("First code in beaglebone");
+	int iter = 0;
+
+	printf("Start setup");
+	setup();
+	printf("................done\n");
+
+	printf("Start brain\n");
+	while (iter < 10000) {
+		loop();
+		iter ++;
+	}
+	printf("Brain......................shutdown\n");
+
 	return 0;
 }

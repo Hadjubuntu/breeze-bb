@@ -9,7 +9,6 @@
 #include "../hal/HAL.h"
 #include "RadioSbus.h"
 
-#define port
 
 /**
  * Default constructor

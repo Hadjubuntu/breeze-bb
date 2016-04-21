@@ -5,6 +5,7 @@
  *      Author: adrien
  */
 
+#include <stdio.h>
 #include "Processing.h"
 
 Processing::Processing() : logger(Logger()), freqHz(50), lastExecutionDate(Date::zero()), dt(0.0),
@@ -47,6 +48,7 @@ void Processing::wait(float pDtWait)
 
 	while (Date::now().durationFrom(currentTime) < pDtWait)
 	{
+		printf("Duration %.4f\n", Date::now().durationFrom(currentTime));
 		// Update data
 		process();
 	}

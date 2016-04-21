@@ -70,7 +70,7 @@ include $(SRCROOT)/build-targets.mk
 
 .PHONY: install sketch clean help
 
-sketch: clean install
+sketch: install
 
 all: sketch
 

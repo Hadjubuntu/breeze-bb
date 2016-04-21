@@ -25,25 +25,25 @@ void RadioControler::init()
 	_handler.begin();
 
 	// Wait for two seconds
-	wait(2.0);
-
-	// Set calibration values
-	for (int i = 0; i < 7; i ++) {
-		_handler.channelsCalib[i] = _handler.channels[i];
-	}
+//	wait(2.0);
+//
+//	// Set calibration values
+//	for (int i = 0; i < 7; i ++) {
+//		_handler.channelsCalib[i] = _handler.channels[i];
+//	}
 }
 
 void RadioControler::process()
 {
-	// Read bus data
-	_handler.FeedLine();
-
-	// If data are complete
-	if (_handler.toChannels == 1)
-	{
-		// Update channel data and last update date
-		_handler.UpdateChannels();
-		_handler.toChannels = 0;
-		_handler.lastUpdate = Date::now();
-	}
+//	// Read bus data
+//	_handler.FeedLine();
+//
+//	// If data are complete
+//	if (_handler.toChannels == 1)
+//	{
+//		// Update channel data and last update date
+//		_handler.UpdateChannels();
+//		_handler.toChannels = 0;
+//		_handler.lastUpdate = Date::now();
+//	}
 }
