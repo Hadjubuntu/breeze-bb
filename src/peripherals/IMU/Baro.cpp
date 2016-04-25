@@ -190,6 +190,6 @@ void Baro::calculateAltitude()
 
 		// Calculate altitude from difference of pressure
 		float diffPressure = ((float)_truePressure / (float)GroundPressure);
-		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::pow(diffPressure, 0.190295));
+		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
 	}
 }

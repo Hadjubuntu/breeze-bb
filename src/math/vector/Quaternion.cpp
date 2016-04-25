@@ -75,7 +75,7 @@ float Quaternion::getNorm2() {
 }
 
 float Quaternion::getNorm() {
-	return FastMath::sqrt(getNorm2());
+	return FastMath::fsqrt(getNorm2());
 }
 
 // See: http://fr.mathworks.com/help/aeroblks/quaternionrotation.html?requestedDomain=www.mathworks.com

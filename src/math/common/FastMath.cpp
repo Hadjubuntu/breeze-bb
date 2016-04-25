@@ -41,8 +41,8 @@ float FastMath::exp(float x)
 	return FastMath::fastpow2(1.442695040f * x);
 }
 
-float FastMath::sqrt(float x) {
-	return std::sqrt(x);
+float FastMath::fsqrt(float x) {
+	return sqrt(x);
 }
 
 
@@ -109,11 +109,11 @@ float FastMath::fabs(float x)
 	}
 }
 
-float FastMath::pow(float a, float power) {
+float FastMath::fpow(float a, float power) {
 	return pow(a, power);
 }
 
-float FastMath::cos(float x)
+float FastMath::fcos(float x)
 {
 	return cos(x);
 }

@@ -35,14 +35,14 @@ public:
 	static float toRadians(float angleDegrees);
 	static float exp(float x);
 	static float fastpow2(float x);
-	static float sqrt(float x);
+	static float fsqrt(float x);
 	static float fast_invsqrtf(float);
 	static int toCenti(float x);
 	static float constrainAngleZeroToTwoPi(float);
 	static float constrainAngleMinusPiPlusPi(float);
 	static float fabs(float);
-	static float pow(float, float);
-	static float cos(float);
+	static float fpow(float, float);
+	static float fcos(float);
 };
 
 #endif /* MATH_COMMON_FASTMATH_H_ */
