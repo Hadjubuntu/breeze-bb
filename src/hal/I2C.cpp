@@ -5,8 +5,8 @@
  *      Author: adrien
  */
 
-#include "../../hal/i2c.h"
 #include "I2C.h"
+
 
 // This is the instance of the libmaple I2C device to use
 #define FLYMAPLE_I2C_DEVICE I2C1
@@ -55,7 +55,7 @@ int I2C::readFrom(short addr, short nbBytes, short *msgData)
 //		reset();
 //	}
 	 */
-// FIXME
+// FIXME Manage I2C on beaglebone black
 	return 0;
 
 	//	i2c_msg msgs[1];

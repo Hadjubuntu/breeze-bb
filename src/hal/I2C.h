@@ -8,7 +8,7 @@
 #ifndef PERIPHERALS_I2C_I2C_H_
 #define PERIPHERALS_I2C_I2C_H_
 
-#include "../../hal/HalTypes.h"
+#include "HalTypes.h"
 
 class I2C {
 private:

@@ -23,7 +23,7 @@ void Accelerometer::init()
 
 	if (dev_id != XL345_DEVID)
 	{
-		// TODO exit
+		logger.error("Error while trying to access Accelerometer\n");
 	}
 
 	//invoke ADXL345
@@ -55,7 +55,7 @@ void Accelerometer::calibration()
 	float maxAccZ = 0.0;
 
 	update();
-	Vect3D prevAccRaw = _accRaw;
+	Vect3D prevAccRaw = accRaw;
 
 	while (countSample < nbHealthySamples && nbTrial < 1000)
 	{
@@ -63,22 +63,22 @@ void Accelerometer::calibration()
 		update();
 
 		// Sample vector
-		Vect3D delta = prevAccRaw - _accRaw;
+		Vect3D delta = prevAccRaw - accRaw;
 
 
 
 		if (delta.getNorm2() < 0.05)
 		{
-			sumAccX += _accRaw.getX();
-			sumAccY += _accRaw.getY();
-			sumAccZ += _accRaw.getZ();
+			sumAccX += accRaw.getX();
+			sumAccY += accRaw.getY();
+			sumAccZ += accRaw.getZ();
 			//
-			if ((_accRaw.getZ() > 0.0 && _accRaw.getZ() > maxAccZ)
-					|| (_accRaw.getZ() < 0.0 && _accRaw.getZ() < maxAccZ)) {
-				maxAccZ = _accRaw.getZ();
+			if ((accRaw.getZ() > 0.0 && accRaw.getZ() > maxAccZ)
+					|| (accRaw.getZ() < 0.0 && accRaw.getZ() < maxAccZ)) {
+				maxAccZ = accRaw.getZ();
 			}
 
-			prevAccRaw = _accRaw;
+			prevAccRaw = accRaw;
 			countSample ++;
 		}
 
@@ -116,9 +116,9 @@ void Accelerometer::update()
 	// Retrieve offset
 	cAcc -= _offset;
 
-	_accRaw = cAcc;
+	accRaw = cAcc;
 
 	//	_accFiltered = cAcc;
-	_accFiltered = _accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
+	accFiltered = accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
 
 }

@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include "../common/FastMath.h"
+#include "../../core/Logger.h"
 #include "Quaternion.h"
 
 
@@ -43,6 +44,21 @@ Quaternion::Quaternion(float rollRad, float pitchRad, float yawRad)
 		_z = -_z;
 	}
 }
+
+float Quaternion::operator[](int x) {
+		if (x == 0) {
+			return _w;
+		} else if (x == 1) {
+			return _x;
+		} else if (x == 2) {
+			return _y;
+		} else if (x == 3) {
+			return _z;
+		} else {
+			Logger::getDefault().error("Error while using [] operator on quaternion - out of bounds");
+			return 0.0;
+		}
+	}
 
 void Quaternion::toRollPitchYaw(float rpy[3])
 {

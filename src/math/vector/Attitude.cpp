@@ -8,7 +8,7 @@
 #include "Attitude.h"
 
 Attitude::Attitude() {
-	// TODO Auto-generated constructor stub
+
 
 }
 

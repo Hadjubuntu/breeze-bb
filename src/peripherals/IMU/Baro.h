@@ -8,7 +8,7 @@
 #ifndef PERIPHERALS_IMU_BARO_H_
 #define PERIPHERALS_IMU_BARO_H_
 
-#include "../../peripherals/I2C/I2C.h"
+#include "../../hal/I2C.h"
 #include "../../core/Processing.h"
 
 #define BMP085_ADDRESS 0x77  //(0xEE >> 1)

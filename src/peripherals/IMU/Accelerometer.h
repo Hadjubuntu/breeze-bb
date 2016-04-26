@@ -8,8 +8,9 @@
 #ifndef PERIPHERALS_IMU_ACCELEROMETER_H_
 #define PERIPHERALS_IMU_ACCELEROMETER_H_
 
+#include "../../core/Logger.h"
 #include "../../peripherals/sensor/Sensor.h"
-#include "../../peripherals/I2C/I2C.h"
+#include "../../hal/I2C.h"
 
 ////////Acceleration sensor ADXL345 function/////////////////////////////
 #define ACC (0x53)    // Defined ADXL345 address, ALT ADDRESS pin is grounded
@@ -39,20 +40,21 @@
 class Accelerometer : public Sensor
 {
 private:
-	// TODO refactor and delete those data (use dataFiltered / dataRaw instead)
+	/** Internal logger */
+	Logger logger;
 	/** Filtered acceleration */
-	Vect3D _accFiltered;
-
+	Vect3D accFiltered;
 	/** Raw data acceleration */
-	Vect3D _accRaw;
+	Vect3D accRaw;
 public:
 	/**
 	 * Constructor
 	 */
 	Accelerometer() :
 		Sensor(I2C::getInstance(ACC)),
-		_accFiltered(Vect3D::zero()),
-		_accRaw(Vect3D::zero()) {
+		logger(Logger::getDefault()),
+		accFiltered(Vect3D::zero()),
+		accRaw(Vect3D::zero()) {
 
 	}
 
@@ -78,10 +80,10 @@ public:
 	 * GETTERS
 	 ***************************************************/
 	Vect3D getAccRaw() {
-		return _accRaw;
+		return accRaw;
 	}
 	Vect3D getAccFiltered() {
-		return _accFiltered;
+		return accFiltered;
 	}
 };
 

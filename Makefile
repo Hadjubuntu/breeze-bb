@@ -42,7 +42,6 @@ BREEZE_MODULES += $(SRCROOT)/src/math/vector
 BREEZE_MODULES += $(SRCROOT)/src/math/filter
 BREEZE_MODULES += $(SRCROOT)/src/data/conf
 BREEZE_MODULES += $(SRCROOT)/src/hal
-BREEZE_MODULES += $(SRCROOT)/src/peripherals/I2C
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/sensor
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU
 BREEZE_MODULES += $(SRCROOT)/src/processing/ahrs

@@ -64,7 +64,7 @@ public:
 	FlightStabilization(AHRS*, FlightControl*, Sonar*);
 
 	/**
-	 * TODO
+	 * Initialization
 	 */
 	void init() {
 

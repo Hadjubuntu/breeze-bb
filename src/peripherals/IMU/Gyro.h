@@ -10,7 +10,7 @@
 
 
 #include "../../math/vector/Vect3D.h"
-#include "../../peripherals/I2C/I2C.h"
+#include "../../hal/I2C.h"
 #include "../../math/time/Date.h"
 
 #define GYRO_ADDR 0x68

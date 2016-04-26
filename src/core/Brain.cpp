@@ -7,7 +7,7 @@
  */
 #include <stdio.h>
 #include "../core/Brain.h"
-#include "../hal/i2c.h"
+#include "../hal/I2C.h"
 #include "../hal/HAL.h"
 
 

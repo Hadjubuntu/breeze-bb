@@ -27,6 +27,11 @@ public:
 	void info(const char str[]) ;
 	void debug(const char str[]);
 	void error(const char str[]);
+
+	static Logger getDefault() {
+		Logger e;
+		return e;
+	}
 };
 
 #endif /* CORE_LOGGER_H_ */

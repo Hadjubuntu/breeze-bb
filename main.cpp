@@ -88,7 +88,7 @@ void setup()
 	uavBrain.addProcessing(&radioControler);
 	uavBrain.addProcessing(&flightControl);
 	uavBrain.addProcessing(&sonar);
-	uavBrain.addProcessing(&flightStabilization); // FIXME
+	uavBrain.addProcessing(&flightStabilization);
 	uavBrain.addProcessing(&actuatorControl);
 	uavBrain.addProcessing(&telemetry);
 

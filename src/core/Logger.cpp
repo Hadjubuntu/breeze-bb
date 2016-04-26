@@ -20,17 +20,17 @@ void Logger::info(const char str[])
 {
 	if (_mode == INFO || _mode == DEBUG)
 	{
-//		Serial3.println(str);
+		printf("[INFO] %s\n", str);
 	}
 }
 
 void Logger::debug(const char str[])
 {
 	if (_mode == DEBUG) {
-//		Serial3.println(str);
+		printf("[DEBUG] %s\n", str);
 	}
 }
 
 void Logger::error(const char str[]) {
-//	Serial3.println(str);
+	printf("[ERROR] %s\n", str);
 }

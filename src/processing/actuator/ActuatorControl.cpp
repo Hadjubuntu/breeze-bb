@@ -24,7 +24,7 @@ Timer4 	5 	9 	14 	24
 
 
 // This picks the smallest prescaler that allows an overflow < 2^16.
-#define CYCLES_PER_MICROSECOND 100000000000000 // TODO FIXME
+#define CYCLES_PER_MICROSECOND 100000000000000 // FIXME How to manage ESC motors on beaglebone ?
 #define MAX_OVERFLOW    ((1 << 16) - 1)
 #define CYC_MSEC        (1000 * CYCLES_PER_MICROSECOND)
 #define TAU_MSEC        20
@@ -238,7 +238,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 //		pwmWrite(D12, levelToCtrl(motorX[3]));
 //	}
 //	else {
-//		// Signal goes from 650 to 2250 ms TODO use conf parameter here
+//		// Signal goes from 650 to 2250 ms
 //		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
 //	}
 }
