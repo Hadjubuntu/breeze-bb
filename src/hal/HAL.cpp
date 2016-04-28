@@ -9,6 +9,7 @@
  */
 
 #include "../math/time/Date.h"
+#include "../core/Constants.h"
 #include "HAL.h"
 
 HAL::HAL() {
@@ -25,7 +26,7 @@ void HAL::delayUs(unsigned long pDtUs)
 {
 
 	Date d = Date::now();
-	while (Date::now().durationFrom(d)*1000000.0 < pDtUs) {
+	while (Date::now().durationFrom(d)*Constants::S_TO_US < pDtUs) {
 		// Wait
 	}
 }

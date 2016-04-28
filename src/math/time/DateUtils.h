@@ -9,23 +9,22 @@
 #define MATH_TIME_DATEUTILS_H_
 
 #include "Date.h"
+#include "../../core/Constants.h"
 
 
 /**
  * Useful function to manipulate dates
  */
 class DateUtils {
-private:
-	static constexpr float S_TO_US = 1000000.0f;
 public:
 	/**
 	 * Transform delta time in microseconds into delta time in seconds
 	 */
 	static float microToSeconds(long dt) {
-		return ((float) dt / S_TO_US);
+		return ((float) dt / Constants::S_TO_US);
 	}
 	static long secondsToMicros(float pSeconds) {
-		return (long) (pSeconds * S_TO_US);
+		return (long) (pSeconds * Constants::S_TO_US);
 	}
 
 	static int micros() {

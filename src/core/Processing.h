@@ -11,6 +11,7 @@
 #include <vector>
 #include "../core/Logger.h"
 #include "../math/time/Date.h"
+#include "../core/Constants.h"
 
 
 /**
@@ -62,6 +63,8 @@ public:
 
 		// Store dt
 		dt = now.durationFrom(lastExecutionDate);
+
+		printf("Processing exec lat of %.2f us\n", (dt - 1.0/freqHz) * Constants::S_TO_US);
 
 		// Update last execution date
 		lastExecutionDate = now;

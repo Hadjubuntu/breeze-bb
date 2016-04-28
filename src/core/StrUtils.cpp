@@ -8,8 +8,21 @@
  *      Author: Adrien HADJ-SALAH
  */
 
+#include <string.h>
 #include "StrUtils.h"
 
+
+bool StrUtils::startsWith(const char *s, const char *prefix)
+{
+	size_t len = strlen(prefix);
+	if (strncmp(s, prefix, len) == 0) {
+//		return (char *) s + len;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
 std::vector<std::string> StrUtils::explode(const std::string& s, const char& c)
 {

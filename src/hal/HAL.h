@@ -11,6 +11,8 @@
 #ifndef PERIPHERALS_HAL_HAL_H_
 #define PERIPHERALS_HAL_HAL_H_
 
+#define HAL_GPIO_INPUT 0
+#define HAL_GPIO_OUTPUT 1
 
 
 class HAL {
