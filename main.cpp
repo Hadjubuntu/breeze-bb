@@ -54,6 +54,7 @@ ActuatorControl actuatorControl(&flightStabilization);
 /** Telemetry to keep GCS update */
 Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 
+/** Flight stabilization autotune */
 FsAutotune fsAutotune(&flightStabilization);
 
 void calibration()
@@ -91,6 +92,7 @@ void setup()
 	uavBrain.addProcessing(&flightStabilization);
 	uavBrain.addProcessing(&actuatorControl);
 	uavBrain.addProcessing(&telemetry);
+	uavBrain.addProcessing(&fsAutotune);
 
 	// Initialize all processings
 	//----------------------
@@ -136,7 +138,7 @@ int main()
 	printf("................done\n");
 
 	printf("Start brain\n");
-	while (iter < 10000) {
+	while (iter < 100000) {
 		loop();
 		iter ++;
 	}

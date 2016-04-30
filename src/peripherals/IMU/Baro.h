@@ -53,6 +53,7 @@ private:
 	int                       _retry_time;
 
 	int _state;
+	bool baroHealthy;
 
 
 	void readUncompensatedTempValue();

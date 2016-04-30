@@ -17,15 +17,15 @@
 
 class FsAutotune : public Processing {
 protected:
+	bool subprocessingAdded;
+	FlightStabilization *fs;
+
 	// Add a new PID to autotune
 	void addAutotune(PID *pPid);
 public:
 	FsAutotune(FlightStabilization *flightStabilization);
 
-	void init()
-	{
-
-	}
+	void init();
 
 	/**
 	 * Process and update data

@@ -33,6 +33,7 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 	b5 = 0;
 	_iter = 0;
 	_altitudeMeters = 0.0f;
+	baroHealthy = true;
 }
 
 void Baro::init()
@@ -54,10 +55,15 @@ void Baro::init()
 	mb = ((int16_t)buff[16] << 8) | buff[17];
 	mc = ((int16_t)buff[18] << 8) | buff[19];
 	md = ((int16_t)buff[20] << 8) | buff[21];
+
+	if (ac1 == 0) {
+		baroHealthy = false;
+	}
 }
 
 void Baro::process()
 {
+	if (baroHealthy) {
 	if (_state == 0)
 	{
 		_state = 1;
@@ -85,6 +91,7 @@ void Baro::process()
 		if (_iter < 10000) {
 			_iter ++;
 		}
+	}
 	}
 }
 

@@ -10,14 +10,18 @@
 FsAutotune::FsAutotune(FlightStabilization *flightStabilization) :  Processing()
 {
 	freqHz = 50;
-
-	PID pidRoll = flightStabilization->getPidRoll();
-	addAutotune(&pidRoll);
-//
-//	PID pidPitch = flightStabilization->getPidPitch();
-//	addAutotune(&pidPitch);
+	fs = flightStabilization;
+	subprocessingAdded = false;
 }
 
+void FsAutotune::init()
+{
+
+}
+
+/**
+ * Add a new PID to optimize
+ */
 void FsAutotune::addAutotune(PID *pPid)
 {
 	FsAutotuneStoreMeasure storeMeasure(pPid);
@@ -26,6 +30,12 @@ void FsAutotune::addAutotune(PID *pPid)
 
 void FsAutotune::process()
 {
+	if (!subprocessingAdded && fs != nullptr) 
+	{
+		PID pidRoll = fs->getPidRoll();
+		// addAutotune(&pidRoll);
+		subprocessingAdded = true;
+	}
 
 }
 
