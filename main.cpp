@@ -24,8 +24,8 @@
 
 
 /** Attitude and heading reference system */
-Baro baro;
-AHRS ahrs(&baro);
+//Baro baro;
+//AHRS ahrs(&baro);
 
 /** UAV brain */
 Brain uavBrain;
@@ -46,16 +46,16 @@ FlightControl flightControl(&radioControler);
 Sonar sonar;
 
 /** Flight stabilization controller */
-FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
+//FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
 
 /** Motor and servo control */
-ActuatorControl actuatorControl(&flightStabilization);
+//ActuatorControl actuatorControl(&flightStabilization);
 
 /** Telemetry to keep GCS update */
-Telemetry telemetry(&ahrs, &flightControl, &rfControler);
+//Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 
 /** Flight stabilization autotune */
-FsAutotune fsAutotune(&flightStabilization);
+//FsAutotune fsAutotune(&flightStabilization);
 
 void calibration()
 {
@@ -64,7 +64,7 @@ void calibration()
 	for (int i = 0; i < nbCalibrationMeasure; i++)
 	{
 		uavBrain.loop();
-		ahrs.calibrateOffset();
+//		ahrs.calibrateOffset();
 
 		HAL::delayMs(10);
 	}
@@ -82,17 +82,17 @@ void setup()
 
 	// Add processings
 	//----------------------
-	uavBrain.addProcessing(&baro);
-	uavBrain.addProcessing(&ahrs);
+//	uavBrain.addProcessing(&baro);
+//	uavBrain.addProcessing(&ahrs);
 	uavBrain.addProcessing(&rfControler);
 	uavBrain.addProcessing(&rfRouter);
 	uavBrain.addProcessing(&radioControler);
 	uavBrain.addProcessing(&flightControl);
 	uavBrain.addProcessing(&sonar);
-	uavBrain.addProcessing(&flightStabilization);
-	uavBrain.addProcessing(&actuatorControl);
-	uavBrain.addProcessing(&telemetry);
-	uavBrain.addProcessing(&fsAutotune);
+//	uavBrain.addProcessing(&flightStabilization);
+//	uavBrain.addProcessing(&actuatorControl);
+//	uavBrain.addProcessing(&telemetry);
+//	uavBrain.addProcessing(&fsAutotune);
 
 	// Initialize all processings
 	//----------------------
@@ -114,15 +114,16 @@ void loop()
 	if (uavBrain.getTickId() % 2000 == 0)
 	{
 		float rpy[3];
-		ahrs.getAttitude().toRollPitchYaw(rpy);
+//		ahrs.getAttitude().toRollPitchYaw(rpy);
 
 		char str[90];
+		sprintf(str, "ok debug");
 
-		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
-				baro.getAltitudeMeters()*100.0f,
-				sonar.getOutput(),
-				flightStabilization.getErrorAltitude()) ;
+//		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
+//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
+//				baro.getAltitudeMeters()*100.0f,
+//				sonar.getOutput(),
+//				flightStabilization.getErrorAltitude()) ;
 
 		RfPacket packet(Date::now(), "LOG", str);
 		rfControler.addPacketToSend(packet);
