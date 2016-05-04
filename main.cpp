@@ -126,6 +126,11 @@ void loop()
 
 		RfPacket packet(Date::now(), "LOG", str);
 		rfControler.addPacketToSend(packet);
+
+		short buffer[2];
+		I2C i2c(0x68);
+		i2c.readFrom(0x1B, 1, buffer);
+		printf("i2c gyro : %c\n", buffer[0]);
 	}
 }
 

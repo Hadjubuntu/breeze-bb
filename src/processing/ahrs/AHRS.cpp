@@ -13,11 +13,6 @@
 float gyro_correct_int[3];
 
 
-
-bool isnan(double x) {
-	return false;
-}
-
 /**
  * Constructor
  */
