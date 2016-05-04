@@ -21,7 +21,7 @@
  * Read https://datko.net/2013/11/03/bbb_i2c/
  * to understand i2c bus
  */
-#define I2C_BUS 2
+#define I2C_BUS 1
 #define PATH_SIZE 15
 
 /** Default Constructor
