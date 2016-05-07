@@ -131,12 +131,12 @@ void loop()
 
 		short buffer[2];
 		I2C i2c(0x68);
+		//		i2c.readFrom(0x1B, 1, buffer);
+		//		printf("i2c gyro : %c\n", buffer[0]);
 
 		Pwm pwm(50, PWMName::P8_13);
 		pwm.check();
 
-//		i2c.readFrom(0x1B, 1, buffer);
-//		printf("i2c gyro : %c\n", buffer[0]);
 	}
 }
 

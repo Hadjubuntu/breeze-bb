@@ -34,12 +34,12 @@ void HAL::delayUs(unsigned long pDtUs)
 
 std::string HAL::findCapeMgrName()
 {
-	std::string searchResult = FileTools::searchDirectory("/sys/devices/","bone_capemgr.");
+	std::string searchResult = FileTools::searchDirectory("/sys/devices/platform/","bone_capemgr.");
 	return searchResult;
 }
 
 std::string HAL::findOpcName()
 {
-	std::string searchResult = FileTools::searchDirectory("/sys/devices/","ocp.");
+	std::string searchResult = FileTools::searchDirectory("/sys/devices/platform/","ocp.");
 	return searchResult;
 }
