@@ -11,6 +11,7 @@
 #include "../math/time/Date.h"
 #include "../core/Constants.h"
 #include "HAL.h"
+#include "../core/FileTools.h"
 
 HAL::HAL() {
 	// TODO Auto-generated constructor stub
@@ -19,7 +20,7 @@ HAL::HAL() {
 
 void HAL::delayMs(unsigned long pDtMs)
 {
-//	FIXME for beaglebone delay(pDtMs);
+	//	FIXME for beaglebone delay(pDtMs);
 }
 
 void HAL::delayUs(unsigned long pDtUs)
@@ -29,4 +30,16 @@ void HAL::delayUs(unsigned long pDtUs)
 	while (Date::now().durationFrom(d)*Constants::S_TO_US < pDtUs) {
 		// Wait
 	}
+}
+
+std::string HAL::findCapeMgrName()
+{
+	std::string searchResult = FileTools::searchDirectory("/sys/devices/","bone_capemgr.");
+	return searchResult;
+}
+
+std::string HAL::findOpcName()
+{
+	std::string searchResult = FileTools::searchDirectory("/sys/devices/","ocp.");
+	return searchResult;
 }

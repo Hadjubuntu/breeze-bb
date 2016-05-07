@@ -20,6 +20,7 @@
 #include "src/processing/nav/sonar/Sonar.h"
 #include "src/processing/link/Telemetry.h"
 #include "src/hal/HAL.h"
+#include "src/hal/Pwm.h"
 
 
 
@@ -111,7 +112,7 @@ void loop()
 
 	// Prints infos
 	// ----
-	if (uavBrain.getTickId() % 2000 == 0)
+	if (uavBrain.getTickId() % 4000 == 0)
 	{
 		float rpy[3];
 //		ahrs.getAttitude().toRollPitchYaw(rpy);
@@ -130,6 +131,10 @@ void loop()
 
 		short buffer[2];
 		I2C i2c(0x68);
+
+		Pwm pwm(50, PWMName::P8_13);
+		pwm.check();
+
 //		i2c.readFrom(0x1B, 1, buffer);
 //		printf("i2c gyro : %c\n", buffer[0]);
 	}
