@@ -33,12 +33,20 @@ class Pwm {
 private:
 	int freqHz;
 	PWMName pwmName;
-	std::string capeMgrName;
-	std::string opcName;
+	std::string scriptDirectory;
+
+	void setupPwmAndDisable(PWMName, int);
 public:
 	Pwm(int pFreqHz, PWMName pName);
 
+	void init();
 	void check();
+	std::string findScriptDirectory();
+
+	void enable();
+	void disable();
+
+	void write(long dutyCycleMs);
 
 	virtual ~Pwm();
 };

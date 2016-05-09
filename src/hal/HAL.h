@@ -22,9 +22,6 @@ class HAL {
 public:
 	HAL();
 
-	std::string findCapeMgrName();
-	std::string findOpcName();
-
 	static void delayMs(unsigned long pDtMs);
 	static void delayUs(unsigned long pDtUs);
 

@@ -58,6 +58,9 @@ Sonar sonar;
 /** Flight stabilization autotune */
 //FsAutotune fsAutotune(&flightStabilization);
 
+
+Pwm pwm(50, PWMName::P8_13);
+
 void calibration()
 {
 	int nbCalibrationMeasure = 100;
@@ -102,6 +105,8 @@ void setup()
 	// Calibration on AHRS
 	//----------------------
 	calibration();
+
+	pwm.init();
 }
 
 void loop()
@@ -134,13 +139,11 @@ void loop()
 		//		i2c.readFrom(0x1B, 1, buffer);
 		//		printf("i2c gyro : %c\n", buffer[0]);
 
-		Pwm pwm(50, PWMName::P8_13);
 		pwm.check();
-
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	int iter = 0;
 
@@ -154,6 +157,5 @@ int main()
 		iter ++;
 	}
 	printf("Brain......................shutdown\n");
-
 	return 0;
 }
