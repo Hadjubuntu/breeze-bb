@@ -24,20 +24,26 @@ fi
 
 config-pin ${PIN_NAME} pwm
 
-cd /sys/class/pwm/pwmchip${PIN}
-chmod +rw *
-chown adrien *
+DIRECTORY="/sys/class/pwm/pwmchip${PIN}"
+echo "Directory ${DIRECTORY}"
 
-echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/unexport
-echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/export
+if [ -d "$DIRECTORY" ]; then
+	# Control will enter here if $DIRECTORY exists.
 
-cd pwm${SUBPATH}
-chmod +rw *
-chown adrien *
+	cd /sys/class/pwm/pwmchip${PIN}
+	chmod +rw *
+	chown adrien *
 
-echo 0 > enable
-echo ${PERIOD} > period
-echo ${DUTY_CYCLE} > duty_cycle
-echo 1 > enable
+	echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/unexport
+	echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/export
 
+	cd pwm${SUBPATH}
+	chmod +rw *
+	chown adrien *
+
+	echo 0 > enable
+	echo ${PERIOD} > period
+	echo ${DUTY_CYCLE} > duty_cycle
+	echo 1 > enable
+fi
 
