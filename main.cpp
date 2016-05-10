@@ -137,7 +137,7 @@ void loop()
 		short buffer[2];
 		I2C i2c(0x68);
 		i2c.readFrom(0x75, 1, buffer);
-		printf("i2c gyro : %c\n", buffer[0]);
+		printf("i2c gyro : %d\n", buffer[0]);
 
 		pwm.check();
 	}
