@@ -64,7 +64,8 @@ public:
 		// Store dt
 		dt = now.durationFrom(lastExecutionDate);
 
-		printf("Proc at %d Hz | late of %.2f us\n", freqHz, (dt - 1.0/freqHz) * Constants::S_TO_US);
+		// Debug
+		// printf("Proc at %d Hz | late of %.2f us\n", freqHz, (dt - 1.0/freqHz) * Constants::S_TO_US);
 
 		// Update last execution date
 		lastExecutionDate = now;
