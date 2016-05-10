@@ -14,9 +14,9 @@ void Gyro::init()
 {
 	// Initialize gyro
 	///----------------------------
-	// Power control
-	_i2c.writeTo(GYRO_PWR_MNGT,0x00);
-	HAL::delayMs(5);
+	// Power control - reset and wake up
+	_i2c.writeTo(GYRO_PWR_MNGT,0x80);
+	HAL::delayMs(100);
 	_i2c.writeTo(GYRO_PWR_MNGT,0x00);
 	HAL::delayMs(5);
 	// Sample at 500Hz (1kHz / (div + 1))
@@ -24,6 +24,10 @@ void Gyro::init()
 	HAL::delayMs(5);
 	// Gyro +/- 2000 deg/s, low-pass filter at 10Hz
 	_i2c.writeTo(GYRO_DLPF_FS, 0x1d);
+
+	// 1A => 0x00
+	// 1B => 0x03 (2000°)
+
 	HAL::delayMs(5);
 	//
 	_i2c.writeTo(GYRO_INT_CFG, 0x00);

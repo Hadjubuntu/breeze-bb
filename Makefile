@@ -44,6 +44,7 @@ BREEZE_MODULES += $(SRCROOT)/src/data/conf
 BREEZE_MODULES += $(SRCROOT)/src/hal
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/sensor
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU
+BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU/provider
 BREEZE_MODULES += $(SRCROOT)/src/processing/ahrs
 BREEZE_MODULES += $(SRCROOT)/src/processing/actuator
 BREEZE_MODULES += $(SRCROOT)/src/processing/flightstabilization
