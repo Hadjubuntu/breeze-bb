@@ -116,7 +116,6 @@ void loop()
 	// Call brain loop function to udpate the processings
 	// ----
 	uavBrain.loop();
-	gyro.update();
 
 	// Prints infos
 	// ----
@@ -138,6 +137,7 @@ void loop()
 		rfControler.addPacketToSend(packet);
 
 
+		gyro.update();
 		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
 				gyro.getGyroRaw().getX(),
 				gyro.getGyroRaw().getY(),
