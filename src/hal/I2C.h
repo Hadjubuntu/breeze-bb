@@ -20,6 +20,8 @@
 
 class I2C
 {
+protected:
+	bool mock;
 public:
 	I2C();
 	I2C(short DEV_ADD);

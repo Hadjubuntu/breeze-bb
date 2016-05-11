@@ -11,6 +11,8 @@
 #include "GyroProvider.h"
 
 class GyroMPU6050 : public GyroProvider {
+protected:
+	I2C i2c;
 public:
 	GyroMPU6050();
 	virtual ~GyroMPU6050();

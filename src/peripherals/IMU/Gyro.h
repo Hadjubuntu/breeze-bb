@@ -18,7 +18,7 @@
 class Gyro {
 private:
 	/** Provider */
-	GyroProvider *provider;
+	GyroMPU6050 provider;
 
 	/** Raw data acceleration */
 	Vect3D _gyroRaw;
@@ -42,9 +42,7 @@ public:
 		_offset(Vect3D::zero()),
 		_filterNewDataCoeff(0.5)
 	{
-		// Initialize provider
-		GyroMPU6050 providerMPU6050;
-		provider = &providerMPU6050;
+
 	}
 
 	/**

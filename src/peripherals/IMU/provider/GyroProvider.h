@@ -15,7 +15,6 @@
 
 class GyroProvider {
 protected:
-	I2C i2c;
 public:
 	GyroProvider();
 	virtual ~GyroProvider();

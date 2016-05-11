@@ -138,10 +138,10 @@ void loop()
 
 		gyro.update();
 
-		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
-				gyro.getGyroFiltered().getX(),
-				gyro.getGyroFiltered().getY(),
-				gyro.getGyroFiltered().getZ());
+//		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
+//				gyro.getGyroFiltered().getX(),
+//				gyro.getGyroFiltered().getY(),
+//				gyro.getGyroFiltered().getZ());
 
 		pwm.check();
 	}

@@ -29,9 +29,10 @@
  *
  */
 I2C::I2C() {
-	this->DEV_ADD = 0;
-	this->busAddr = I2C_BUS;
-	this->path = (char*) calloc(PATH_SIZE, sizeof(char));
+	mock = false;
+	DEV_ADD = 0;
+	busAddr = I2C_BUS;
+	path = (char*) calloc(PATH_SIZE, sizeof(char));
 	sprintf(path, "/dev/i2c-%d", this->busAddr);
 
 	printf("Device address auto-set 0.");
@@ -42,10 +43,11 @@ I2C::I2C() {
  * @function BBB_I2C(short DEV_ADD)
  * @param DEV_ADD Device Address
  */
-I2C::I2C(short DEV_ADD) {
-	this->busAddr = I2C_BUS;
-	this->path = (char*) calloc(PATH_SIZE, sizeof(char));
-	this->DEV_ADD = DEV_ADD;
+I2C::I2C(short pDevAddr) {
+	mock = false;
+	busAddr = I2C_BUS;
+	path = (char*) calloc(PATH_SIZE, sizeof(char));
+	DEV_ADD = pDevAddr;
 	sprintf(path, "/dev/i2c-%d", busAddr);
 
 	printf("I2C bus auto-set 1.");
@@ -57,6 +59,7 @@ I2C::I2C(short DEV_ADD) {
  * @param busAddr I2C Bus address.
  */
 I2C::I2C(short DEV_ADD, short busAddr) {
+	mock = false;
 	this->busAddr = busAddr;
 	this->path = (char*) calloc(PATH_SIZE, sizeof(char));
 	this->DEV_ADD = DEV_ADD;
@@ -99,12 +102,12 @@ int I2C::openConnection() {
 
 	if ((file = open(path, O_RDWR)) < 0) {
 		printf("%s do not open. Address %d.", path, DEV_ADD);
-		exit(1);
+		mock = true;
 	}
 
 	if (ioctl(file, I2C_SLAVE, DEV_ADD) < 0) {
 		printf("Can not join I2C Bus. Address %d.", DEV_ADD);
-		exit(1);
+		mock = true;
 	}
 
 	return file;
@@ -171,17 +174,18 @@ void I2C::writeTo(short DATA_REGADD, short data) {
 
 	int file = openConnection();
 
-	short buffer[2];
+	if (!mock) {
+		short buffer[2];
 
-	buffer[0] = DATA_REGADD;
-	buffer[1] = data;
+		buffer[0] = DATA_REGADD;
+		buffer[1] = data;
 
-	if (write(file, buffer, 2) != 2) {
-		printf("Can not write data. Address %d.", DEV_ADD);
+		if (write(file, buffer, 2) != 2) {
+			printf("Can not write data. Address %d.", DEV_ADD);
+		}
+
+		close(file);
 	}
-
-	close(file);
-
 }
 
 /**
@@ -318,18 +322,27 @@ void I2C::readFrom(short DATA_REGADD,
 
 	int file = openConnection();
 
-	short buffer[1];
-	buffer[0] = DATA_REGADD;
-
-	if (write(file, buffer, 1) != 1) {
-		printf("Can not write data. Address %d.", DEV_ADD);
+	if (mock) {
+		for (int i = 0; i < length; i ++)
+		{
+			data[i] = 0;
+		}
 	}
+	else {
 
-	if (read(file, data, length) != length) {
-		printf("Can not read data. Address %d.", DEV_ADD);
+		short buffer[1];
+		buffer[0] = DATA_REGADD;
+
+		if (write(file, buffer, 1) != 1) {
+			printf("Can not write data. Address %d.", DEV_ADD);
+		}
+
+		if (read(file, data, length) != length) {
+			printf("Can not read data. Address %d.", DEV_ADD);
+		}
+
+		close(file);
 	}
-
-	close(file);
 
 }
 
