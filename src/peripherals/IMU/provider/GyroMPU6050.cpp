@@ -28,27 +28,27 @@ void GyroMPU6050::init()
 {
 	// Initialize gyro
 	///----------------------------
-	// Power control - reset and wake up
-//	i2c.writeTo(GYRO_PWR_MNGT_1,0x80);
-//	HAL::delayMs(100);
-//	i2c.writeTo(GYRO_PWR_MNGT_1,0x01);
-//	HAL::delayMs(10);
-//	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
-//	HAL::delayMs(10);
-//	i2c.writeTo(CONFIG, 0x01); // Use DLPF set gyro bandwith 184Hz
-//	HAL::delayMs(10);
-//	i2c.writeTo(GYRO_CONFIG, 0x18); // +/- 2000 dps
-//	HAL::delayMs(10);
-//
-//
-//	// Sample at 500Hz (1kHz / (div + 1))
-//	//	i2c.writeTo(GYRO_SMPLRT_DIV, 0x01);
-//	HAL::delayMs(5);
-//	// Gyro +/- 2000 deg/s, low-pass filter at 10Hz
-//	//	i2c.writeTo(GYRO_DLPF_FS, 0x1d);
-//
-//	HAL::delayMs(5);
-	//
+//	 Power control - reset and wake up
+	i2c.writeTo(GYRO_PWR_MNGT_1,0x80);
+	HAL::delayMs(100);
+	i2c.writeTo(GYRO_PWR_MNGT_1,0x01);
+	HAL::delayMs(10);
+	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
+	HAL::delayMs(10);
+	i2c.writeTo(CONFIG, 0x01); // Use DLPF set gyro bandwith 184Hz
+	HAL::delayMs(10);
+	i2c.writeTo(GYRO_CONFIG, 0x18); // +/- 2000 dps
+	HAL::delayMs(10);
+
+
+	// Sample at 500Hz (1kHz / (div + 1))
+	//	i2c.writeTo(GYRO_SMPLRT_DIV, 0x01);
+	HAL::delayMs(5);
+	// Gyro +/- 2000 deg/s, low-pass filter at 10Hz
+	//	i2c.writeTo(GYRO_DLPF_FS, 0x1d);
+
+	HAL::delayMs(5);
+
 }
 
 
