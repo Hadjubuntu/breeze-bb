@@ -14,7 +14,7 @@
 #define GYRO_DLPF_FS 0x16
 #define GYRO_INT_CFG 0x17
 #define GYRO_REG_ADDR 0x1d
-#define GYRO_LSB_TO_DEGS 0.0695652174f
+#define GYRO_LSB_TO_DEGS 0.06097560975f
 
 
 GyroItg3200::GyroItg3200() : GyroProvider()
