@@ -15,7 +15,7 @@
 #define INT_PIN_CFG 0x37
 #define GYRO_SMPLRT_DIV 0x15
 #define GYRO_DLPF_FS 0x16
-#define GYRO_REG_ADDR 0x3B
+#define GYRO_REG_ADDR 0x43
 #define GYRO_LSB_TO_DEGS 0.06097560975f
 
 
@@ -54,14 +54,14 @@ void GyroMPU6050::init()
 
 Vect3D GyroMPU6050::read()
 {
-	short buffer[14];
+	short buffer[6];
 	int result[3];
 
-	i2c.readFrom(GYRO_REG_ADDR,14,buffer);
+	i2c.readFrom(GYRO_REG_ADDR,6,buffer);
 
-	result[0]=(((int)buffer[8]) << 8 ) | buffer[9];
-	result[1]=(((int)buffer[10]) << 8 ) | buffer[11];
-	result[2]=(((int)buffer[12]) << 8 ) | buffer[13];
+	result[0]=(((int)buffer[2]) << 8 ) | buffer[1];
+	result[1]=(((int)buffer[4]) << 8 ) | buffer[3];
+	result[2]=(((int)buffer[6]) << 8 ) | buffer[5];
 
 	//	// Read raw data
 	//	short buff[6];
