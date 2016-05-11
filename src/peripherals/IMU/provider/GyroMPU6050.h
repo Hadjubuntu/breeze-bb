@@ -8,10 +8,15 @@
 #ifndef SRC_PERIPHERALS_IMU_PROVIDER_GYROMPU6050_H_
 #define SRC_PERIPHERALS_IMU_PROVIDER_GYROMPU6050_H_
 
-class GyroMPU6050 {
+#include "GyroProvider.h"
+
+class GyroMPU6050 : public GyroProvider {
 public:
 	GyroMPU6050();
 	virtual ~GyroMPU6050();
+
+	void init();
+	Vect3D read();
 };
 
 #endif /* SRC_PERIPHERALS_IMU_PROVIDER_GYROMPU6050_H_ */

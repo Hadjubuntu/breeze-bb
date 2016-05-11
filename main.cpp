@@ -60,6 +60,7 @@ Sonar sonar;
 
 
 Pwm pwm(50, PWMName::P8_13);
+Gyro gyro;
 
 void calibration()
 {
@@ -107,6 +108,7 @@ void setup()
 	calibration();
 
 	pwm.init();
+	gyro.init();
 }
 
 void loop()
@@ -134,10 +136,12 @@ void loop()
 		RfPacket packet(Date::now(), "LOG", str);
 		rfControler.addPacketToSend(packet);
 
-		short buffer[2];
-		I2C i2c(0x68);
-		i2c.readFrom(0x75, 1, buffer);
-		printf("i2c gyro : %d\n", buffer[0]);
+		gyro.update();
+
+		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
+				gyro.getGyroFiltered().getX(),
+				gyro.getGyroFiltered().getY(),
+				gyro.getGyroFiltered().getZ());
 
 		pwm.check();
 	}

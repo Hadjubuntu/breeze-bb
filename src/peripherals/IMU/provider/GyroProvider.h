@@ -8,10 +8,20 @@
 #ifndef SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_
 #define SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_
 
+
+#include "../../../hal/I2C.h"
+#include "../../../hal/HAL.h"
+#include "../../../math/vector/Vect3D.h"
+
 class GyroProvider {
+protected:
+	I2C i2c;
 public:
 	GyroProvider();
 	virtual ~GyroProvider();
+
+	virtual void init() = 0;
+	virtual Vect3D read() = 0;
 };
 
 #endif /* SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_ */
