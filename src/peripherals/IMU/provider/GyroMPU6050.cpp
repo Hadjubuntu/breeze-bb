@@ -59,12 +59,9 @@ Vect3D GyroMPU6050::read()
 
 	i2c.readFrom(GYRO_REG_ADDR, 6,buffer);
 
-	result[0]=(((int)buffer[1]) << 8 ) | buffer[0];
-	result[1]=(((int)buffer[3]) << 8 ) | buffer[2];
-	result[2]=(((int)buffer[5]) << 8 ) | buffer[4];
-
-	printf("buffer 0 = %d | result 0 = %d\n", buffer[0], result[0]);
-
+	result[0]=(((int)buffer[0]) << 8 ) | buffer[1];
+	result[1]=(((int)buffer[2]) << 8 ) | buffer[3];
+	result[2]=(((int)buffer[4]) << 8 ) | buffer[5];
 
 	//	// Read raw data
 	//	short buff[6];
