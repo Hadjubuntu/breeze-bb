@@ -16,6 +16,7 @@
 #define GYRO_SMPLRT_DIV 0x15
 #define GYRO_DLPF_FS 0x16
 #define GYRO_REG_ADDR 0x43
+#define GYRO_SAMPLE_RATE 0x19
 #define GYRO_LSB_TO_DEGS 0.06097560975f
 
 
@@ -31,13 +32,15 @@ void GyroMPU6050::init()
 //	 Power control - reset and wake up
 	i2c.writeTo(GYRO_PWR_MNGT_1,0x80);
 	HAL::delayMs(100);
-	i2c.writeTo(GYRO_PWR_MNGT_1,0x01);
+	i2c.writeTo(GYRO_PWR_MNGT_1,0x00);
 	HAL::delayMs(10);
-	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
+//	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
 	HAL::delayMs(10);
 	i2c.writeTo(CONFIG, 0x01); // Use DLPF set gyro bandwith 184Hz
 	HAL::delayMs(10);
 	i2c.writeTo(GYRO_CONFIG, 0x18); // +/- 2000 dps
+	HAL::delayMs(10);
+	i2c.writeTo(GYRO_SAMPLE_RATE, 1000 / 800 - 1); // 800 Hz
 	HAL::delayMs(10);
 
 
