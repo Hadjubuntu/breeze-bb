@@ -2,19 +2,19 @@
 
 config-pin overlay cape-universaln
 
-PIN=0
-SUBPATH=0
+PIN=$1 # 0 => PWM0 | 1 => ? | 2 => P9.22/21 SPIO  |  4 => PWM1A/B | 6 => PWM2A/B
+PWM_ELEMENT=$2 # 0 for 1A | 1 for 1B
 
-config-pin 9.42 pwm
+config-pin 9.14 pwm
 
 cd /sys/class/pwm/pwmchip${PIN}
 chmod +rw *
 chown adrien *
 
-echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/unexport
-echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/export
+echo ${PWM_ELEMENT} > /sys/class/pwm/pwmchip${PIN}/unexport
+echo ${PWM_ELEMENT} > /sys/class/pwm/pwmchip${PIN}/export
 
-cd pwm${SUBPATH}
+cd pwm${PWM_ELEMENT}
 chmod +rw *
 chown adrien *
 

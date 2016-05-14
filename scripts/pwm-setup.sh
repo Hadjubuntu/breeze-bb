@@ -11,6 +11,19 @@
 
 config-pin overlay cape-universaln
 
+# Initialize pin
+# ---------------------------------
+pin_list=(9.14 9.16 9.42 8.13 8.19);
+
+for i in "${pin_list[@]}"
+do
+	echo "Config pin $i"
+	config-pin $i pwm
+done
+
+
+# Setup variables
+# ---------------------------------
 PIN=$1 # eg. 0
 PIN_NAME=$2 # eg. 9.42
 PERIOD=$3 # eg. 20000000 means 50Hz
