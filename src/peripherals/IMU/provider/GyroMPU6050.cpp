@@ -38,7 +38,7 @@ void GyroMPU6050::init()
 	HAL::delayMs(10);
 	i2c.writeTo(CONFIG, 0x01); // Use DLPF set gyro bandwith 184Hz
 	HAL::delayMs(10);
-	i2c.writeTo(GYRO_CONFIG, 0x24); // +/- 2000 dps
+	i2c.writeTo(GYRO_CONFIG, 0x18); // +/- 2000 dps
 	HAL::delayMs(10);
 	i2c.writeTo(GYRO_SAMPLE_RATE, 1000 / 800 - 1); // 800 Hz
 	HAL::delayMs(10);
@@ -60,11 +60,11 @@ Vect3D GyroMPU6050::read()
 	short buffer[6];
 	int16_t result[3];
 
-	i2c.readFrom(GYRO_REG_ADDR,6,buffer);
+	i2c.readFrom(0x3B,6,buffer);
 
-	result[0]=(((int16_t)buffer[2]) << 8 ) | buffer[1];
-	result[1]=(((int16_t)buffer[4]) << 8 ) | buffer[3];
-	result[2]=(((int16_t)buffer[6]) << 8 ) | buffer[5];
+	result[0]=(((int16_t)buffer[8]) << 8 ) | buffer[9];
+	result[1]=(((int16_t)buffer[10]) << 8 ) | buffer[11];
+	result[2]=(((int16_t)buffer[12]) << 8 ) | buffer[13];
 
 	result[0] *= 2000.0/32768.0;
 	result[1] *= 2000.0/32768.0;
