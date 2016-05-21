@@ -24,18 +24,15 @@ done
 
 # Setup variables
 # ---------------------------------
-PIN=$1 # eg. 0
-PIN_NAME=$2 # eg. 9.42
+PIN=$1 # 0 => PWM0 | 1 => ? | 2 => P9.22/21 SPIO  |  4 => PWM1A/B | 6 => PWM2A/B
+SUBPATH=$2 # 0 for 1A | 1 for 1B
 PERIOD=$3 # eg. 20000000 means 50Hz
 DUTY_CYCLE=$4 # eg. 1500000 ns
-SUBPATH=0
 
 if [ -z "$2" ];	then
-	echo "No argument supplied for PIN_NAME, exit.."
+	echo "No argument supplied for sub-pin (0 or 1), exit.."
 	exit
 fi
-
-config-pin ${PIN_NAME} pwm
 
 DIRECTORY="/sys/class/pwm/pwmchip${PIN}"
 echo "Directory ${DIRECTORY}"
@@ -58,5 +55,8 @@ if [ -d "$DIRECTORY" ]; then
 	echo ${PERIOD} > period
 	echo ${DUTY_CYCLE} > duty_cycle
 	echo 1 > enable
+else
+	echo "Unknow directory"
+	echo $DIRECTORY
 fi
 

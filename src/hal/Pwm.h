@@ -12,13 +12,13 @@
 
 /** Pwm Name */
 enum PWMName           {
-	P8_13                   = 0,
-	P8_19                   = 1,
-	P9_14                   = 2,
-	P9_16                   = 3,
-	P9_21                   = 4,
-	P9_22                   = 5,
-	P9_42                   = 6,
+	P8_13                   = 5,
+	P8_19                   = 6,
+	P9_14                   = 3,
+	P9_16                   = 4,
+	P9_21                   = 1,
+	P9_22                   = 2,
+	P9_42                   = 0,
 
 	EHRPWM2B                = P8_13,
 	EHRPWM2A                = P8_19,
@@ -29,8 +29,12 @@ enum PWMName           {
 	ECAP0                   = P9_42
 };
 
+
+
 class Pwm {
 private:
+	int mapPwmPin[7]={0, 2, 2, 4, 4, 6, 6};
+	int mapPwmSubpin[7]={0, 0, 1, 0, 1, 0, 1};
 	int freqHz;
 	PWMName pwmName;
 	std::string scriptDirectory;
