@@ -35,8 +35,14 @@ void Pwm::setupPwmAndDisable(PWMName pinNumber, int freqHz)
 
 	std::string defaultDutyCycle = "1000000"; // 1000 ms
 
-	std::string parameters = mapPwmPin[pinNumber] + " " +mapPwmSubpin[pinNumber]+ " " + periodStr.str() + " " + defaultDutyCycle;
-	std::string scriptSetup = "sudo ./" + scriptDirectory + "/pwm-setup.sh " + parameters;
+	char parameters[100];
+	sprintf(parameters, "%d %d", mapPwmPin[pinNumber], mapPwmSubpin[pinNumber]);
+
+	std::string paramStr = "";
+	paramStr.append(parameters);
+	paramStr.append(" " + periodStr.str() + " " + defaultDutyCycle);
+
+	std::string scriptSetup = "sudo ./" + scriptDirectory + "/pwm-setup.sh " + paramStr;
 
 	// Execute script to setup pwm pin
 	int result = system(scriptSetup.c_str());
