@@ -44,11 +44,8 @@ void Accelerometer::update()
 	Vect3D cAcc = provider.read();
 
 
-	// Apply scale factor from LSB to g
-	cAcc *= 0.1; // TODO
-
 	// Retrieve offset
-	cAcc -= offset;
+//	cAcc -= offset;
 
 	accRaw = cAcc;
 

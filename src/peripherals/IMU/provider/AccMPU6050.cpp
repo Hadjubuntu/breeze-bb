@@ -8,7 +8,7 @@
 #include "AccMPU6050.h"
 
 ////////Acceleration sensor ADXL345 function/////////////////////////////
-#define ACC_ADR (0x53)    // Defined MPU6050 address, ALT ADDRESS pin is grounded
+#define ACC_ADR (0x68)    // Defined MPU6050 address, ALT ADDRESS pin is grounded
 #define A_TO_READ (6) // Number of bytes to read(each axis accounted for two-byte)
 // MPU6050 Acceleromter Control register
 #define ACC_CONFIG    			 0x1C
