@@ -35,7 +35,7 @@ void Accelerometer::init()
 		accumulator[i] /= num_samples;
 	}
 
-	_offset = accumulator;
+	offset = accumulator;
 }
 
 void Accelerometer::update()
@@ -48,12 +48,12 @@ void Accelerometer::update()
 	cAcc *= 0.1; // TODO
 
 	// Retrieve offset
-	cAcc -= _offset;
+	cAcc -= offset;
 
 	accRaw = cAcc;
 
 	//	_accFiltered = cAcc;
-	accFiltered = accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
+	accFiltered = accFiltered * (1.0 - filterNewDataCoeff) + cAcc * filterNewDataCoeff;
 }
 
 
@@ -80,7 +80,6 @@ void Accelerometer::calibration()
 		Vect3D delta = prevAccRaw - accRaw;
 
 
-
 		if (delta.getNorm2() < 0.05)
 		{
 			sumAccX += accRaw.getX();
@@ -101,10 +100,10 @@ void Accelerometer::calibration()
 
 	if (nbTrial >= 1000 && countSample < nbHealthySamples) {
 		// No calibration could be done..
-		_offset = Vect3D(0.0, 0.0, 0.0);
+		offset = Vect3D(0.0, 0.0, 0.0);
 	}
 	else
 	{
-		_offset = Vect3D(sumAccX / countSample, sumAccY / countSample,  0.0); // sumAccZ / countSample - maxAccZ
+		offset = Vect3D(sumAccX / countSample, sumAccY / countSample,  0.0); // sumAccZ / countSample - maxAccZ
 	}
 }

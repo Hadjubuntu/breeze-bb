@@ -29,12 +29,12 @@ void GyroMPU6050::init()
 {
 	// Initialize gyro
 	///----------------------------
-//	 Power control - reset and wake up
+	//	 Power control - reset and wake up
 	i2c.writeTo(GYRO_PWR_MNGT_1,0x80);
 	HAL::delayMs(100);
 	i2c.writeTo(GYRO_PWR_MNGT_1,0x00);
 	HAL::delayMs(10);
-//	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
+	//	i2c.writeTo(GYRO_PWR_MNGT_2,0x00); // Enable acc & gyro
 	HAL::delayMs(10);
 	i2c.writeTo(CONFIG, 0x01); // Use DLPF set gyro bandwith 184Hz
 	HAL::delayMs(10);
@@ -66,20 +66,6 @@ Vect3D GyroMPU6050::read()
 	result[0]=(((int)buffer[0]) << 8 ) | buffer[1];
 	result[1]=-(((int)buffer[2]) << 8 ) | buffer[3];
 	result[2]=-(((int)buffer[4]) << 8 ) | buffer[5];
-
-
-//	printf("%d; %d; %d\n", result[0], result[1], result[2]);
-
-	//	// Read raw data
-	//	short buff[6];
-	//
-	//	i2c.readFrom(GYRO_REG_ADDR, 6, buff);
-	//
-	//	// Convention : positive when rolling left, pitching down
-	//	int result[3];
-	//	result[1] = -((((int) buff[0]) << 8) | buff[1]) ;
-	//	result[0] = -((((int) buff[2]) << 8) | buff[3]) ;
-	//	result[2] = -((((int) buff[4]) << 8) | buff[5]) ;
 
 	// Create gyro vector from raw data
 	Vect3D cGyro(result[0], result[1], result[2]);

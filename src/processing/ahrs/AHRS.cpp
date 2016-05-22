@@ -48,8 +48,9 @@ void AHRS::calibrateOffset()
 
 void AHRS::init()
 {
-	_accelerometer.init();
+	// Initialize gyro first
 	_gyro.init();
+	_accelerometer.init();
 }
 
 float* AHRS::getGyroCorr() {

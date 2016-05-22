@@ -61,6 +61,7 @@ Sonar sonar;
 
 Pwm pwm(50, PWMName::P8_13);
 Gyro gyro;
+Accelerometer acc;
 
 void calibration()
 {
@@ -109,6 +110,7 @@ void setup()
 
 	pwm.init();
 	gyro.init();
+	acc.init();
 }
 
 void loop()
@@ -139,11 +141,16 @@ void loop()
 
 		gyro.update();
 		Vect3D gyroRawDeg = gyro.getGyroRaw().toDeg();
+		acc.update();
+		Vect3D accRaw = acc.getAccRaw();
 
-		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
+		printf("Gyro [x=%.2f; y=%.2f; z=%.2f] | Acc [x=%.2f; y=%.2f; z=%.2f]\n",
 				gyroRawDeg.getX(),
 				gyroRawDeg.getY(),
-				gyroRawDeg.getZ());
+				gyroRawDeg.getZ(),
+				accRaw.getX(),
+				accRaw.getY(),
+				accRaw.getZ());
 
 		pwm.check();
 	}

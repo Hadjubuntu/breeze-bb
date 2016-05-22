@@ -23,15 +23,14 @@ private:
 	AccMPU6050 provider;
 	/** Internal logger */
 	Logger logger;
-
 	/** Filtered acceleration */
 	Vect3D accFiltered;
 	/** Raw data acceleration */
 	Vect3D accRaw;
 	/** Initial offset acceleration */
-	Vect3D _offset;
+	Vect3D offset;
 	/** Filter coefficient */
-	float _filterNewDataCoeff;
+	float filterNewDataCoeff;
 public:
 	/**
 	 * Constructor
@@ -40,8 +39,8 @@ public:
 		logger(Logger::getDefault()),
 		accFiltered(Vect3D::zero()),
 		accRaw(Vect3D::zero()),
-		_offset(Vect3D::zero()),
-		_filterNewDataCoeff(0.5f) {
+		offset(Vect3D::zero()),
+		filterNewDataCoeff(0.5f) {
 
 	}
 

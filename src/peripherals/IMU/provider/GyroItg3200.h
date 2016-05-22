@@ -12,6 +12,8 @@
 #include "IMUProvider.h"
 
 class GyroItg3200  : public IMUProvider {
+protected:
+	I2C i2c;
 public:
 	GyroItg3200();
 	virtual ~GyroItg3200();

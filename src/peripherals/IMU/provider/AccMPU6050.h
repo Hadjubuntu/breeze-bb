@@ -11,12 +11,20 @@
 #include "IMUProvider.h"
 
 class AccMPU6050  : public IMUProvider  {
+protected:
+	I2C i2c;
 public:
 	AccMPU6050();
 	virtual ~AccMPU6050();
 
-
+	/**
+	 * Initialize accelerometer
+	 */
 	void init();
+
+	/**
+	 * Read accelerometer value
+	 */
 	Vect3D read();
 };
 
