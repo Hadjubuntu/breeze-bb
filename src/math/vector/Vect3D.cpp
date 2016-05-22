@@ -18,6 +18,15 @@ Vect3D Vect3D::toRad()
 	return e;
 }
 
+Vect3D Vect3D::toDeg()
+{
+	Vect3D e(
+			FastMath::toDegrees(_x),
+			FastMath::toDegrees(_y),
+			FastMath::toDegrees(_z));
+	return e;
+}
+
 
 Vect3D Vect3D::roundvect()
 {

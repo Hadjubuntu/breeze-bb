@@ -36,6 +36,7 @@ public:
 	}
 
 	Vect3D toRad();
+	Vect3D toDeg();
 
 	Vect3D roundvect();
 

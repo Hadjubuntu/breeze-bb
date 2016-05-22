@@ -138,10 +138,12 @@ void loop()
 
 
 		gyro.update();
+		Vect3D gyroRawDeg = gyro.getGyroRaw().toDeg();
+
 		printf("Gyro [x=%.2f; y=%.2f; z=%.2f]\n",
-				gyro.getGyroRaw().getX(),
-				gyro.getGyroRaw().getY(),
-				gyro.getGyroRaw().getZ());
+				gyroRawDeg.getX(),
+				gyroRawDeg.getY(),
+				gyroRawDeg.getZ());
 
 		pwm.check();
 	}
@@ -156,7 +158,7 @@ int main(int argc, char *argv[])
 	printf("................done\n");
 
 	printf("Start brain\n");
-	while (iter < 100000) {
+	while (iter < 1000000) {
 		loop();
 		iter ++;
 	}

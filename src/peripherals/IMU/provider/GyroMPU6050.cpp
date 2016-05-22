@@ -66,11 +66,8 @@ Vect3D GyroMPU6050::read()
 	result[1]=(((int)buffer[2]) << 8 ) | buffer[3];
 	result[2]=(((int)buffer[4]) << 8 ) | buffer[5];
 
-	result[0] *= 2000.0/32768.0;
-	result[1] *= 2000.0/32768.0;
-	result[2] *= 2000.0/32768.0;
 
-	printf("%d; %d; %d\n", result[0], result[1], result[2]);
+//	printf("%d; %d; %d\n", result[0], result[1], result[2]);
 
 	//	// Read raw data
 	//	short buff[6];
