@@ -37,13 +37,14 @@ I2C::I2C() {
 
 	printf("Device address auto-set 0.");
 	printf("I2C bus auto-set 1.");
+
 }
 
 /**
- * @function BBB_I2C(short DEV_ADD)
+ * @function BBB_I2C(uint8_t DEV_ADD)
  * @param DEV_ADD Device Address
  */
-I2C::I2C(short pDevAddr) {
+I2C::I2C(uint8_t pDevAddr) {
 	mock = false;
 	busAddr = I2C_BUS;
 	path = (char*) calloc(PATH_SIZE, sizeof(char));
@@ -54,11 +55,11 @@ I2C::I2C(short pDevAddr) {
 }
 
 /**
- * @funtion BBB_I2C(short DEV_ADD, short busAddr)
+ * @funtion BBB_I2C(uint8_t DEV_ADD, uint8_t busAddr)
  * @param DEV_ADD Device Address
  * @param busAddr I2C Bus address.
  */
-I2C::I2C(short DEV_ADD, short busAddr) {
+I2C::I2C(uint8_t DEV_ADD, uint8_t busAddr) {
 	mock = false;
 	this->busAddr = busAddr;
 	this->path = (char*) calloc(PATH_SIZE, sizeof(char));
@@ -75,10 +76,10 @@ I2C::~I2C() {
 }
 
 /**
- * @funtion setBusAddress(short busAddr)
+ * @funtion setBusAddress(uint8_t busAddr)
  * @param busAddr I2C Bus address.
  */
-void I2C::setBusAddress(short busAddr) {
+void I2C::setBusAddress(uint8_t busAddr) {
 	free(path);
 	this->busAddr = busAddr;
 	this->path = (char*) calloc(PATH_SIZE, sizeof(char));
@@ -86,10 +87,10 @@ void I2C::setBusAddress(short busAddr) {
 }
 
 /**
- * @funtion setDEV_ADD(short DEV_ADD)
+ * @funtion setDEV_ADD(uint8_t DEV_ADD)
  * @param DEV_ADD Device Address
  */
-void I2C::setDEV_ADD(short DEV_ADD) {
+void I2C::setDEV_ADD(uint8_t DEV_ADD) {
 	this->DEV_ADD = DEV_ADD;
 }
 
@@ -114,14 +115,14 @@ int I2C::openConnection() {
 }
 
 /**
- * @function writeBit(short DEV_ADD, short DATA_REGADD, short data, int bitNum)
+ * @function writeBit(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t data, int bitNum)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param data Writing data.
  * @param bitNum Bit Number for writing.
  * @return void.
  */
-void I2C::writeBit(short DATA_REGADD, short data, short bitNum) {
+void I2C::writeBit(uint8_t DATA_REGADD, uint8_t data, uint8_t bitNum) {
 	int8_t temp = readByte(DATA_REGADD);
 	if (data == 0) {
 		temp = temp & ~(1 << bitNum);
@@ -136,18 +137,18 @@ void I2C::writeBit(short DATA_REGADD, short data, short bitNum) {
 }
 
 /**
- * @function writeBits(short DEV_ADD, short DATA_REGADD, short data, int length, int startBit)
+ * @function writeBits(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t data, int length, int startBit)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param length Bits length.
  * @param startBit Starting point of the data.
  * @return void.
  */
-void I2C::writeMoreBits(short DATA_REGADD, short data, short length,
-		short startBit) {
+void I2C::writeMoreBits(uint8_t DATA_REGADD, uint8_t data, uint8_t length,
+		uint8_t startBit) {
 	int8_t temp = readByte(DATA_REGADD);
-	short bits = 1;
-	short i = 0;
+	uint8_t bits = 1;
+	uint8_t i = 0;
 
 	while (i < length - 1) {
 		bits = (bits << 1);
@@ -164,18 +165,18 @@ void I2C::writeMoreBits(short DATA_REGADD, short data, short length,
 }
 
 /**
- * @function writeByte(short DEV_ADD, short DATA_REGADD, short data)
+ * @function writeByte(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t data)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param data Writing data.
  * @return void.
  */
-void I2C::writeTo(short DATA_REGADD, short data) {
+void I2C::writeTo(uint8_t DATA_REGADD, uint8_t data) {
 
 	int file = openConnection();
 
 	if (!mock) {
-		short buffer[2];
+		uint8_t buffer[2];
 
 		buffer[0] = DATA_REGADD;
 		buffer[1] = data;
@@ -189,19 +190,19 @@ void I2C::writeTo(short DATA_REGADD, short data) {
 }
 
 /**
- * @function writeByteBuffer(short DEV_ADD, short DATA_REGADD, short *data, short length)
+ * @function writeByteBuffer(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t *data, uint8_t length)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param *data Data storage array.
  * @param length Array length.
  * @return void.
  */
-void I2C::writeByteBuffer(short DATA_REGADD, short *data,
-		short length) {
+void I2C::writeByteBuffer(uint8_t DATA_REGADD, uint8_t *data,
+		uint8_t length) {
 
 	int file = openConnection();
 
-	short buffer[1];
+	uint8_t buffer[1];
 	buffer[0] = DATA_REGADD;
 
 	if (write(file, buffer, 1) != 1) {
@@ -216,7 +217,7 @@ void I2C::writeByteBuffer(short DATA_REGADD, short *data,
 }
 
 /**
- * @function writeByteArduino(short DEV_ADD, int8_t data)
+ * @function writeByteArduino(uint8_t DEV_ADD, int8_t data)
  * @param DEV_ADD Arduino Device Address.
  * @param data Writing data.
  * @return void.
@@ -237,13 +238,13 @@ void I2C::writeByteArduino(int8_t data) {
 }
 
 /**
- * @function writeByteBufferArduino(short DEV_ADD, short *data, short length)
+ * @function writeByteBufferArduino(uint8_t DEV_ADD, uint8_t *data, uint8_t length)
  * @param DEV_ADD Arduino Device Address.
  * @param *data Data storage array.
  * @param length Array length.
  * @return void.
  */
-void I2C::writeByteBufferArduino(short *data, short length) {
+void I2C::writeByteBufferArduino(uint8_t *data, uint8_t length) {
 
 	int file = openConnection();
 
@@ -255,50 +256,50 @@ void I2C::writeByteBufferArduino(short *data, short length) {
 }
 
 /**
- * @function readBit(short DEV_ADD, short DATA_REGADD, short bitNum)
+ * @function readBit(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t bitNum)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param bitNum Bit Number for reading.
- * @return short bit value.
+ * @return uint8_t bit value.
  */
 
-short I2C::readBit(short DATA_REGADD, short bitNum) {
+uint8_t I2C::readBit(uint8_t DATA_REGADD, uint8_t bitNum) {
 	int8_t temp = readByte(DATA_REGADD);
 	return (temp >> bitNum) % 2;
 }
 
 /**
- * @function readBits(short DEV_ADD, short DATA_REGADD, short length, short startBit)
+ * @function readBits(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t length, uint8_t startBit)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param length Bits length.
  * @param startBit Starting point of the value.
- * @return short bit value.
+ * @return uint8_t bit value.
  */
-short I2C::readMoreBits(short DATA_REGADD, short length,
-		short startBit) {
+uint8_t I2C::readMoreBits(uint8_t DATA_REGADD, uint8_t length,
+		uint8_t startBit) {
 	int8_t temp = readByte(DATA_REGADD);
 	return (temp >> startBit) % (uint8_t) pow(2, length);
 }
 
 /**
- * @function readByte(short DEV_ADD, short DATA_REGADD)
+ * @function readByte(uint8_t DEV_ADD, uint8_t DATA_REGADD)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
- * @return short bit value.
+ * @return uint8_t bit value.
  */
-short I2C::readByte(short DATA_REGADD) {
+uint8_t I2C::readByte(uint8_t DATA_REGADD) {
 
 	int file = openConnection();
 
-	short buffer[1];
+	uint8_t buffer[1];
 	buffer[0] = DATA_REGADD;
 
 	if (write(file, buffer, 1) != 1) {
 		printf("Can not write data. Address %d.", DEV_ADD);
 	}
 
-	short value[1];
+	uint8_t value[1];
 
 	if (read(file, value, 1) != 1) {
 		printf("Can not read data. Address %d.", DEV_ADD);
@@ -310,15 +311,15 @@ short I2C::readByte(short DATA_REGADD) {
 }
 
 /**
- * @function readByteBuffer(short DEV_ADD, short DATA_REGADD, short *data, short length)
+ * @function readByteBuffer(uint8_t DEV_ADD, uint8_t DATA_REGADD, uint8_t *data, uint8_t length)
  * @param DEV_ADD Device Address.
  * @param DATA_REGADD Data Register Address.
  * @param *data Data storage array.
  * @param length Array length.
  * @return void.
  */
-void I2C::readFrom(short DATA_REGADD,
-		short length,  short *data) {
+void I2C::readFrom(uint8_t DATA_REGADD,
+		uint8_t length,  uint8_t *data) {
 
 	int file = openConnection();
 
@@ -330,7 +331,7 @@ void I2C::readFrom(short DATA_REGADD,
 	}
 	else {
 
-		short buffer[1];
+		uint8_t buffer[1];
 		buffer[0] = DATA_REGADD;
 
 		if (write(file, buffer, 1) != 1) {
@@ -347,13 +348,13 @@ void I2C::readFrom(short DATA_REGADD,
 }
 
 /**
- * @function readByteBufferArduino(short DEV_ADD, uint8_t* data, short length)
+ * @function readByteBufferArduino(uint8_t DEV_ADD, uint8_t* data, uint8_t length)
  * @param DEV_ADD Arduino Device Address.
  * @param *data Data storage array.
  * @param length Array length.
  * @return void.
  */
-void I2C::readByteBufferArduino(short* data, short length) {
+void I2C::readByteBufferArduino(uint8_t* data, uint8_t length) {
 
 	int file = openConnection();
 
@@ -366,17 +367,17 @@ void I2C::readByteBufferArduino(short* data, short length) {
 }
 
 /**
- * @function readWord(short DEV_ADD, short MSB, short LSB)
+ * @function readWord(uint8_t DEV_ADD, uint8_t MSB, uint8_t LSB)
  * @param DEV_ADD Arduino Device Address.
  * @param MSB 16-bit values Most Significant Byte Address.
  * @param LSB 16-bit values Less Significant Byte Address..
  * @return void.
  */
-int16_t I2C::readWord(short MSB, short LSB) {
+int16_t I2C::readWord(uint8_t MSB, uint8_t LSB) {
 
-	short msb = readByte(MSB);
+	uint8_t msb = readByte(MSB);
 
-	short lsb = readByte(LSB);
+	uint8_t lsb = readByte(LSB);
 
 	return ((int16_t) msb << 8) + lsb;
 }

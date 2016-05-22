@@ -38,7 +38,7 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 
 void Baro::init()
 {
-	short buff[22];
+	uint8_t buff[22];
 
 
 	// We read the calibration data registers
@@ -99,7 +99,7 @@ void Baro::callback()
 {
 	if (_state == 1)
 	{
-		short Data[2];
+		uint8_t Data[2];
 		_i2c.readFrom(0xF6, 2, Data);
 		_uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
 		_state = 3;
@@ -107,7 +107,7 @@ void Baro::callback()
 	}
 	else if (_state == 5)
 	{
-		short Data[3];
+		uint8_t Data[3];
 		_i2c.readFrom(0xF6, 3, Data);
 		_uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
 		_state = 6;

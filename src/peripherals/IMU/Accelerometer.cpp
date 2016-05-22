@@ -14,11 +14,11 @@
  */
 void Accelerometer::init()
 {
-	short buff[1];
+	uint8_t buff[1];
 	_i2c.readFrom(0x00, 1, buff);
 
 	// now we check msg_data for our 0xE5 magic number
-	short dev_id = buff[0];
+	uint8_t dev_id = buff[0];
 
 
 	if (dev_id != XL345_DEVID)
@@ -98,7 +98,7 @@ void Accelerometer::calibration()
 void Accelerometer::update()
 {
 	// Retrieve raw data from I2C
-	short buff[A_TO_READ];
+	uint8_t buff[A_TO_READ];
 
 	_i2c.readFrom(ADXLREG_DATAX0, A_TO_READ, buff);
 
