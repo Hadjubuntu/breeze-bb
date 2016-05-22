@@ -67,6 +67,9 @@ Vect3D GyroMPU6050::read()
 	result[1]=-(((int)buffer[2]) << 8 ) | buffer[3];
 	result[2]=-(((int)buffer[4]) << 8 ) | buffer[5];
 
+	printf("gyro %.2f | %.2f | %.2f\n", result[0], result[1], result[2]);
+
+
 	// Create gyro vector from raw data
 	Vect3D cGyro(result[0], result[1], result[2]);
 

@@ -71,7 +71,7 @@ void Pwm::disable()
 
 void Pwm::check()
 {
-	printf("Script dir : %s\n", scriptDirectory.c_str());
+//	printf("Script dir : %s\n", scriptDirectory.c_str());
 }
 
 

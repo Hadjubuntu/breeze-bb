@@ -122,17 +122,17 @@ void loop()
 		float rpy[3];
 		ahrs.getAttitude().toRollPitchYaw(rpy);
 
-		char str[90];
-		sprintf(str, "ok debug");
-
-		//		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
-		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
-		//				baro.getAltitudeMeters()*100.0f,
-		//				sonar.getOutput(),
-		//				flightStabilization.getErrorAltitude()) ;
-
-		RfPacket packet(Date::now(), "LOG", str);
-		rfControler.addPacketToSend(packet);
+//		char str[90];
+//		sprintf(str, "ok debug");
+//
+//		//		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
+//		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
+//		//				baro.getAltitudeMeters()*100.0f,
+//		//				sonar.getOutput(),
+//		//				flightStabilization.getErrorAltitude()) ;
+//
+//		RfPacket packet(Date::now(), "LOG", str);
+//		rfControler.addPacketToSend(packet);
 
 
 		printf("AHRS [roll=%.2f; pitch=%.2f]\n",
