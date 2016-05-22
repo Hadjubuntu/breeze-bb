@@ -61,11 +61,11 @@ Vect3D AccMPU6050::read()
 	// Create accelerometer vector from raw data
 	Vect3D cAcc(result[0], result[1], result[2]);
 
+	// Scale gyro from LSB to g
+	cAcc *= ACC_LSB_TO_G;
 
 	printf("acc %.2f | %.2f | %.2f\n", cAcc.getX(),cAcc.getY(), cAcc.getZ());
 
-	// Scale gyro from LSB to g
-	cAcc *= ACC_LSB_TO_G;
 
 	return cAcc;
 }
