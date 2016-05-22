@@ -53,8 +53,8 @@ Vect3D AccMPU6050::read()
 	i2c.readFrom(0x3B, 6, buffer);
 
 	// Positive right roll, pitching up, yaw right
-	result[0]=(((int)buffer[0]) << 8 ) | buffer[1];
-	result[1]=(((int)buffer[2]) << 8 ) | buffer[3];
+	result[1]=(((int)buffer[0]) << 8 ) | buffer[1];
+	result[0]=(((int)buffer[2]) << 8 ) | buffer[3];
 	result[2]=(((int)buffer[4]) << 8 ) | buffer[5];
 
 	// Create accelerometer vector from raw data

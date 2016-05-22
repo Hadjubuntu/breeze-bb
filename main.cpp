@@ -25,8 +25,8 @@
 
 
 /** Attitude and heading reference system */
-//Baro baro;
-//AHRS ahrs(&baro);
+Baro baro;
+AHRS ahrs(&baro);
 
 /** UAV brain */
 Brain uavBrain;
@@ -60,8 +60,6 @@ Sonar sonar;
 
 
 Pwm pwm(50, PWMName::P8_13);
-Gyro gyro;
-Accelerometer acc;
 
 void calibration()
 {
@@ -88,8 +86,8 @@ void setup()
 
 	// Add processings
 	//----------------------
-	//	uavBrain.addProcessing(&baro);
-	//	uavBrain.addProcessing(&ahrs);
+	uavBrain.addProcessing(&baro);
+	uavBrain.addProcessing(&ahrs);
 	uavBrain.addProcessing(&rfControler);
 	uavBrain.addProcessing(&rfRouter);
 	uavBrain.addProcessing(&radioControler);
@@ -109,8 +107,6 @@ void setup()
 	calibration();
 
 	pwm.init();
-	gyro.init();
-	acc.init();
 }
 
 void loop()
@@ -124,7 +120,7 @@ void loop()
 	if (uavBrain.getTickId() % 4000 == 0)
 	{
 		float rpy[3];
-		//		ahrs.getAttitude().toRollPitchYaw(rpy);
+		ahrs.getAttitude().toRollPitchYaw(rpy);
 
 		char str[90];
 		sprintf(str, "ok debug");
@@ -139,18 +135,8 @@ void loop()
 		rfControler.addPacketToSend(packet);
 
 
-		gyro.update();
-		Vect3D gyroRawDeg = gyro.getGyroRaw().toDeg();
-		acc.update();
-		Vect3D accRaw = acc.getAccRaw();
-
-		printf("Gyro [x=%.2f; y=%.2f; z=%.2f] | Acc [x=%.2f; y=%.2f; z=%.2f]\n",
-				gyroRawDeg.getX(),
-				gyroRawDeg.getY(),
-				gyroRawDeg.getZ(),
-				accRaw.getX(),
-				accRaw.getY(),
-				accRaw.getZ());
+		printf("AHRS [roll=%.2f; pitch=%.2f]\n",
+				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]));
 
 		pwm.check();
 	}
