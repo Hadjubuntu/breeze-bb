@@ -117,7 +117,7 @@ void loop()
 
 	// Prints infos
 	// ----
-	if (uavBrain.getTickId() % 4000 == 0)
+	if (uavBrain.getTickId() % 2000 == 0)
 	{
 		float rpy[3];
 		ahrs.getAttitude().toRollPitchYaw(rpy);
