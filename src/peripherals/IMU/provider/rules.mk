@@ -10,7 +10,7 @@ CFLAGS_$(d) := $(WIRISH_INCLUDES) $(LIBMAPLE_INCLUDES)
 # Local rules and targets
 cSRCS_$(d) :=
 
-cppSRCS_$(d) :=  AccProvider.cpp GyroProvider.cpp GyroMPU6050.cpp AccMPU6050.cpp
+cppSRCS_$(d) :=  IMUProvider.cpp GyroMPU6050.cpp AccMPU6050.cpp
 
 cFILES_$(d) := $(cSRCS_$(d):%=$(d)/%)
 cppFILES_$(d) := $(cppSRCS_$(d):%=$(d)/%)

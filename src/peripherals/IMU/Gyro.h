@@ -12,8 +12,8 @@
 #include "../../math/vector/Vect3D.h"
 #include "../../hal/I2C.h"
 #include "../../math/time/Date.h"
-#include "provider/GyroProvider.h"
 #include "provider/GyroMPU6050.h"
+#include "provider/IMUProvider.h"
 
 class Gyro {
 private:

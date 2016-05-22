@@ -17,7 +17,7 @@
 #define GYRO_LSB_TO_DEGS 0.06097560975f
 
 
-GyroItg3200::GyroItg3200() : GyroProvider()
+GyroItg3200::GyroItg3200() : IMUProvider()
 {
 	i2c = I2C::getInstance(GYRO_ADDR);
 }

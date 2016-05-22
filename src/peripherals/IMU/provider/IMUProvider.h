@@ -5,22 +5,22 @@
  *      Author: adrien
  */
 
-#ifndef SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_
-#define SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_
+#ifndef SRC_PERIPHERALS_IMU_PROVIDER_IMUPROVIDER_H_
+#define SRC_PERIPHERALS_IMU_PROVIDER_IMUPROVIDER_H_
 
 
 #include "../../../hal/I2C.h"
 #include "../../../hal/HAL.h"
 #include "../../../math/vector/Vect3D.h"
 
-class GyroProvider {
+class IMUProvider {
 protected:
 public:
-	GyroProvider();
-	virtual ~GyroProvider();
+	IMUProvider();
+	virtual ~IMUProvider();
 
 	virtual void init() = 0;
 	virtual Vect3D read() = 0;
 };
 
-#endif /* SRC_PERIPHERALS_IMU_PROVIDER_GYROPROVIDER_H_ */
+#endif /* SRC_PERIPHERALS_IMU_PROVIDER_IMUPROVIDER_H_ */

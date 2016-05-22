@@ -9,9 +9,9 @@
 #define SRC_PERIPHERALS_IMU_PROVIDER_GYROITG3200_H_
 
 
-#include "GyroProvider.h"
+#include "IMUProvider.h"
 
-class GyroItg3200  : public GyroProvider {
+class GyroItg3200  : public IMUProvider {
 public:
 	GyroItg3200();
 	virtual ~GyroItg3200();

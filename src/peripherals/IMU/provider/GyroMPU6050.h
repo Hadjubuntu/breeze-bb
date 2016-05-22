@@ -8,9 +8,9 @@
 #ifndef SRC_PERIPHERALS_IMU_PROVIDER_GYROMPU6050_H_
 #define SRC_PERIPHERALS_IMU_PROVIDER_GYROMPU6050_H_
 
-#include "GyroProvider.h"
+#include "IMUProvider.h"
 
-class GyroMPU6050 : public GyroProvider {
+class GyroMPU6050 : public IMUProvider {
 protected:
 	I2C i2c;
 public:

@@ -8,40 +8,54 @@
 #include "../../hal/HAL.h"
 #include "Accelerometer.h"
 
-/**
- * Reference:
- * https://github.com/opendrone/flymaple/blob/testing/src/Accelerometer.cpp
- */
+
 void Accelerometer::init()
 {
-	uint8_t buff[1];
-	_i2c.readFrom(0x00, 1, buff);
+	// Init
+	provider.init();
 
-	// now we check msg_data for our 0xE5 magic number
-	uint8_t dev_id = buff[0];
+	HAL::delayMs(250);
 
+	int num_samples = 50;
+	float accumulator[] = {0.0, 0.0, 0.0};
 
-	if (dev_id != XL345_DEVID)
+	for(int i = 0 ; i < num_samples ; i++)
 	{
-		logger.error("Error while trying to access Accelerometer\n");
+		update();
+
+		accumulator[0] += accRaw.getX();
+		accumulator[1] += accRaw.getY();
+		accumulator[2] += accRaw.getZ();
+
+		HAL::delayMs(5);
 	}
 
-	//invoke ADXL345
-	_i2c.writeTo(ADXLREG_POWER_CTL,0x00);	HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_POWER_CTL, 0xff);	HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_POWER_CTL, 0x08); HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_DATA_FORMAT, 0x08); HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_BW_RATE, 0x09); HAL::delayMs(5);		//25Hz
+	for(int i = 0 ; i < 3 ; i++)
+	{
+		accumulator[i] /= num_samples;
+	}
 
-
-	HAL::delayMs(100);
-
-	// Calibrate: compute accelerometer scale and offset
-	//	calibration();
-
-	// DEBUG 0 offset
-	_offset = Vect3D(0.0, 0.0, 0.0);
+	_offset = accumulator;
 }
+
+void Accelerometer::update()
+{
+	// Read from provider
+	Vect3D cAcc = provider.read();
+
+
+	// Apply scale factor from LSB to g
+	cAcc *= 0.1; // TODO
+
+	// Retrieve offset
+	cAcc -= _offset;
+
+	accRaw = cAcc;
+
+	//	_accFiltered = cAcc;
+	accFiltered = accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
+}
+
 
 void Accelerometer::calibration()
 {
@@ -93,32 +107,4 @@ void Accelerometer::calibration()
 	{
 		_offset = Vect3D(sumAccX / countSample, sumAccY / countSample,  0.0); // sumAccZ / countSample - maxAccZ
 	}
-}
-
-void Accelerometer::update()
-{
-	// Retrieve raw data from I2C
-	uint8_t buff[A_TO_READ];
-
-	_i2c.readFrom(ADXLREG_DATAX0, A_TO_READ, buff);
-
-	int result[3];
-	result[1] = -((((int) buff[1]) << 8) | buff[0]) ;
-	result[0] = -((((int) buff[3]) << 8) | buff[2]) ;
-	result[2] = -((((int) buff[5]) << 8) | buff[4]) ;
-
-	// Create vector 3D from array of int16
-	Vect3D cAcc(result[0], result[1], result[2]);
-
-	// Apply scale factor from LSB to g
-	cAcc *= ACC_SENSITIVITY;
-
-	// Retrieve offset
-	cAcc -= _offset;
-
-	accRaw = cAcc;
-
-	//	_accFiltered = cAcc;
-	accFiltered = accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
-
 }

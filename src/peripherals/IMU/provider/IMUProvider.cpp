@@ -5,14 +5,14 @@
  *      Author: adrien
  */
 
-#include "GyroProvider.h"
+#include "IMUProvider.h"
 
-GyroProvider::GyroProvider() {
+IMUProvider::IMUProvider() {
 	// TODO Auto-generated constructor stub
 
 }
 
-GyroProvider::~GyroProvider() {
+IMUProvider::~IMUProvider() {
 	// TODO Auto-generated destructor stub
 }
 
