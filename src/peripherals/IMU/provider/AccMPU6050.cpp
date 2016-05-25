@@ -45,6 +45,7 @@ void AccMPU6050::init()
 	HAL::delayMs(10);
 }
 
+int accStep = 0;
 Vect3D AccMPU6050::read()
 {
 	uint8_t buffer[6];
@@ -64,6 +65,10 @@ Vect3D AccMPU6050::read()
 	// Scale gyro from LSB to g
 	cAcc *= ACC_LSB_TO_G;
 
+	if (accStep % 500 == 0) {
+	printf("acc x=%.1f  y=%.1f\n", cAcc.getX(), cAcc.getY());
+	}
+	accStep ++;
 
 
 	return cAcc;
