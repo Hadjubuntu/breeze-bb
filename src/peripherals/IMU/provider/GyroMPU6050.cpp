@@ -77,7 +77,7 @@ Vect3D GyroMPU6050::read()
 
 	if (gyroStep % 100 == 0)
 	{
-		printf("gyro x=%.1f  y=%.1f\n", cGyro.getX(), cGyro.getY());
+		printf("gyro x=%.1f  y=%.1f  z=%.1f\n", cGyro.getX(), cGyro.getY(), cGyro.getZ());
 	}
 	gyroStep ++;
 

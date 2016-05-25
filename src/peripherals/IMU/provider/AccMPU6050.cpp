@@ -67,7 +67,7 @@ Vect3D AccMPU6050::read()
 
 	if (accStep % 100 == 0)
 	{
-		printf("acc x=%.1f  y=%.1f\n", cAcc.getX(), cAcc.getY());
+		printf("acc x=%.1f  y=%.1f  z=%.1f\n", cAcc.getX(), cAcc.getY(), cAcc.getZ());
 	}
 	accStep ++;
 
