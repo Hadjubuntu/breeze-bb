@@ -75,7 +75,7 @@ Vect3D GyroMPU6050::read()
 	// Scale gyro from LSB to deg/s
 	cGyro *= GYRO_LSB_TO_DEGS;
 
-	if (gyroStep % 500 == 0)
+	if (gyroStep % 100 == 0)
 	{
 		printf("gyro x=%.1f  y=%.1f\n", cGyro.getX(), cGyro.getY());
 	}
