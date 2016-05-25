@@ -65,8 +65,9 @@ Vect3D AccMPU6050::read()
 	// Scale gyro from LSB to g
 	cAcc *= ACC_LSB_TO_G;
 
-	if (accStep % 500 == 0) {
-	printf("acc x=%.1f  y=%.1f\n", cAcc.getX(), cAcc.getY());
+	if (accStep % 500 == 0)
+	{
+		printf("acc x=%.1f  y=%.1f\n", cAcc.getX(), cAcc.getY());
 	}
 	accStep ++;
 
