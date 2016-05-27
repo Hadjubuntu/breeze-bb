@@ -45,7 +45,7 @@ void Accelerometer::update()
 
 
 	// Retrieve offset
-//	cAcc -= offset;
+	//	cAcc -= offset;
 
 	accRaw = cAcc;
 
