@@ -135,8 +135,8 @@ void loop()
 //		rfControler.addPacketToSend(packet);
 
 
-		printf("AHRS [roll=%.2f; pitch=%.2f]\n",
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]));
+		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
+				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
 
 		pwm.check();
 	}
