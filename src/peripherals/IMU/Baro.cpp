@@ -14,20 +14,20 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 {
 	freqHz = 20;
 
-	_dev_address = BMP085_ADDRESS;
-	_pressure_samples = 1;
-	_retry_time = 0;
-	_trueTemperature = 0.0;
-	_uncompensatedTemperature = 0;
-	_uncompensatedPressure = 0;
+	dev_address = BMP085_ADDRESS;
+	pressure_samples = 1;
+	retry_time = 0;
+	trueTemperature = 0.0;
+	uncompensatedTemperature = 0;
+	uncompensatedPressure = 0;
 	ac1 = 0; ac2= 0; ac3 = 0; ac4 = 0; ac5 = 0;
 	ac6 = 0; b1 = 0; b2 = 0; mb = 0;
-	_truePressure = 0;
+	truePressure = 0;
 	mc = 0;
-	_firstMeasure = true;
+	firstMeasure = true;
 	GroundPressure = 1;
 	GroundTemp = 0;
-	_last_update = 0; md = 0;
+	last_update = 0; md = 0;
 	_count = 0;
 	_state = 0;
 	b5 = 0;
@@ -92,6 +92,7 @@ void Baro::process()
 
 			_state = 0;
 
+			// Note: limit iter variable to increase indefinitly
 			if (_iter < 10000) {
 				_iter ++;
 			}
@@ -105,7 +106,7 @@ void Baro::callback()
 	{
 		uint8_t Data[2];
 		_i2c.readFrom(0xF6, 2, Data);
-		_uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
+		uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
 		_state = 3;
 
 	}
@@ -113,7 +114,7 @@ void Baro::callback()
 	{
 		uint8_t Data[3];
 		_i2c.readFrom(0xF6, 3, Data);
-		_uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
+		uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
 		_state = 6;
 	}
 }
@@ -136,10 +137,10 @@ void Baro::readUncompensatedPressureValue()
 
 void Baro::calculateTrueTemperature()
 {
-	long x1 = (_uncompensatedTemperature - ac6) * ac5 >> 15;
+	long x1 = (uncompensatedTemperature - ac6) * ac5 >> 15;
 	long x2 = ((long) mc << 11) / (x1 + md);
 	b5 = x1 + x2;
-	_trueTemperature = (b5 + 8) >> 4;
+	trueTemperature = (b5 + 8) >> 4;
 }
 
 void Baro::calculateTruePressure()
@@ -160,20 +161,20 @@ void Baro::calculateTruePressure()
 	x2 = (b1 * (b6 * b6 >> 12)) >> 16;
 	x3 = ((x1+x2) + 2) >> 2;
 	b4 = (ac4 * (uint32_t)(x3 + 32768)) >> 15;
-	b7 = ((uint32_t)_uncompensatedPressure - b3) * (50000 >> OVERSAMPLING);
+	b7 = ((uint32_t)uncompensatedPressure - b3) * (50000 >> OVERSAMPLING);
 	p  = b7 < 0x80000000 ? (b7 * 2) / b4 : (b7 / b4) * 2;
 
 	x1 = (p >> 8) * (p >> 8);
 	x1 = (x1 * 3038) >> 16;
 	x2 = (-7357 * p) >> 16;
-	_truePressure = 0.8*_truePressure + 0.2*(p + ((x1 + x2 + 3791) >> 4));
+	truePressure = 0.8*truePressure + 0.2*(p + ((x1 + x2 + 3791) >> 4));
 }
 
 void Baro::recalibrateAtZeroThrottle()
 {
 	float alpha = 0.05;
-	GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * _truePressure);
-	GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * _trueTemperature);
+	GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * truePressure);
+	GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * trueTemperature);
 }
 
 void Baro::calculateAltitude()
@@ -182,16 +183,16 @@ void Baro::calculateAltitude()
 	if (_iter < 20) {
 		_altitudeMeters = 0.0f; // throw data
 	}
-	else if (_iter >= 20  && _iter <= 200)
+	else if (_iter >= 20  && _iter <= 100)
 	{
 		float alpha = 0.7;
 		// First value set to computed value
-		if (_firstMeasure) {
+		if (firstMeasure) {
 			alpha = 0.0;
-			_firstMeasure = false;
+			firstMeasure = false;
 		}
-		GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * _truePressure);
-		GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * _trueTemperature);
+		GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * truePressure);
+		GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * trueTemperature);
 
 		_altitudeMeters = 0.0;
 	}
@@ -200,7 +201,8 @@ void Baro::calculateAltitude()
 		float altitudeOffset = 0.1;
 
 		// Calculate altitude from difference of pressure
-		float diffPressure = ((float)_truePressure / (float)GroundPressure);
+		printf("true pressure = %.1f | ground pressure = %.1f\n", (float)truePressure, (float)GroundPressure);
+		float diffPressure = ((float)truePressure / (float)GroundPressure);
 		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
 	}
 }

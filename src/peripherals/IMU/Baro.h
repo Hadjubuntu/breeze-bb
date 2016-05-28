@@ -29,28 +29,28 @@
 class Baro : public Processing {
 private:
 	I2C _i2c;
-	short _dev_address;
+	short dev_address;
 
-	bool _firstMeasure;
-	long        _uncompensatedPressure;
-	long        _uncompensatedTemperature;
+	bool firstMeasure;
+	long        uncompensatedPressure;
+	long        uncompensatedTemperature;
 	uint8_t			_count;
-	long _trueTemperature;
-	long _truePressure;
+	long trueTemperature;
+	long truePressure;
 	float _altitudeMeters;
 	int _iter;
 
 	long b5;
 
-	int                           _last_update; // in us
-	short                            _pressure_samples;
+	int                           last_update; // in us
+	short                            pressure_samples;
 	// State machine
 	// Internal calibration registers
 	int                        ac1, ac2, ac3, b1, b2, mb, mc, md;
 	int                       ac4, ac5, ac6;
 
 
-	int                       _retry_time;
+	int                       retry_time;
 
 	int _state;
 	bool baroHealthy;
@@ -77,10 +77,10 @@ public:
 		return _altitudeMeters;
 	}
 	long getTrueTemperature() {
-		return _trueTemperature;
+		return trueTemperature;
 	}
 	long getTruePressure() {
-		return _truePressure;
+		return truePressure;
 	}
 	long getGroundPressure() {
 		return GroundPressure;
