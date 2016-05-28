@@ -167,7 +167,7 @@ void Baro::calculateTruePressure()
 	x1 = (p >> 8) * (p >> 8);
 	x1 = (x1 * 3038) >> 16;
 	x2 = (-7357 * p) >> 16;
-	truePressure = 0.8*truePressure + 0.2*(p + ((x1 + x2 + 3791) >> 4));
+	truePressure = truePressure + (p + ((x1 + x2 + 3791) >> 4));
 }
 
 void Baro::recalibrateAtZeroThrottle()
