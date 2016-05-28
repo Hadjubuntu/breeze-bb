@@ -62,17 +62,17 @@ void Baro::init()
 	}
 	else {
 		printf("Barometer initialized successfully\n");
-		printf("ac1=%h\n", ac1);
-		printf("ac2=%h\n", ac2);
-		printf("ac3=%h\n", ac3);
-		printf("ac4=%h\n", ac4);
-		printf("ac5=%h\n", ac5);
-		printf("ac6=%h\n", ac6);
-		printf("b1=%h\n", b1);
-		printf("b2=%h\n", b2);
-		printf("mb=%h\n", mb);
-		printf("mc=%h\n", mc);
-		printf("md=%h\n", md);
+		printf("ac1=%hd\n", ac1);
+		printf("ac2=%hd\n", ac2);
+		printf("ac3=%hd\n", ac3);
+		printf("ac4=%hd\n", ac4);
+		printf("ac5=%hd\n", ac5);
+		printf("ac6=%hd\n", ac6);
+		printf("b1=%hd\n", b1);
+		printf("b2=%hd\n", b2);
+		printf("mb=%hd\n", mb);
+		printf("mc=%hd\n", mc);
+		printf("md=%hd\n", md);
 	}
 }
 
