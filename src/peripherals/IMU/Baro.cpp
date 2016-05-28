@@ -194,7 +194,7 @@ void Baro::calculateAltitude()
 		GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * truePressure);
 		GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * trueTemperature);
 
-		printf("Adjusting ground pressure : %.1f | true pressure = %.1f\n", GroundPressure, truePressure);
+		printf("Adjusting ground pressure : %lu | true pressure = %lu \n", GroundPressure, truePressure);
 
 		_altitudeMeters = 0.0;
 	}
