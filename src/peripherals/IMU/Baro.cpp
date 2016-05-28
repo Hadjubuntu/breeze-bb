@@ -124,15 +124,15 @@ void Baro::readUncompensatedTempValue()
 	_i2c.writeTo(0xF4, 0x2E);
 
 	// Wait for 4.5ms
-	planCallback(DateUtils::secondsToMicros(4.5/1000.0));
+	planCallback(DateUtils::secondsToMicros(4.5f/1000.0f));
 }
 
 
 void Baro::readUncompensatedPressureValue()
 {
 	_i2c.writeTo(0xF4, 0x34 + (OVERSAMPLING << 6));
-	// Wait for 7.5ms (oss=1) | 25.5ms (oss=3)
-	planCallback(DateUtils::secondsToMicros(25.6f/1000.0));
+	// Wait for 7.5ms (oss=1) | 25.5ms (oss=3) //
+	planCallback(DateUtils::secondsToMicros(26.0f/1000.0f));
 }
 
 void Baro::calculateTrueTemperature()
@@ -146,9 +146,7 @@ void Baro::calculateTrueTemperature()
 void Baro::calculateTruePressure()
 {
 	long b6, b3,  x1, x2, x3;
-	long tmpPressure;
 	unsigned long b4, b7;
-	unsigned long tmp;
 //	long p;
 
 
@@ -203,7 +201,7 @@ void Baro::calculateAltitude()
 		float altitudeOffset = 0.1;
 
 		// Calculate altitude from difference of pressure
-		printf("true pressure = %.1f | ground pressure = %.1f\n", (float)truePressure, (float)GroundPressure);
+		printf("true pressure = %.1f | ground pressure = %.1f | ground temp = %.1f\n", (float)truePressure, (float)GroundPressure, (float)GroundTemp/10.0);
 		float diffPressure = ((float)truePressure / (float)GroundPressure);
 		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
 	}
