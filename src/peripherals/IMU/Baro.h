@@ -46,8 +46,8 @@ private:
 	short                            pressure_samples;
 	// State machine
 	// Internal calibration registers
-	int                        ac1, ac2, ac3, b1, b2, mb, mc, md;
-	int                       ac4, ac5, ac6;
+	short ac1, ac2, ac3, b1, b2, mb, mc, md;
+	unsigned short  ac4, ac5, ac6;
 
 
 	int                       retry_time;
