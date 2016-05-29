@@ -59,7 +59,7 @@ Sonar sonar;
 //FsAutotune fsAutotune(&flightStabilization);
 
 
-Pwm pwm(50, PWMName::P9_42);
+Pwm pwm(50, PWMName::PWM0);
 
 void calibration()
 {

@@ -22,6 +22,7 @@ Timer4 	5 	9 	14 	24
  */
 
 
+#define MOTOR_FREQ_HZ 50 // MOCK FOR SERVO FIXME
 
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define CYCLES_PER_MICROSECOND 100000000000000 // FIXME How to manage ESC motors on beaglebone ?
@@ -50,7 +51,9 @@ unsigned short levelToCtrl(unsigned short level)
 /**
  * Processing constructor
  */
-ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing()
+ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing(),
+		pwm0(Pwm(MOTOR_FREQ_HZ, PWMName::PWM0)), pwm1(Pwm(MOTOR_FREQ_HZ, PWMName::PWM1)),
+		pwm2(Pwm(MOTOR_FREQ_HZ, PWMName::PWM2)), pwm3(Pwm(MOTOR_FREQ_HZ, PWMName::PWM3))
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
@@ -95,6 +98,11 @@ void ActuatorControl::initMotorRepartition() {
  */
 void ActuatorControl::init()
 {
+	pwm0.init();
+	pwm1.init();
+	pwm2.init();
+	pwm3.init();
+
 	// Prepare all pin output
 	// -----------------------
 	// Timer 3 for motors at 480 Hz
@@ -227,6 +235,12 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 			motors[i] = motorX[i];
 		}
 	}
+
+	int min_pwm = 800; // TODO put in conf
+	pwm0.write(min_pwm + motorX[0]);
+	pwm1.write(min_pwm + motorX[1]);
+	pwm2.write(min_pwm + motorX[2]);
+	pwm3.write(min_pwm + motorX[3]);
 
 	// Write pulse for motors
 //	pwmWrite(D28, levelToCtrl(motorX[0]));

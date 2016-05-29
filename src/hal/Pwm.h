@@ -12,21 +12,21 @@
 
 /** Pwm Name */
 enum PWMName           {
-	P8_13                   = 5,
-	P8_19                   = 6,
-	P9_14                   = 3,
-	P9_16                   = 4,
-	P9_21                   = 1,
-	P9_22                   = 2,
-	P9_42                   = 0,
+	PWM5                   = 5,
+	pWM6                   = 6,
+	PWM3                   = 3,
+	PWM4                   = 4,
+	PWM1                   = 1,
+	PWM2                   = 2,
+	PWM0                   = 0,
 
-	EHRPWM2B                = P8_13,
-	EHRPWM2A                = P8_19,
-	EHRPWM1A                = P9_14,
-	EHRPWM1B                = P9_16,
-	EHRPWM0B                = P9_21,
-	EHRPWM0A                = P9_22,
-	ECAP0                   = P9_42
+	EHRPWM2B                = PWM5,
+	EHRPWM2A                = pWM6,
+	EHRPWM1A                = PWM3,
+	EHRPWM1B                = PWM4,
+	EHRPWM0B                = PWM1,
+	EHRPWM0A                = PWM2,
+	ECAP0                   = PWM0
 };
 
 
