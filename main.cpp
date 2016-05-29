@@ -59,8 +59,6 @@ Sonar sonar;
 //FsAutotune fsAutotune(&flightStabilization);
 
 
-Pwm pwm(50, PWMName::PWM0);
-
 void calibration()
 {
 	int nbCalibrationMeasure = 100;
@@ -105,8 +103,6 @@ void setup()
 	// Calibration on AHRS
 	//----------------------
 	calibration();
-
-	pwm.init();
 }
 
 void loop()
@@ -137,8 +133,6 @@ void loop()
 
 		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
 				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
-
-		pwm.check();
 	}
 }
 

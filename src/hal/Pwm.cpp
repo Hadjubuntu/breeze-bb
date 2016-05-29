@@ -33,7 +33,7 @@ void Pwm::setupPwmAndDisable(PWMName pinNumber, int freqHz)
 	std::stringstream periodStr;
 	periodStr << periodNs;
 
-	std::string defaultDutyCycle = "900000"; // 900 ms
+	std::string defaultDutyCycle = "1000000"; // 1000 ms
 
 	char parameters[100];
 	sprintf(parameters, "%d %d", mapPwmPin[pinNumber], mapPwmSubpin[pinNumber]);
