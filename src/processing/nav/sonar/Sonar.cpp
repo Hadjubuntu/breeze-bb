@@ -25,7 +25,7 @@ Sonar::Sonar() : Processing()
 
 void Sonar::init()
 {
-//	pinMode(_sonarPin, INPUT);
+	//	pinMode(_sonarPin, INPUT);
 
 	// Create zero vector at initialization
 	//	for (int i = 0; i < nSonar; i ++)
@@ -36,8 +36,8 @@ void Sonar::init()
 	int strangeMeasure = 0;
 	int nbMeasure = 25;
 	for (int i = 0; i < 25; i ++) {
-//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
-float currentSonarVal = 0.0;
+		//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
+		float currentSonarVal = 0.0;
 
 		if (currentSonarVal > 150) {
 			strangeMeasure ++;
@@ -46,7 +46,7 @@ float currentSonarVal = 0.0;
 
 	if (((float)strangeMeasure / nbMeasure) > 0.7) {
 		_healthy = false;
-//		Serial3.println("Sonar is not healthy");
+		//		Serial3.println("Sonar is not healthy");
 	}
 }
 

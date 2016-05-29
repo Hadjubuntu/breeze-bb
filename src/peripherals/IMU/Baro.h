@@ -37,7 +37,7 @@ private:
 	uint8_t			_count;
 	long trueTemperature;
 	long truePressure;
-	float _altitudeMeters;
+	float altitudeMeters;
 	int _iter;
 
 	long b5;
@@ -52,7 +52,7 @@ private:
 
 	int                       retry_time;
 
-	int _state;
+	int state;
 	bool baroHealthy;
 
 
@@ -74,7 +74,7 @@ public:
 	void callback();
 
 	float getAltitudeMeters() {
-		return _altitudeMeters;
+		return altitudeMeters;
 	}
 	long getTrueTemperature() {
 		return trueTemperature;

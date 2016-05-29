@@ -29,10 +29,10 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 	GroundTemp = 0;
 	last_update = 0; md = 0;
 	_count = 0;
-	_state = 0;
+	state = 0;
 	b5 = 0;
 	_iter = 0;
-	_altitudeMeters = 0.0f;
+	altitudeMeters = 0.0f;
 	baroHealthy = true;
 }
 
@@ -79,21 +79,21 @@ void Baro::init()
 void Baro::process()
 {
 	if (baroHealthy) {
-		if (_state == 0)
+		if (state == 0)
 		{
-			_state = 1;
+			state = 1;
 			readUncompensatedTempValue();
 		}
 
 		// Force to check state again since it has changed above
-		if (_state == 3)
+		if (state == 3)
 		{
-			_state = 5;
+			state = 5;
 			readUncompensatedPressureValue();
 		}
 
 		// Again
-		if (_state == 6)
+		if (state == 6)
 		{
 			calculateTrueTemperature();
 
@@ -101,7 +101,7 @@ void Baro::process()
 
 			calculateAltitude();
 
-			_state = 0;
+			state = 0;
 
 			// Note: limit iter variable to increase indefinitly
 			if (_iter < 10000) {
@@ -113,20 +113,20 @@ void Baro::process()
 
 void Baro::callback()
 {
-	if (_state == 1)
+	if (state == 1)
 	{
 		uint8_t Data[2];
 		_i2c.readFrom(0xF6, 2, Data);
 		uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
-		_state = 3;
+		state = 3;
 
 	}
-	else if (_state == 5)
+	else if (state == 5)
 	{
 		uint8_t Data[3];
 		_i2c.readFrom(0xF6, 3, Data);
 		uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
-		_state = 6;
+		state = 6;
 	}
 }
 
@@ -190,7 +190,7 @@ void Baro::calculateAltitude()
 {
 	// Calibration value
 	if (_iter < 20) {
-		_altitudeMeters = 0.0f; // throw data
+		altitudeMeters = 0.0f; // throw data
 	}
 	else if (_iter >= 20  && _iter <= 200)
 	{
@@ -205,7 +205,7 @@ void Baro::calculateAltitude()
 
 		printf("Adjusting ground pressure : %lu | true pressure = %lu \n", GroundPressure, truePressure);
 
-		_altitudeMeters = 0.0;
+		altitudeMeters = 0.0;
 	}
 	else
 	{
@@ -214,6 +214,6 @@ void Baro::calculateAltitude()
 		// Calculate altitude from difference of pressure
 		printf("true pressure = %.1f | ground pressure = %.1f | ground temp = %.1f\n", (float)truePressure, (float)GroundPressure, (float)GroundTemp/10.0);
 		float diffPressure = ((float)truePressure / (float)GroundPressure);
-		_altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
+		altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
 	}
 }
