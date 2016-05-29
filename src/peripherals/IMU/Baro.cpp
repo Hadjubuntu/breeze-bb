@@ -10,6 +10,8 @@
 #include "../../math/common/FastMath.h"
 #include "Baro.h"
 
+#define MAX_ALTITUDE_METERS 10000.0f // 10 km altitude
+
 Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 {
 	freqHz = 20;
@@ -158,8 +160,8 @@ void Baro::calculateTruePressure()
 {
 	long b6, b3,  x1, x2, x3;
 	unsigned long b4, b7;
-//	long p;
-
+	long p = 0;
+	float alpha = 0.5;
 
 	b6 = b5 - 4000;
 	x1 = (b2 * (b6 * b6 >> 12)) >> 11;
@@ -171,12 +173,17 @@ void Baro::calculateTruePressure()
 	x3 = ((x1+x2) + 2) >> 2;
 	b4 = (ac4 * (uint32_t)(x3 + 32768)) >> 15;
 	b7 = ((uint32_t)uncompensatedPressure - b3) * (50000 >> OVERSAMPLING);
-	truePressure  = b7 < 0x80000000 ? (b7 * 2) / b4 : (b7 / b4) * 2;
+	p  = b7 < 0x80000000 ? (b7 * 2) / b4 : (b7 / b4) * 2;
 
-	x1 = (truePressure >> 8) * (truePressure >> 8);
+	x1 = (p >> 8) * (p >> 8);
 	x1 = (x1 * 3038) >> 16;
-	x2 = (-7357 * truePressure) >> 16;
-	truePressure = truePressure + (truePressure + ((x1 + x2 + 3791) >> 4));
+	x2 = (-7357 * p) >> 16;
+	p = p + (p + ((x1 + x2 + 3791) >> 4));
+
+	if (truePressure == 0) {
+		alpha = 0.0;
+	}
+	truePressure = alpha * truePressure + (1.0-alpha) * p;
 }
 
 void Baro::recalibrateAtZeroThrottle()
@@ -194,7 +201,7 @@ void Baro::calculateAltitude()
 	}
 	else if (_iter >= 20  && _iter <= 200)
 	{
-		float alpha = 0.1;
+		float alpha = 0.5;
 		// First value set to computed value
 		if (firstMeasure) {
 			alpha = 0.0;
@@ -203,17 +210,13 @@ void Baro::calculateAltitude()
 		GroundPressure = (long) (alpha*GroundPressure + (1.0-alpha) * truePressure);
 		GroundTemp =  (long) (alpha*GroundTemp  + (1.0-alpha) * trueTemperature);
 
-		printf("Adjusting ground pressure : %lu | true pressure = %lu \n", GroundPressure, truePressure);
-
 		altitudeMeters = 0.0;
 	}
 	else
 	{
-		float altitudeOffset = 0.1;
-
 		// Calculate altitude from difference of pressure
-		printf("true pressure = %.1f | ground pressure = %.1f | ground temp = %.1f\n", (float)truePressure, (float)GroundPressure, (float)GroundTemp/10.0);
 		float diffPressure = ((float)truePressure / (float)GroundPressure);
-		altitudeMeters =  altitudeOffset + 44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
+		altitudeMeters =  44330.0 * (1.0 - FastMath::fpow(diffPressure, 0.190295));
+		Bound(altitudeMeters, 0.0, MAX_ALTITUDE_METERS);
 	}
 }
