@@ -46,6 +46,7 @@ void Pwm::setupPwmAndDisable(PWMName pinNumber, int freqHz)
 
 	// Execute script to setup pwm pin
 	int result = system(scriptSetup.c_str());
+	printf("Executed command setup pwm %s\n", scriptSetup);
 }
 
 void Pwm::write(long dutyCycleMs)
