@@ -12,7 +12,7 @@ Electronics
 
 
 
-# Install procedure (memo)
+# Install procedure
 sudo adduser adrien
 sudo adduser adrien sudo
 sudo apt-get install git
