@@ -12,12 +12,12 @@
 
 /** Pwm Name */
 enum PWMName           {
-	PWM5                   = 5,
 	pWM6                   = 6,
-	PWM3                   = 3,
+	PWM5                   = 5,
 	PWM4                   = 4,
-	PWM1                   = 1,
+	PWM3                   = 3,
 	PWM2                   = 2,
+	PWM1                   = 1,
 	PWM0                   = 0,
 
 	EHRPWM2B                = PWM5,
@@ -33,8 +33,8 @@ enum PWMName           {
 
 class Pwm {
 private:
-	int mapPwmPin[7]={0, 2, 2, 4, 4, 6, 6};
-	int mapPwmSubpin[7]={0, 0, 1, 0, 1, 0, 1};
+	int mapPwmPin[7]     = {4, 2, 2, 6, 6, 6, 6};
+	int mapPwmSubpin[7]  = {0, 0, 1, 0, 1, 0, 1};
 	int freqHz;
 	PWMName pwmName;
 	std::string scriptDirectory;
