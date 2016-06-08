@@ -21,6 +21,9 @@
 #include "src/processing/link/Telemetry.h"
 #include "src/hal/HAL.h"
 #include "src/hal/Pwm.h"
+#include "src/hal/Uart.h"
+
+Uart uart(1);
 
 
 
@@ -103,6 +106,12 @@ void setup()
 	// Calibration on AHRS
 	//----------------------
 	calibration();
+
+
+	// Test uart
+	uart.open();
+	uart.setBlocking(false);
+
 }
 
 void loop()
@@ -130,9 +139,12 @@ void loop()
 //		RfPacket packet(Date::now(), "LOG", str);
 //		rfControler.addPacketToSend(packet);
 
+		uint8_t buf[2];
+		buf[0] = 0;
+		uart.read(buf, 1);
 
-		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
+		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | uart=%d\n",
+				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f, buf[0]);
 	}
 }
 

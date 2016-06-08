@@ -41,10 +41,12 @@ public:
 	/**
 	 * Write to the serial
 	 */
-	void writeByte(uint8_t pData);
+	int write(const uint8_t *buf, uint16_t n);
 	void writeStr(std::string pData);
 
-	uint8_t read();
+	int read(uint8_t *buf, uint16_t n);
+
+	void setBlocking(bool blocking);
 
 	virtual ~Uart();
 };

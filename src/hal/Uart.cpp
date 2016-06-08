@@ -33,10 +33,45 @@ void Uart::open()
 	if (fd < 0) {
 		printf("Failed to open UART device %s\n", devicePath.c_str());
 	}
+
+	disableCrlf();
 }
 
-void Uart::writeByte(uint8_t pData)
+int Uart::read(uint8_t *buf, uint16_t n)
 {
+    return ::read(fd, buf, n);
+}
+
+
+int Uart::write(const uint8_t *buf, uint16_t n)
+{
+    struct pollfd fds;
+    fds.fd = fd;
+    fds.events = POLLOUT;
+    fds.revents = 0;
+
+    int ret = 0;
+
+    if (poll(&fds, 1, 0) == 1) {
+        ret = ::write(fd, buf, n);
+    }
+
+    return ret;
+}
+
+void Uart::setBlocking(bool blocking)
+{
+    int flags = fcntl(fd, F_GETFL, 0);
+
+    if (blocking) {
+        flags = flags & ~O_NONBLOCK;
+    } else {
+        flags = flags | O_NONBLOCK;
+    }
+
+    if (fcntl(fd, F_SETFL, flags) < 0) {
+        printf("Failed to make UART nonblocking");
+    }
 
 }
 
@@ -45,10 +80,6 @@ void Uart::writeStr(std::string pData)
 	const char *data = pData.c_str();
 }
 
-uint8_t Uart::read()
-{
-//	::write();
-}
 
 void Uart::disableCrlf()
 {
