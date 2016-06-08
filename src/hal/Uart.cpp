@@ -20,6 +20,8 @@
 #include <string.h> // for memset function
 #include "Uart.h"
 
+// TODO see : https://github.com/yigityuce/BlackLib/tree/master/v3_0/BlackUART
+
 #define READ_BUFFER_SIZE 1024
 
 Uart::Uart(int pUartPin)
@@ -37,7 +39,8 @@ void Uart::open()
 		printf("Failed to open UART device %s\n", devicePath.c_str());
 	}
 
-	disableCrlf();
+	//	disableCrlf();
+	setProperties();
 }
 
 std::string Uart::read()
@@ -111,6 +114,40 @@ void Uart::disableCrlf()
 	t.c_cc[VMIN] = 0;
 
 	tcsetattr(fd, TCSANOW, &t);
+}
+
+void Uart::setProperties()
+{
+	termios tempProperties;
+	tcgetattr(fd, &tempProperties);
+
+	cfsetispeed(&tempProperties, 100000);
+	cfsetospeed(&tempProperties, 100000);
+
+
+	tempProperties.c_cflag &= ~(PARENB);
+	tempProperties.c_cflag &= ~(CSTOPB);
+	tempProperties.c_cflag &= ~(CSIZE);
+	tempProperties.c_cflag |= CS8;
+
+	tempProperties.c_cflag |= CLOCAL;
+	tempProperties.c_cflag |= CREAD;
+
+	tempProperties.c_iflag |= ICRNL;
+	tempProperties.c_oflag = 0;
+	tempProperties.c_lflag = 0;
+
+	tempProperties.c_cc[VTIME] = 0;
+	tempProperties.c_cc[VMIN]  = 1;
+
+	if( tcsetattr(fd, TCSANOW, &tempProperties) == 0 )
+	{
+		printf("Properties setted for uart\n");
+	}
+	else
+	{
+		printf("Error while initializing properties for UART\n");
+	}
 }
 
 void Uart::setSpeed(unsigned int baudrate)

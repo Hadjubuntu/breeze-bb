@@ -24,6 +24,7 @@ private:
 	int fd;
 
 	void disableCrlf();
+	void setProperties();
 public:
 	/**
 	 * Create a new instance of uart
