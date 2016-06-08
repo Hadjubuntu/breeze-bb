@@ -87,13 +87,13 @@ void setup()
 
 	// Add processings
 	//----------------------
-	uavBrain.addProcessing(&baro);
-	uavBrain.addProcessing(&ahrs);
-	uavBrain.addProcessing(&rfControler);
-	uavBrain.addProcessing(&rfRouter);
-	uavBrain.addProcessing(&radioControler);
-	uavBrain.addProcessing(&flightControl);
-	uavBrain.addProcessing(&sonar);
+//	uavBrain.addProcessing(&baro);
+//	uavBrain.addProcessing(&ahrs);
+//	uavBrain.addProcessing(&rfControler);
+//	uavBrain.addProcessing(&rfRouter);
+//	uavBrain.addProcessing(&radioControler);
+//	uavBrain.addProcessing(&flightControl);
+//	uavBrain.addProcessing(&sonar);
 	//	uavBrain.addProcessing(&flightStabilization);
 	//	uavBrain.addProcessing(&actuatorControl);
 	//	uavBrain.addProcessing(&telemetry);
@@ -124,8 +124,8 @@ void loop()
 	// ----
 	if (uavBrain.getTickId() % 2000 == 0)
 	{
-		float rpy[3];
-		ahrs.getAttitude().toRollPitchYaw(rpy);
+//		float rpy[3];
+//		ahrs.getAttitude().toRollPitchYaw(rpy);
 
 //		char str[90];
 //		sprintf(str, "ok debug");
@@ -139,12 +139,13 @@ void loop()
 //		RfPacket packet(Date::now(), "LOG", str);
 //		rfControler.addPacketToSend(packet);
 
-		uint8_t buf[2];
-		buf[0] = 0;
-		uart.read(buf, 1);
+		unsigned char buf = '\0';
+		uart.read(&buf, 1);
 
-		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | uart=%d\n",
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f, buf[0]);
+		printf("%c", buf);
+//
+//		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
+//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
 	}
 }
 
