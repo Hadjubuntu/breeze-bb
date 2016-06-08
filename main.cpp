@@ -87,13 +87,13 @@ void setup()
 
 	// Add processings
 	//----------------------
-//	uavBrain.addProcessing(&baro);
-//	uavBrain.addProcessing(&ahrs);
-//	uavBrain.addProcessing(&rfControler);
-//	uavBrain.addProcessing(&rfRouter);
-//	uavBrain.addProcessing(&radioControler);
-//	uavBrain.addProcessing(&flightControl);
-//	uavBrain.addProcessing(&sonar);
+	//	uavBrain.addProcessing(&baro);
+	//	uavBrain.addProcessing(&ahrs);
+	//	uavBrain.addProcessing(&rfControler);
+	//	uavBrain.addProcessing(&rfRouter);
+	//	uavBrain.addProcessing(&radioControler);
+	//	uavBrain.addProcessing(&flightControl);
+	//	uavBrain.addProcessing(&sonar);
 	//	uavBrain.addProcessing(&flightStabilization);
 	//	uavBrain.addProcessing(&actuatorControl);
 	//	uavBrain.addProcessing(&telemetry);
@@ -125,27 +125,28 @@ void loop()
 	// ----
 	if (uavBrain.getTickId() % 2000 == 0)
 	{
-//		float rpy[3];
-//		ahrs.getAttitude().toRollPitchYaw(rpy);
+		//		float rpy[3];
+		//		ahrs.getAttitude().toRollPitchYaw(rpy);
 
-//		char str[90];
-//		sprintf(str, "ok debug");
-//
-//		//		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
-//		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
-//		//				baro.getAltitudeMeters()*100.0f,
-//		//				sonar.getOutput(),
-//		//				flightStabilization.getErrorAltitude()) ;
-//
-//		RfPacket packet(Date::now(), "LOG", str);
-//		rfControler.addPacketToSend(packet);
+		//		char str[90];
+		//		sprintf(str, "ok debug");
+		//
+		//		//		sprintf(str, "r=%.1f|p=%.1f|alt=%.1f cm|baro_alt=%.2f|error_alt=%.3f", // |baroAlt = %.2f|Temp=%.2f , baro.getAltitudeMeters(), baro.getTemperature()
+		//		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]),
+		//		//				baro.getAltitudeMeters()*100.0f,
+		//		//				sonar.getOutput(),
+		//		//				flightStabilization.getErrorAltitude()) ;
+		//
+		//		RfPacket packet(Date::now(), "LOG", str);
+		//		rfControler.addPacketToSend(packet);
 
 		std::string str = uart.read();
-
-		printf("%s\n", str.c_str());
-//
-//		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
-//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
+		if (str.length() > 0) {
+			printf("%s\n", str.c_str());
+		}
+		//
+		//		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
+		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);
 	}
 }
 
