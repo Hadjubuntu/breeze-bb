@@ -20,10 +20,13 @@
 #include <string.h> // for memset function
 #include "Uart.h"
 
+#define READ_BUFFER_SIZE 1024
+
 Uart::Uart(int pUartPin)
 {
 	uartPin = pUartPin;
 	devicePath = "/dev/ttyO1";
+	fd = -1;
 }
 
 void Uart::open()
@@ -37,41 +40,54 @@ void Uart::open()
 	disableCrlf();
 }
 
-int Uart::read(uint8_t *buf, uint16_t n)
+std::string Uart::read()
 {
-    return ::read(fd, buf, n);
+	std::string tempReadBuffer;
+	tempReadBuffer.resize(READ_BUFFER_SIZE);
+
+	int readSize = ::read(fd, &tempReadBuffer[0], tempReadBuffer.size());
+
+	if(readSize > 0)
+	{
+		tempReadBuffer.resize(readSize);
+		return tempReadBuffer;
+	}
+	else
+	{
+		return std::string("");
+	}
 }
 
 
 int Uart::write(const uint8_t *buf, uint16_t n)
 {
-    struct pollfd fds;
-    fds.fd = fd;
-    fds.events = POLLOUT;
-    fds.revents = 0;
+	struct pollfd fds;
+	fds.fd = fd;
+	fds.events = POLLOUT;
+	fds.revents = 0;
 
-    int ret = 0;
+	int ret = 0;
 
-    if (poll(&fds, 1, 0) == 1) {
-        ret = ::write(fd, buf, n);
-    }
+	if (poll(&fds, 1, 0) == 1) {
+		ret = ::write(fd, buf, n);
+	}
 
-    return ret;
+	return ret;
 }
 
 void Uart::setBlocking(bool blocking)
 {
-    int flags = fcntl(fd, F_GETFL, 0);
+	int flags = fcntl(fd, F_GETFL, 0);
 
-    if (blocking) {
-        flags = flags & ~O_NONBLOCK;
-    } else {
-        flags = flags | O_NONBLOCK;
-    }
+	if (blocking) {
+		flags = flags & ~O_NONBLOCK;
+	} else {
+		flags = flags | O_NONBLOCK;
+	}
 
-    if (fcntl(fd, F_SETFL, flags) < 0) {
-        printf("Failed to make UART nonblocking");
-    }
+	if (fcntl(fd, F_SETFL, flags) < 0) {
+		printf("Failed to make UART nonblocking");
+	}
 
 }
 
@@ -83,28 +99,28 @@ void Uart::writeStr(std::string pData)
 
 void Uart::disableCrlf()
 {
-    struct termios t;
-    memset(&t, 0, sizeof(t));
+	struct termios t;
+	memset(&t, 0, sizeof(t));
 
-    tcgetattr(fd, &t);
+	tcgetattr(fd, &t);
 
-    // disable LF -> CR/LF
-    t.c_iflag &= ~(BRKINT | ICRNL | IMAXBEL | IXON | IXOFF);
-    t.c_oflag &= ~(OPOST | ONLCR);
-    t.c_lflag &= ~(ISIG | ICANON | IEXTEN | ECHO | ECHOE | ECHOK | ECHOCTL | ECHOKE);
-    t.c_cc[VMIN] = 0;
+	// disable LF -> CR/LF
+	t.c_iflag &= ~(BRKINT | ICRNL | IMAXBEL | IXON | IXOFF);
+	t.c_oflag &= ~(OPOST | ONLCR);
+	t.c_lflag &= ~(ISIG | ICANON | IEXTEN | ECHO | ECHOE | ECHOK | ECHOCTL | ECHOKE);
+	t.c_cc[VMIN] = 0;
 
-    tcsetattr(fd, TCSANOW, &t);
+	tcsetattr(fd, TCSANOW, &t);
 }
 
 void Uart::setSpeed(unsigned int baudrate)
 {
-    struct termios t;
-    memset(&t, 0, sizeof(t));
+	struct termios t;
+	memset(&t, 0, sizeof(t));
 
-    tcgetattr(fd, &t);
-    cfsetspeed(&t, baudrate);
-    tcsetattr(fd, TCSANOW, &t);
+	tcgetattr(fd, &t);
+	cfsetspeed(&t, baudrate);
+	tcsetattr(fd, TCSANOW, &t);
 }
 
 

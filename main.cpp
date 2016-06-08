@@ -140,10 +140,9 @@ void loop()
 //		RfPacket packet(Date::now(), "LOG", str);
 //		rfControler.addPacketToSend(packet);
 
-		unsigned char buf = '\0';
-		uart.read(&buf, 1);
+		std::string str = uart.read();
 
-		printf("%c", buf);
+		printf("%s\n", str.c_str());
 //
 //		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
 //				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);

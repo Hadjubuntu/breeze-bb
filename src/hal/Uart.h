@@ -44,7 +44,7 @@ public:
 	int write(const uint8_t *buf, uint16_t n);
 	void writeStr(std::string pData);
 
-	int read(uint8_t *buf, uint16_t n);
+	std::string read();
 
 	void setBlocking(bool blocking);
 
