@@ -111,6 +111,7 @@ void setup()
 	// Test uart
 	uart.open();
 	uart.setBlocking(false);
+	uart.setSpeed(100000);
 
 }
 
