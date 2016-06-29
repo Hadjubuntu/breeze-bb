@@ -29,11 +29,32 @@ Uart::Uart(int pUartPin)
 	uartPin = pUartPin;
 	devicePath = "/dev/ttyO1";
 	fd = -1;
+	scriptDirectory = findScriptDirectory();
+}
+
+std::string Uart::findScriptDirectory()
+{
+	std::string searchResult = FileTools::searchDirectory(".","scripts");
+	return searchResult;
 }
 
 void Uart::open()
 {
+	std::string paramStr = "P9.26";
+	std::string scriptSetup = "sudo ./" + scriptDirectory + "/uart-setup.sh " + paramStr;
+	int result = system(scriptSetup.c_str());
+	printf("Executed command setup uart %s\n", scriptSetup.c_str());
+
+	/**
+	 * TODO FIXME
+	 * ---------------------------------
+	 * See code on beaglebone black : test.cpp
+	 */
+
+
 	fd = ::open(devicePath.c_str(), O_RDWR | O_CLOEXEC);
+
+
 
 	if (fd < 0) {
 		printf("Failed to open UART device %s\n", devicePath.c_str());

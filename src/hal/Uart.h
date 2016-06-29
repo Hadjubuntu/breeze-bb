@@ -22,6 +22,8 @@ private:
 	std::string devicePath;
 	/** File status */
 	int fd;
+	/** Script directory */
+	std::string scriptDirectory;
 
 	void disableCrlf();
 	void setProperties();
@@ -35,6 +37,9 @@ public:
 
 	/** Open serial port */
 	void open();
+
+
+	std::string findScriptDirectory();
 
 	/** Set baud rate */
 	void setSpeed(unsigned int pBaudRate);
