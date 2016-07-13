@@ -19,6 +19,7 @@
 #include <poll.h>
 #include <string.h> // for memset function
 #include "Uart.h"
+#include "../core/FileTools.h"
 
 // TODO see : https://github.com/yigityuce/BlackLib/tree/master/v3_0/BlackUART
 
