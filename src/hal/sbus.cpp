@@ -310,7 +310,7 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 		uint16_t max_values)
 {
 	/* check frame boundary markers to avoid out-of-sync cases */
-	if ((frame[0] != 0x0f)) {
+	if ((frame[0] != 0x1f)) {
 		printf("out of sync | frame_0=%d | expected_value=%d\n", frame[0], 0x0f);
 		for (int i = 0; i < 24; i ++)
 		{
