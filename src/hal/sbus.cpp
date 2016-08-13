@@ -226,6 +226,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 	now = micros();
 
 	if ((now - last_rx_time) > 3000) {
+		printf("drop\n");
 		if (partial_frame_count > 0) {
 			sbus_frame_drops++;
 			partial_frame_count = 0;
