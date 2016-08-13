@@ -139,7 +139,7 @@ sbus_init(const char *device)
 
 		/* 100000bps, even parity, two stop bits */
 		tcgetattr(sbus_fd, &t);
-		cfsetspeed(&t, 100000); // 100000
+		cfsetspeed(&t, 57600); // 100000
 		t.c_cflag |= (CSTOPB | PARENB);
 		tcsetattr(sbus_fd, TCSANOW, &t);
 
@@ -225,12 +225,12 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 	 */
 	now = micros();
 
-//	if ((now - last_rx_time) > 3000) {
-//		if (partial_frame_count > 0) {
-//			sbus_frame_drops++;
-//			partial_frame_count = 0;
-//		}
-//	}
+	if ((now - last_rx_time) > 3000) {
+		if (partial_frame_count > 0) {
+			sbus_frame_drops++;
+			partial_frame_count = 0;
+		}
+	}
 
 //	printf("Diff = %d\n", (int)(now - last_rx_time), now, last_rx_time);
 	/*
