@@ -232,7 +232,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		}
 	}
 
-	printf("Diff = %d\n", (int)(now - last_rx_time), now, last_rx_time);
+//	printf("Diff = %d\n", (int)(now - last_rx_time), now, last_rx_time);
 	/*
 	 * Fetch bytes, but no more than we would need to complete
 	 * the current frame.
@@ -244,7 +244,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		return false;
 	}
 	else {
-//		printf("partial_frame_count=%d\n", partial_frame_count);
+		printf("ret ! partial_frame_count=%d\n", partial_frame_count);
 	}
 
 	last_rx_time = now;
