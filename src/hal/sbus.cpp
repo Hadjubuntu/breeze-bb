@@ -442,7 +442,7 @@ int main() {
 			}
 		}
 
-		printf("dt_loop=%lu | dt_inside_loop=%lu\n", (now - lastIter), (micros()-now));
+//		printf("dt_loop=%lu | dt_inside_loop=%lu\n", (now - lastIter), (micros()-now));
 		lastIter = now;
 
 		iter ++;
