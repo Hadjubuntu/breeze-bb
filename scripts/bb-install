@@ -1,0 +1,48 @@
+# -------------------------------------------------
+# Beaglebone black install with debian 8.4 at least
+# Project : Breeze-BB
+# Author  : Adrien HADJ-SALAH
+# -------------------------------------------------
+
+sudo adduser adrien
+sudo adduser adrien sudo
+# sudo apt-get install git
+
+ssh-keygen -t rsa -b 4096
+
+git clone git@github.com:Hadjubuntu/breeze-bb.git
+git checkout dev-bb
+
+# On wheezy only !
+# sudo vim /etc/apt/sources.list
+# :%s/wheezy/jessie/g
+
+# sudo apt-get update
+# sudo apt-get install gcc-4.9 g++-4.9
+
+# sudo vim /etc/apt/sources.list
+# :%s/jessie/wheezy/g
+# sudo apt-get update
+
+cd /usr/bin
+sudo mv g++ g++old
+sudo ln -s g++-4.9 g++
+sudo mv gcc gccold
+sudo ln -s gcc-4.9 gcc
+
+cd ~/breeze-bb
+make
+
+# Install pwm pin chip on bb
+sudo su -c "echo am33xx_pwm > slots"
+
+
+
+# Actually pin work
+# 0 0 => ECAPPWM0
+# 4 0 => PWM1A
+
+
+# Wifi : clone wifi-reset from github
+# Define wifi parameters in /etc/network/interfaces
+# ..
