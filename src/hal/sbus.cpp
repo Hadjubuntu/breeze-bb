@@ -41,7 +41,10 @@
 #include <chrono>
 #include <fcntl.h>
 #include <unistd.h>
-#include <termios.h>
+//#include <termios.h>
+
+#include <asm/termios.h> // custom baud rate
+#include <stropts.h>
 
 #define PX4IO_RC_INPUT_CHANNELS 18
 
@@ -135,13 +138,24 @@ sbus_init(const char *device)
 	}
 
 	if (sbus_fd >= 0) {
-		struct termios t;
+//		struct termios t;
+//
+//		/* 100000bps, even parity, two stop bits */
+//		tcgetattr(sbus_fd, &t);
+//		cfsetspeed(&t, 57600); // 100000
+//		t.c_cflag |= (CSTOPB | PARENB);
+//		tcsetattr(sbus_fd, TCSANOW, &t);
 
-		/* 100000bps, even parity, two stop bits */
-		tcgetattr(sbus_fd, &t);
-		cfsetspeed(&t, 57600); // 100000
-		t.c_cflag |= (CSTOPB | PARENB);
-		tcsetattr(sbus_fd, TCSANOW, &t);
+		// start: custom baud rate
+		struct termios2 tio;
+		ioctl(sbus_fd, TCGETS2, &tio);
+		tio.c_cflag &= ~CBAUD;
+		tio.c_cflag |= BOTHER;
+		tio.c_ispeed = 100000;
+		tio.c_ospeed = 100000;
+		/* do other miscellaneous setup options with the flags here */
+		ioctl(sbus_fd, TCSETS2, &tio);
+		// end: custom baud rate
 
 		/* initialise the decoder */
 		partial_frame_count = 0;
