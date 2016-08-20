@@ -154,8 +154,10 @@ sbus_init(const char *device)
 		tio.c_ispeed = 100000;
 		tio.c_ospeed = 100000;
 		/* do other miscellaneous setup options with the flags here */
-		ioctl(sbus_fd, TCSETS2, &tio);
+		int retSpeed = ioctl(sbus_fd, TCSETS2, &tio);
+		printf("custom baud rate = %d\n", retSpeed);
 		// end: custom baud rate
+
 
 		/* initialise the decoder */
 		partial_frame_count = 0;
