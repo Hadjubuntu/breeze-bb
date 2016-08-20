@@ -150,7 +150,7 @@ sbus_init(const char *device)
 		struct termios2 tio;
 		ioctl(sbus_fd, TCGETS2, &tio);
 		tio.c_cflag &= ~CBAUD;
-		tio.c_cflag |= (CSTOPB | PARENB);
+		tio.c_cflag |= (BOTHER | CSTOPB | PARENB);
 		tio.c_ispeed = 100000;
 		tio.c_ospeed = 100000;
 		/* do other miscellaneous setup options with the flags here */
