@@ -138,13 +138,13 @@ sbus_init(const char *device)
 	}
 
 	if (sbus_fd >= 0) {
-//		struct termios t;
-//
-//		/* 100000bps, even parity, two stop bits */
-//		tcgetattr(sbus_fd, &t);
-//		cfsetspeed(&t, 57600); // 100000
-//		t.c_cflag |= (CSTOPB | PARENB);
-//		tcsetattr(sbus_fd, TCSANOW, &t);
+		//		struct termios t;
+		//
+		//		/* 100000bps, even parity, two stop bits */
+		//		tcgetattr(sbus_fd, &t);
+		//		cfsetspeed(&t, 57600); // 100000
+		//		t.c_cflag |= (CSTOPB | PARENB);
+		//		tcsetattr(sbus_fd, TCSANOW, &t);
 
 		// start: custom baud rate
 		struct termios2 tio;
@@ -248,7 +248,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		}
 	}
 
-//	printf("Diff = %d\n", (int)(now - last_rx_time), now, last_rx_time);
+	//	printf("Diff = %d\n", (int)(now - last_rx_time), now, last_rx_time);
 	/*
 	 * Fetch bytes, but no more than we would need to complete
 	 * the current frame.
@@ -260,7 +260,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		return false;
 	}
 	else {
-		printf("ret ! partial_frame_count=%d\n", partial_frame_count);
+		//		 printf("ret ! partial_frame_count=%d\n", partial_frame_count);
 	}
 
 	last_rx_time = now;
@@ -327,17 +327,10 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 {
 	/* check frame boundary markers to avoid out-of-sync cases */
 	if ((frame[0] != 0x0f)) {
-		printf("out of sync | frame_0=%d | expected_value=%d\n", frame[0], 0x0f);
-		for (int i = 0; i < 24; i ++)
-		{
-			printf("[%d]=%d", i, frame[i]);
-		}
-		printf("-------------\n");
 		sbus_frame_drops++;
 		return false;
 	}
 
-	printf("sync ok => decode\n");
 
 	switch (frame[24]) {
 	case 0x00:
@@ -449,7 +442,7 @@ int main() {
 		bool sbus_updated = sbus_input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, PX4IO_RC_INPUT_CHANNELS);
 
 		if (sbus_updated) {
-			printf("Sbus updated !!\n");
+			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
 		}
 		else {
 			if (iter % 50000 == 0)
@@ -458,7 +451,7 @@ int main() {
 			}
 		}
 
-//		printf("dt_loop=%lu | dt_inside_loop=%lu\n", (now - lastIter), (micros()-now));
+		//		printf("dt_loop=%lu | dt_inside_loop=%lu\n", (now - lastIter), (micros()-now));
 		lastIter = now;
 
 		iter ++;
