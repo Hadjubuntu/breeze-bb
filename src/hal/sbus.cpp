@@ -150,9 +150,9 @@ sbus_init(const char *device)
 		struct termios2 tio;
 		ioctl(sbus_fd, TCGETS2, &tio);
 		tio.c_cflag &= ~CBAUD;
-		tio.c_cflag |= BOTHER;
-		tio.c_ispeed = 57600;
-		tio.c_ospeed = 57600;
+		tio.c_cflag |= (CSTOPB | PARENB);
+		tio.c_ispeed = 100000;
+		tio.c_ospeed = 100000;
 		/* do other miscellaneous setup options with the flags here */
 		int retSpeed = ioctl(sbus_fd, TCSETS2, &tio);
 		printf("custom baud rate = %d\n", retSpeed);
