@@ -428,6 +428,7 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 }
 
 long lastIter = micros();
+long subiter = 0;
 
 int main() {
 
@@ -448,7 +449,7 @@ int main() {
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
 
-			if (iter % 1000 == 0)
+			if (subiter % 100 == 0)
 			{
 				char parameters[100];
 				sprintf(parameters, "%d %d", 0, 0);
@@ -474,6 +475,8 @@ int main() {
 				int result = system(scriptSetup.c_str());
 				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
 			}
+
+			subiter ++;
 		}
 		else {
 			if (iter % 50000 == 0)
