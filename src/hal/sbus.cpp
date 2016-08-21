@@ -463,7 +463,7 @@ int main() {
 				std::stringstream periodStr;
 				periodStr << periodNs;
 
-				long dutyCycle = (long) ((int)r_raw_rc_count[0] * 1000);
+				long dutyCycle = (long) ((float)r_raw_rc_count[0] * 1000.0f);
 				std::stringstream dutyCycleStr;
 				dutyCycleStr << dutyCycle;
 
