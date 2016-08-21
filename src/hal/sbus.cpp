@@ -41,6 +41,9 @@
 #include <chrono>
 #include <fcntl.h>
 #include <unistd.h>
+
+#include <string>
+#include <sstream>
 //#include <termios.h>
 
 #include <asm/termios.h> // custom baud rate
