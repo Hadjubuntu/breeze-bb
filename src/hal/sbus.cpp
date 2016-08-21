@@ -464,7 +464,7 @@ int main() {
 				periodStr << periodNs;
 
 				std::stringstream dutyCycleStr;
-				dutyCycleStr << r_raw_rc_count[0] * 1000;
+				dutyCycleStr << ((long)r_raw_rc_count[0]) * 1000l;
 
 				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
 
