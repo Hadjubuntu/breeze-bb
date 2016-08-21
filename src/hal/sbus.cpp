@@ -138,6 +138,7 @@ sbus_init(const char *device)
 	}
 
 	if (sbus_fd >= 0) {
+		// Following code is desactivated since we need specific baud rate
 		//		struct termios t;
 		//
 		//		/* 100000bps, even parity, two stop bits */
@@ -443,6 +444,33 @@ int main() {
 
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
+
+			if (iter % 1000 == 0)
+			{
+				char parameters[100];
+				sprintf(parameters, "%d %d", 0, 0);
+
+
+
+				std::string paramStr = "";
+				paramStr.append(parameters);
+
+				long periodNs = 20000000l;
+				std::stringstream periodStr;
+				periodStr << periodNs;
+
+				long dutyCycle = (long) (r_raw_rc_count[0] * 1000l);
+				std::stringstream dutyCycleStr;
+				dutyCycleStr << dutyCycle;
+
+				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
+
+				std::string scriptSetup = "sudo ../../scripts/pwm-setup.sh " + paramStr;
+
+				// Execute script to setup pwm pin
+				int result = system(scriptSetup.c_str());
+				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
+			}
 		}
 		else {
 			if (iter % 50000 == 0)
