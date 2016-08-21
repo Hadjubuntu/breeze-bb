@@ -449,7 +449,7 @@ int main() {
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
 
-			if (subiter % 5 == 0)
+			if (subiter % 2 == 0)
 			{
 				char parameters[100];
 				sprintf(parameters, "%d %d", 0, 0);
@@ -463,7 +463,7 @@ int main() {
 				std::stringstream periodStr;
 				periodStr << periodNs;
 
-				long dutyCycle = (long) (r_raw_rc_count[0] * 1000l);
+				long dutyCycle = (long) ((int)r_raw_rc_count[0] * 1000);
 				std::stringstream dutyCycleStr;
 				dutyCycleStr << dutyCycle;
 
