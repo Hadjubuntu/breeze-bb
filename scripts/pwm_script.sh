@@ -1,11 +1,13 @@
 #!/bin/bash
 
-config-pin overlay cape-universaln
+# config-pin overlay cape-universaln
+sudo su -c "echo am33xx_pwm > /sys/devices/platform/bone_capemgr/slots"
+
 
 PIN=$1 # 0 => PWM0 | 1 => ? | 2 => P9.22/21 SPIO  |  4 => PWM1A/B | 6 => PWM2A/B
 PWM_ELEMENT=$2 # 0 for 1A | 1 for 1B
 
-config-pin 9.14 pwm
+#config-pin 9.14 pwm
 
 cd /sys/class/pwm/pwmchip${PIN}
 chmod +rw *

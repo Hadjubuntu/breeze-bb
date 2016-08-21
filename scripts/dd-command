@@ -1,0 +1,3 @@
+# To sd card
+dd if=from of=/dev/mmcblk0 bs=4M conv=sync,noerror
+# Memo : not use notrunc truncate helps to keep full disk size 

@@ -8,9 +8,13 @@ sudo adduser adrien
 sudo adduser adrien sudo
 # sudo apt-get install git
 
+
+su adrien
 ssh-keygen -t rsa -b 4096
 
+cd ~
 git clone git@github.com:Hadjubuntu/breeze-bb.git
+cd ~/breeze-bb
 git checkout dev-bb
 
 # On wheezy only !
@@ -30,11 +34,12 @@ sudo ln -s g++-4.9 g++
 sudo mv gcc gccold
 sudo ln -s gcc-4.9 gcc
 
-cd ~/breeze-bb
+cd ~/breeze-bb/
 make
 
 # Install pwm pin chip on bb
-sudo su -c "echo am33xx_pwm > slots"
+sudo config-pin overlay cape-universaln
+# Not necessary wheezy but on jessie: sudo su -c "echo am33xx_pwm > slots"
 
 
 

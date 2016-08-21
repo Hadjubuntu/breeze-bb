@@ -13,7 +13,7 @@ config-pin overlay cape-universaln
 
 # Initialize pin
 # ---------------------------------
-pin_list=(9.14); # 9.16 9.42 8.13 8.19
+pin_list=(9.14 9.16 9.42 8.13 8.19);
 
 for i in "${pin_list[@]}"
 do
@@ -34,29 +34,30 @@ if [ -z "$2" ];	then
 	exit
 fi
 
-DIRECTORY="/sys/class/pwm/pwm${PIN}"
+DIRECTORY="/sys/class/pwm/pwmchip${PIN}"
 echo "Directory ${DIRECTORY}"
 
 if [ -d "$DIRECTORY" ]; then
 	# Control will enter here if $DIRECTORY exists.
 
-	cd /sys/class/pwm/pwm${PIN}
+	cd /sys/class/pwm/pwmchip${PIN}
 	chmod +rw *
 	chown adrien *
 
-	#echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/unexport
-	#echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/export
+	echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/unexport
+	echo ${SUBPATH} > /sys/class/pwm/pwmchip${PIN}/export
 
-	#cd pwm${SUBPATH}
-	#chmod +rw *
-	#chown adrien *
+	cd pwm${SUBPATH}
+	chmod +rw *
+	chown adrien *
 
-	echo 0 > run
-	echo ${PERIOD} > period_ns
-	echo ${DUTY_CYCLE} > duty_ns
-	echo 1 > run
+	echo 0 > enable
+	echo ${PERIOD} > period
+	echo ${DUTY_CYCLE} > duty_cycle
+	echo 1 > enable
 else
 	echo "Unknow directory"
 	echo $DIRECTORY
 fi
+
 
