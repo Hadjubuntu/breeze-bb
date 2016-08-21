@@ -473,6 +473,7 @@ int main() {
 
 				// Execute script to setup pwm pin
 				int result = system(scriptSetup.c_str());
+				printf("Duty cycle %lu\n", dutyCycle);
 				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
 			}
 
