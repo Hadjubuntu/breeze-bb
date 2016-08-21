@@ -449,7 +449,7 @@ int main() {
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
 
-			if (subiter % 100 == 0)
+			if (subiter % 5 == 0)
 			{
 				char parameters[100];
 				sprintf(parameters, "%d %d", 0, 0);
