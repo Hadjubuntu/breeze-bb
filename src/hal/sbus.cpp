@@ -463,9 +463,8 @@ int main() {
 				std::stringstream periodStr;
 				periodStr << periodNs;
 
-				long dutyCycle = (long) ((float)r_raw_rc_count[0] * 1000.0f);
 				std::stringstream dutyCycleStr;
-				dutyCycleStr << dutyCycle;
+				dutyCycleStr << r_raw_rc_count[0] * 1000;
 
 				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
 
@@ -473,7 +472,7 @@ int main() {
 
 				// Execute script to setup pwm pin
 				int result = system(scriptSetup.c_str());
-				printf("Duty cycle %lu\n", dutyCycle);
+//				printf("Duty cycle %s\n", dutyCycleStr.c_str());
 				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
 			}
 
