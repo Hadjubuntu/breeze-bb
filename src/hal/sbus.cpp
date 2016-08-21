@@ -452,7 +452,7 @@ int main() {
 			if (subiter % 2 == 0)
 			{
 				char parameters[100];
-				sprintf(parameters, "%d %d", 0, 0);
+				sprintf(parameters, "%d %d", 3, 0);
 
 
 
