@@ -23,9 +23,6 @@
 #include "src/hal/Pwm.h"
 #include "src/hal/Uart.h"
 
-Uart uart(1);
-
-
 
 /** Attitude and heading reference system */
 Baro baro;
@@ -87,8 +84,8 @@ void setup()
 
 	// Add processings
 	//----------------------
-	//	uavBrain.addProcessing(&baro);
-	//	uavBrain.addProcessing(&ahrs);
+//	uavBrain.addProcessing(&baro);
+//	uavBrain.addProcessing(&ahrs);
 	//	uavBrain.addProcessing(&rfControler);
 	//	uavBrain.addProcessing(&rfRouter);
 	//	uavBrain.addProcessing(&radioControler);
@@ -106,13 +103,6 @@ void setup()
 	// Calibration on AHRS
 	//----------------------
 	calibration();
-
-
-	// Test uart
-	uart.open();
-	uart.setBlocking(false);
-	uart.setSpeed(100000);
-
 }
 
 void loop()
@@ -125,6 +115,7 @@ void loop()
 	// ----
 	if (uavBrain.getTickId() % 2000 == 0)
 	{
+		printf("brain loop\n");
 		//		float rpy[3];
 		//		ahrs.getAttitude().toRollPitchYaw(rpy);
 
@@ -140,10 +131,6 @@ void loop()
 		//		RfPacket packet(Date::now(), "LOG", str);
 		//		rfControler.addPacketToSend(packet);
 
-		std::string str = uart.read();
-		if (str.length() > 0) {
-			printf("%s\n", str.c_str());
-		}
 		//
 		//		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f\n",
 		//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f);

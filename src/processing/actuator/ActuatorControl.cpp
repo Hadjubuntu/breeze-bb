@@ -8,7 +8,6 @@
 #include "../../hal/HAL.h"
 #include "../../math/common/FastMath.h"
 #include "../../data/conf/Conf.h"
-#include "../../link/RadioSbus.h"
 #include "ActuatorControl.h"
 #include <array>
 
@@ -21,8 +20,10 @@ Timer3 	12 	11 	27 	28
 Timer4 	5 	9 	14 	24
  */
 
+#define MAX_DELTA_RADIO_SIGNAL 680
 
-#define MOTOR_FREQ_HZ 50 // MOCK FOR SERVO FIXME
+
+#define MOTOR_FREQ_HZ 490 // MOCK FOR SERVO FIXME
 
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define CYCLES_PER_MICROSECOND 100000000000000 // FIXME How to manage ESC motors on beaglebone ?
@@ -166,7 +167,7 @@ int ActuatorControl::getCommandNmToSignalUs(float commandNm, float nmToDeltaSign
 	BoundAbs(commandNm, _maxCommandNm->getValue());
 	int deltaSignal = (int) commandNm * nmToDeltaSignalUs;
 
-	BoundAbs(deltaSignal, RADIO_VAR);
+	BoundAbs(deltaSignal, MAX_DELTA_RADIO_SIGNAL);
 	return deltaSignal;
 }
 

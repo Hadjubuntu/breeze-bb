@@ -10,7 +10,7 @@ CFLAGS_$(d) := $(WIRISH_INCLUDES) $(LIBMAPLE_INCLUDES)
 # Local rules and targets
 cSRCS_$(d) :=
 
-cppSRCS_$(d) :=  RfPacket.cpp RfControler.cpp RfRouter.cpp RadioSbus.cpp
+cppSRCS_$(d) :=  RfPacket.cpp RfControler.cpp RfRouter.cpp
 
 cFILES_$(d) := $(cSRCS_$(d):%=$(d)/%)
 cppFILES_$(d) := $(cppSRCS_$(d):%=$(d)/%)

@@ -9,12 +9,13 @@
 #define PROCESSING_LINK_RADIOCONTROLER_H_
 
 #include "../../core/Processing.h"
-#include "../../link/RadioSbus.h"
+#include "../../hal/Sbus.h"
 
-class RadioControler : public Processing {
+class RadioControler : public Processing
+{
 private:
 	/** Radio sbus handler */
-	RadioSbus _handler;
+	Sbus handler;
 public:
 	/**
 	 * Constructor
@@ -35,20 +36,16 @@ public:
 	/**
 	 * Get radio sbus handler
 	 */
-	RadioSbus getHandler()
+	Sbus getHandler()
 	{
-		return _handler;
-	}
-
-	bool isComLost() {
-		return _handler.isComLost();
+		return handler;
 	}
 
 	/**
 	 * Returns last update
 	 */
-	Date& getLastUpdate() {
-		return _handler.lastUpdate;
+	Date getLastUpdate() {
+		return handler.getLastUpdate();
 	}
 };
 

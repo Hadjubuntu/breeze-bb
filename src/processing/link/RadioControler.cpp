@@ -12,8 +12,8 @@
  */
 RadioControler::RadioControler() : Processing()
 {
-	// 100 Hz updater
-	freqHz = 100;
+	// 200 Hz updater
+	freqHz = 200;
 }
 
 /**
@@ -22,28 +22,19 @@ RadioControler::RadioControler() : Processing()
 void RadioControler::init()
 {
 	// Start serial for sbus radio
-	_handler.begin();
+	handler.init("/dev/ttyO1");
 
 	// Wait for two seconds
-//	wait(2.0);
-//
-//	// Set calibration values
-//	for (int i = 0; i < 7; i ++) {
-//		_handler.channelsCalib[i] = _handler.channels[i];
-//	}
+	wait(2.0);
+
+	// Set calibration values
+	for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
+	{
+		handler.channelsCalib[i] = handler.channels[i];
+	}
 }
 
 void RadioControler::process()
 {
-//	// Read bus data
-//	_handler.FeedLine();
-//
-//	// If data are complete
-//	if (_handler.toChannels == 1)
-//	{
-//		// Update channel data and last update date
-//		_handler.UpdateChannels();
-//		_handler.toChannels = 0;
-//		_handler.lastUpdate = Date::now();
-//	}
+	handler.fastLoop();
 }
