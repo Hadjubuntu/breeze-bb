@@ -24,12 +24,13 @@ do
 	sudo su -c "echo $j > /sys/class/pwm/export"
 done
 
+idx=0
 for i in "${pwm_pin_list[@]}"
 do
 	config-pin $i pwm
 
 	# Prepare file access mode
-	DIRECTORY="/sys/class/pwm/pwm${i}"
+	DIRECTORY="/sys/class/pwm/pwm${idx}"
 	echo "Directory ${DIRECTORY}"
 
 	if [ -d "$DIRECTORY" ]; then
@@ -45,6 +46,10 @@ do
 		echo ${PERIOD} > period_ns
 		echo ${DUTY_CYCLE} > duty_ns
 		echo 1 > run
+
+		idx=$((idx+1))
+	else
+		echo "Unknow directory"
 	fi
 done
 for i in "${uart_pin_list[@]}"
