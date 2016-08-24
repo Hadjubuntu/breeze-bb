@@ -46,7 +46,7 @@ do
 		echo "Duty cycle="
 		echo ${DUTY_CYCLE}
 
-		echo 20000000 > period_ns
+		su su -c "echo $PERIOD > period_ns"
 		echo 800000 > duty_ns
 		echo 1 > run
 
