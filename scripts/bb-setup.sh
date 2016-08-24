@@ -22,7 +22,7 @@ pwmDir="/sys/class/pwm/"
 cd pwmDir
 pwmIdx=(0 1 2 3 4 5 6 7);
 for j in "${pwmIdx}"
-	sudo su -c "echo ${j} > export"
+	sudo su -c "echo $j > export"
 done
 
 for i in "${pwm_pin_list[@]}"
