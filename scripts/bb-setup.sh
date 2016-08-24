@@ -18,6 +18,13 @@ pwm_pin_list=(9.14 9.16 9.42 8.13 8.19);
 pwm_freq_list=(9.14=50 9.16=50 59.42=0 8.13=50 8.19=50);
 uart_pin_list=(9.24 9.26);
 
+pwmDir="/sys/class/pwm/"
+cd pwmDir
+pwmIdx=(0 1 2 3 4 5 6 7);
+for j in "${pwmIdx}"
+	sudo su -c "echo ${j} > export"
+done
+
 for i in "${pwm_pin_list[@]}"
 do
 	config-pin $i pwm
