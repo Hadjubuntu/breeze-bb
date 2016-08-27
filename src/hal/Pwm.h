@@ -33,19 +33,14 @@ enum PWMName           {
 
 class Pwm {
 private:
-	int mapPwmPin[7]     = {4, 2, 2, 6, 6, 6, 6};
-	int mapPwmSubpin[7]  = {0, 0, 1, 0, 1, 0, 1};
 	int freqHz;
-	PWMName pwmName;
-	std::string scriptDirectory;
-
-	void setupPwmAndDisable(PWMName, int);
+	int pinNumber;
+	std::string pwmDutyFilepath;
+	std::string pwmEnableFilepath;
 public:
-	Pwm(int pFreqHz, PWMName pName);
+	Pwm(int pFreqHz, int pPin);
 
 	void init();
-	void check();
-	std::string findScriptDirectory();
 
 	void enable();
 	void disable();

@@ -5,6 +5,9 @@
  *      Author: adrien
  */
 
+
+#include <iostream>
+#include <fstream>
 #include <cstring>
 #include <string>
 #include <sstream>          // need for tostr() function
@@ -13,6 +16,16 @@
 #include "FileTools.h"
 
 
+
+bool FileTools::writeToFile(std::string pFilepath, std::string pContent)
+{
+	std::ofstream enableFile;
+	enableFile.open(pFilepath.c_str());
+	enableFile << pContent.c_str();
+	enableFile.close();
+
+	return true;
+}
 
 std::string FileTools::searchDirectory(std::string searchPath, std::string searchPattern)
 {

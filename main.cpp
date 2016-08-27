@@ -127,7 +127,7 @@ void loop()
 
 	// Prints infos
 	// ----
-	if (uavBrain.getTickId() % 2000 == 0)
+	if (uavBrain.getTickId() % 5000 == 0)
 	{
 		printf("brain loop\n");
 		//		float rpy[3];

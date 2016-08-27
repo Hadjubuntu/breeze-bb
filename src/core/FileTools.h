@@ -15,7 +15,7 @@ public:
 	FileTools();
 	virtual ~FileTools();
 
-
+	static bool writeToFile(std::string pFilepath, std::string pContent);
 	static std::string searchDirectory(std::string searchPath, std::string searchPattern);
 
 };

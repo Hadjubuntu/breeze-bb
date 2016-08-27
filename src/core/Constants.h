@@ -12,6 +12,7 @@ class Constants {
 public:
 	static constexpr float S_TO_US = 1000000.0;
 	static constexpr float S_TO_NS = 1000000000.0;
+	static constexpr float MS_TO_NS = 1000000.0;
 	Constants();
 	virtual ~Constants();
 };
