@@ -25,7 +25,7 @@ do
 	CDIR="${DIR_EXPORT}/pwm${j}"
 
 	# Export only if dir doesn't exist
-	if [! -d "$DIRECTORY" ]; then
+	if [ ! -d "$DIRECTORY" ]; then
 		sudo su -c "echo $j > ${DIR_EXPORT}/export"
 	fi
 done
