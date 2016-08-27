@@ -103,6 +103,18 @@ void setup()
 	// Calibration on AHRS
 	//----------------------
 	calibration();
+
+	// Setup pwm, uart through bash script
+	setupPwmUart();
+}
+
+// Execute script to setup pwm pin and uart
+void setupPwmUart()
+{
+	std::string scriptDirectory = FileTools::searchDirectory(".","scripts");
+	std::string scriptSetup = "sudo ./" + scriptDirectory + "/bb-setup.sh ";
+	int result = system(scriptSetup.c_str());
+	printf("Setup pwm and uart results="+result);
 }
 
 void loop()
