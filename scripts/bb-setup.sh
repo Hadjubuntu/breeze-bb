@@ -44,10 +44,10 @@ do
 		PERIOD=${pwm_freq_list[$idx]} # eg. 20000000 means 50Hz TODO operation division and *10^9
 		DUTY_CYCLE=800000 # min duty cycle =  800 us | eg. 1500000 ns
 
-		echo "Duty cycle="
-		echo ${DUTY_CYCLE}
+		echo "Duty cycle=${DUTY_CYCLE}"
+		echo "Period=${PERIOD}"
 
-		# sudo su -c "echo $PERIOD > period_ns"
+		echo $PERIOD > period_ns
 		echo 800000 > duty_ns
 		echo 1 > run
 
