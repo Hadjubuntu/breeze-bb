@@ -21,8 +21,13 @@ uart_pin_list=(9.24 9.26);
 pwmIdx=(0 1 2 3 4 5 6 7);
 for j in "${pwmIdx[@]}"
 do
-	echo "echo $j > /sys/class/pwm/export"
-	sudo su -c "echo $j > /sys/class/pwm/export"
+	DIR_EXPORT="/sys/class/pwm"
+	CDIR="${DIR_EXPORT}/pwm${j}"
+
+	# Export only if dir doesn't exist
+	if [! -d "$DIRECTORY" ]; then
+		sudo su -c "echo $j > ${DIR_EXPORT}/export"
+	fi
 done
 
 idx=0
