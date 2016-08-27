@@ -41,7 +41,8 @@ do
 		chmod +rw *
 		chown ${user} *
 
-		PERIOD=${pwm_freq_list[$idx]} # eg. 20000000 means 50Hz TODO operation division and *10^9
+		FREQ=${pwm_freq_list[$idx]} # eg. 20000000 means 50Hz TODO operation division and *10^9
+		let PERIOD="1000000000/${FREQ}"
 		DUTY_CYCLE=800000 # min duty cycle =  800 us | eg. 1500000 ns
 
 		echo "Duty cycle=${DUTY_CYCLE}"
