@@ -22,6 +22,7 @@
 #include "src/hal/HAL.h"
 #include "src/hal/Pwm.h"
 #include "src/hal/Uart.h"
+#include "src/core/FileTools.h"
 
 
 /** Attitude and heading reference system */
