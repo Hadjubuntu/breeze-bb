@@ -21,6 +21,7 @@ uart_pin_list=(9.24 9.26);
 pwmIdx=(0 1 2 3 4 5 6 7);
 for j in "${pwmIdx}"
 do
+	echo "echo $j > /sys/class/pwm/export"
 	sudo su -c "echo $j > /sys/class/pwm/export"
 done
 
