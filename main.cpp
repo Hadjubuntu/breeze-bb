@@ -48,7 +48,7 @@ FlightControl flightControl(&radioControler);
 Sonar sonar;
 
 /** Flight stabilization controller */
-FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
+//FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
 
 /** Motor and servo control */
 //ActuatorControl actuatorControl(&flightStabilization);
@@ -100,7 +100,7 @@ void setup()
 	uavBrain.addProcessing(&radioControler);
 	uavBrain.addProcessing(&flightControl);
 	uavBrain.addProcessing(&sonar);
-	uavBrain.addProcessing(&flightStabilization);
+//	uavBrain.addProcessing(&flightStabilization);
 //	uavBrain.addProcessing(&actuatorControl);
 	//	uavBrain.addProcessing(&telemetry);
 	//	uavBrain.addProcessing(&fsAutotune);
