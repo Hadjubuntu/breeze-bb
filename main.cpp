@@ -143,9 +143,10 @@ void loop()
 		//		rfControler.addPacketToSend(packet);
 
 		//
-		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | auto=%d\n",
+		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | auto=%d | throttle=%.2f\n",
 				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f,
-				flightControl.isAutoMode());
+				flightControl.isAutoMode(),
+				flightControl.getThrottleOut());
 	}
 }
 
