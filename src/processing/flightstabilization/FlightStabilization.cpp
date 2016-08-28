@@ -49,14 +49,8 @@ _tau(Vect3D::zero())
 
 void FlightStabilization::updateInputParameters()
 {
-	_ahrs->init();
-	_ahrs->process();
-	_flightControl->init();
-	_flightControl->process();
-
-
-//	_targetAttitude = _flightControl->getAttitudeDesired();
-//	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
+		_targetAttitude = _flightControl->getAttitudeDesired();
+	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
 //
 //	_currentAttitude = _ahrs->getAttitude();
 //	_yawFromGyro = _ahrs->getYawFromGyro();
