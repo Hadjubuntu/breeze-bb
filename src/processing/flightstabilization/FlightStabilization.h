@@ -65,7 +65,7 @@ public:
 	 * Initialization
 	 */
 	void init() {
-
+		firstInit = Date::now();
 	}
 
 	void updateInputParameters();

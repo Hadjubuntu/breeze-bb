@@ -21,7 +21,7 @@ FlightStabilization::FlightStabilization(AHRS *ahrs, FlightControl *flightContro
 Processing(),
 _targetAttitude(Quaternion::zero()), _currentAttitude(Quaternion::zero()),
 _gyroRot(Vect3D::zero()),
-_tau(Vect3D::zero())
+_tau(Vect3D::zero()), firstInit(Date::now())
 {
 	freqHz = 1;
 	_throttle = 0;
@@ -44,8 +44,6 @@ _tau(Vect3D::zero())
 	_flightControl = flightControl;
 	_sonar = sonar;
 	_meanAccZ = 1.0;
-
-	firstInit = Date::now();
 }
 
 
