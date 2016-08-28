@@ -52,7 +52,6 @@ private:
 	float _throttleSlewRate;
 	float _meanAccZ;
 
-	Date firstInit;
 
 public:
 
@@ -65,7 +64,7 @@ public:
 	 * Initialization
 	 */
 	void init() {
-		firstInit = Date::now();
+
 	}
 
 	void updateInputParameters();

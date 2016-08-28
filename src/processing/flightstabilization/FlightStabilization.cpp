@@ -21,7 +21,7 @@ FlightStabilization::FlightStabilization(AHRS *ahrs, FlightControl *flightContro
 Processing(),
 _targetAttitude(Quaternion::zero()), _currentAttitude(Quaternion::zero()),
 _gyroRot(Vect3D::zero()),
-_tau(Vect3D::zero()), firstInit(Date::now())
+_tau(Vect3D::zero())
 {
 	freqHz = 1;
 	_throttle = 0;
@@ -49,6 +49,12 @@ _tau(Vect3D::zero()), firstInit(Date::now())
 
 void FlightStabilization::updateInputParameters()
 {
+	_ahrs->init();
+	_ahrs->process();
+	_flightControl->init();
+	_flightControl->process();
+
+
 	_targetAttitude = _flightControl->getAttitudeDesired();
 	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
 
@@ -85,11 +91,6 @@ void FlightStabilization::process()
 	//		_throttleOut = _throttle;
 	//	}
 	//#endif
-
-	// Do not start processing before 2 seconds
-	if (Date::now().durationFrom(firstInit) < 2.0) {
-		return;
-	}
 
 	updateInputParameters();
 
