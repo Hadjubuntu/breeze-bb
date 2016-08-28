@@ -98,7 +98,7 @@ void setup()
 	uavBrain.addProcessing(&rfControler);
 	uavBrain.addProcessing(&rfRouter);
 	uavBrain.addProcessing(&radioControler);
-	//	uavBrain.addProcessing(&flightControl);
+	uavBrain.addProcessing(&flightControl);
 	//	uavBrain.addProcessing(&sonar);
 	//	uavBrain.addProcessing(&flightStabilization);
 	//	uavBrain.addProcessing(&actuatorControl);
@@ -127,7 +127,7 @@ void loop()
 
 	// Prints infos
 	// ----
-	if (uavBrain.getTickId() % 5000 == 0)
+	if (uavBrain.getTickId() % 3000 == 0)
 	{
 		printf("brain loop\n");
 		float rpy[3];

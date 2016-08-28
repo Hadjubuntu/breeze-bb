@@ -11,7 +11,8 @@
 Processing::Processing() : logger(Logger()), freqHz(50), lastExecutionDate(Date::zero()), dt(0.0),
 callbackTrigger(false), callbackStartDate(Date::now()), callbackDtUs(0l)
 {
-
+	// We want to warn user if a processing have been waiting for a duration equals to its delta calling time
+	maxAwaitingProcessingSeconds = 1.0/freqHz;
 }
 
 
@@ -25,8 +26,15 @@ bool Processing::isReady() {
 	// Compute delta time between two execution of the processing
 	float dtExecExpected = 1.0/freqHz;
 
+	float diffDurationWaited = durationLastExecutionSeconds - dtExecExpected;
+
+	if (diffDurationWaited > maxAwaitingProcessingSeconds)
+	{
+		printf("[WARNING] Processing waited for %.2f seconds\n", diffDurationWaited);
+	}
+
 	// Returns yes if processing needs to be executed
-	return durationLastExecutionSeconds >= dtExecExpected;
+	return diffDurationWaited >= 0;
 }
 
 bool Processing::isCallbackReady() {

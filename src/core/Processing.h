@@ -37,6 +37,9 @@ protected:
 	Date callbackStartDate;
 	long callbackDtUs;
 
+	/** Max timeout for a processing execution */
+	float maxAwaitingProcessingSeconds;
+
 	/** Sub-processings */
 	std::vector<Processing*> procChildren;
 
