@@ -50,8 +50,6 @@ private:
 	float _vZ;
 	float _analyzedAccZ;
 
-	bool healthy;
-
 public:
 	AHRS(Baro *);
 
@@ -99,11 +97,6 @@ public:
 	Baro* getBaro() {
 		return _baro;
 	}
-
-	bool isHealthy() {
-		return healthy;
-	}
-
 
 };
 

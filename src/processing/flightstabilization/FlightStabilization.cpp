@@ -23,7 +23,7 @@ _targetAttitude(Quaternion::zero()), _currentAttitude(Quaternion::zero()),
 _gyroRot(Vect3D::zero()),
 _tau(Vect3D::zero())
 {
-	freqHz = 100;
+	freqHz = 1;
 	_throttle = 0;
 	_yawFromGyro = 0.0;
 	_Pq = Conf::getInstance().get("flightStabilization_Pq");
@@ -86,7 +86,6 @@ void FlightStabilization::process()
 	//	}
 	//#endif
 
-	if (_ahrs->isHealthy()) {
 	updateInputParameters();
 
 		// DEBUG simple PID
@@ -118,7 +117,6 @@ void FlightStabilization::process()
 		//	 Control altitude
 		//	 ---
 		stabilizeAltitude();
-	}
 
 }
 
