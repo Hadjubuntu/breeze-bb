@@ -30,7 +30,7 @@ bool Processing::isReady() {
 
 	if (diffDurationWaited > maxAwaitingProcessingSeconds)
 	{
-		printf("[WARNING] Processing waited for %.2f seconds\n", diffDurationWaited);
+		printf("[WARNING] Processing waited for %.2f seconds while max awaiting is %.2f\n", diffDurationWaited, maxAwaitingProcessingSeconds);
 	}
 
 	// Returns yes if processing needs to be executed

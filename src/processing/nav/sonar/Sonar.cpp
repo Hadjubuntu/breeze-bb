@@ -20,7 +20,7 @@ Sonar::Sonar() : Processing()
 	freqHz = 10;
 	_sonarPin = 10;
 	_filteredSonarValueCm = 0.0;
-	_healthy = true;
+	_healthy = false;
 }
 
 void Sonar::init()
@@ -33,21 +33,21 @@ void Sonar::init()
 	//		sonarValues.add(0.0);
 	//	}
 
-	int strangeMeasure = 0;
-	int nbMeasure = 25;
-	for (int i = 0; i < 25; i ++) {
-		//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
-		float currentSonarVal = 0.0;
-
-		if (currentSonarVal > 150) {
-			strangeMeasure ++;
-		}
-	}
-
-	if (((float)strangeMeasure / nbMeasure) > 0.7) {
-		_healthy = false;
-		//		Serial3.println("Sonar is not healthy");
-	}
+//	int strangeMeasure = 0;
+//	int nbMeasure = 25;
+//	for (int i = 0; i < 25; i ++) {
+//		//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
+//		float currentSonarVal = 0.0;
+//
+//		if (currentSonarVal > 150) {
+//			strangeMeasure ++;
+//		}
+//	}
+//
+//	if (((float)strangeMeasure / nbMeasure) > 0.7) {
+//		_healthy = false;
+//		//		Serial3.println("Sonar is not healthy");
+//	}
 }
 
 void Sonar::process()
