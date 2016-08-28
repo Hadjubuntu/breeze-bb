@@ -48,7 +48,7 @@ FlightControl flightControl(&radioControler);
 Sonar sonar;
 
 /** Flight stabilization controller */
-//FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
+FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
 
 /** Motor and servo control */
 //ActuatorControl actuatorControl(&flightStabilization);
