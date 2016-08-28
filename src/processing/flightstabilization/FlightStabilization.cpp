@@ -116,7 +116,7 @@ void FlightStabilization::process()
 
 	// Control altitude
 	// ---
-	stabilizeAltitude();
+//	stabilizeAltitude();
 }
 
 void FlightStabilization::stabilizeAltitude()
