@@ -48,7 +48,7 @@ void Processing::wait(float pDtWait)
 
 	while (Date::now().durationFrom(currentTime) < pDtWait)
 	{
-		printf("Duration %.4f\n", Date::now().durationFrom(currentTime));
+		//		printf("Duration %.4f\n", Date::now().durationFrom(currentTime));
 		// Update data
 		process();
 	}
