@@ -58,7 +58,7 @@ public:
 	// Default configuration parameters
 	// ------------------------------------
 	// Use boost motor to compensate roll/pitch angle
-	const bool useBoostMotors = true;
+	const bool useBoostMotors = false;
 
 
 	// Firmware
