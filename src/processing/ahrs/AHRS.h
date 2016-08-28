@@ -74,7 +74,7 @@ public:
 	 *****************************************************/
 
 	Vect3D getGyroFiltered() {
-		return Vect3D::zero();
+		return _gyro.getGyroFiltered();
 	}
 
 	Accelerometer getAcc() { return _accelerometer; }
