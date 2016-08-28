@@ -125,7 +125,7 @@ void FlightStabilization::stabilizeAltitude()
 	// Manual mode
 	if (!_flightControl->isAutoMode()) {
 
-//		_pidAltitude.reset();
+		_pidAltitude.reset();
 
 		if (Conf::getInstance().useBoostMotors)
 		{
@@ -139,7 +139,7 @@ void FlightStabilization::stabilizeAltitude()
 		if (_throttleOut == 0.0)
 		{
 			// Recalibrate barometer
-//			_ahrs->getBaro()->recalibrateAtZeroThrottle();
+			_ahrs->getBaro()->recalibrateAtZeroThrottle();
 
 			// Average mean acceleration in z-axis
 			_meanAccZ = 0.7 * _meanAccZ + 0.3 * _ahrs->getAnalyzedAccZ();
