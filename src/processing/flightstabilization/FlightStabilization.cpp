@@ -54,7 +54,7 @@ void FlightStabilization::updateInputParameters()
 	//
 	_currentAttitude = _ahrs->getAttitude();
 	_yawFromGyro = _ahrs->getYawFromGyro();
-	_gyroRot = _ahrs->getGyro().getGyroFiltered();
+	_gyroRot = _ahrs->getGyroFiltered();
 }
 
 
