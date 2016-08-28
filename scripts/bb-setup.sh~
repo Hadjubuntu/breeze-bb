@@ -54,7 +54,7 @@ do
 		echo "Period=${PERIOD}"
 
 		echo $PERIOD > period_ns
-		echo 800000 > duty_ns
+		echo 900000 > duty_ns
 		echo 1 > run
 
 		idx=$((idx+1))
