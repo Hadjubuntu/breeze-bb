@@ -52,6 +52,8 @@ private:
 	float _throttleSlewRate;
 	float _meanAccZ;
 
+	bool healthy;
+
 
 public:
 
