@@ -55,12 +55,12 @@ void FlightStabilization::updateInputParameters()
 	_flightControl->process();
 
 
-	_targetAttitude = _flightControl->getAttitudeDesired();
-	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
-
-	_currentAttitude = _ahrs->getAttitude();
-	_yawFromGyro = _ahrs->getYawFromGyro();
-	_gyroRot = _ahrs->getGyro().getGyroFiltered();
+//	_targetAttitude = _flightControl->getAttitudeDesired();
+//	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
+//
+//	_currentAttitude = _ahrs->getAttitude();
+//	_yawFromGyro = _ahrs->getYawFromGyro();
+//	_gyroRot = _ahrs->getGyro().getGyroFiltered();
 
 }
 
@@ -94,35 +94,35 @@ void FlightStabilization::process()
 
 	updateInputParameters();
 
-	// DEBUG simple PID
-	float rpyTarget[3];
-	_targetAttitude.toRollPitchYaw(rpyTarget);
-	float rpyCurrent[3];
-	_currentAttitude.toRollPitchYaw(rpyCurrent);
-
-
-	// Define angle rate from angle error
-	float rollRate = (rpyTarget[0] - rpyCurrent[0]) * _Kangle->getValue();
-	float pitchRate = (rpyTarget[1] - rpyCurrent[1]) * _Kangle->getValue();
-	float yawRate = 1.4 * (rpyTarget[2] - _yawFromGyro) * _Kangle->getValue();
-
-	BoundAbs(rollRate, 3.14);
-	BoundAbs(pitchRate, 3.14);
-
-
-	pidRoll.setGainParameters(_Krate->getValue(), 0.01, 0.0);
-	pidPitch.setGainParameters(_Krate->getValue(), 0.01, 0.0);
-
-	pidRoll.update(rollRate - _gyroRot[0], 1/freqHz);
-	pidPitch.update(pitchRate - _gyroRot[1], 1/freqHz);
-
-	_tau = Vect3D(pidRoll.getOutput(),
-			pidPitch.getOutput(),
-			1.3 *_Krate->getValue() * (yawRate - _gyroRot[2]));
-
-	//	 Control altitude
-	//	 ---
-	stabilizeAltitude();
+//	// DEBUG simple PID
+//	float rpyTarget[3];
+//	_targetAttitude.toRollPitchYaw(rpyTarget);
+//	float rpyCurrent[3];
+//	_currentAttitude.toRollPitchYaw(rpyCurrent);
+//
+//
+//	// Define angle rate from angle error
+//	float rollRate = (rpyTarget[0] - rpyCurrent[0]) * _Kangle->getValue();
+//	float pitchRate = (rpyTarget[1] - rpyCurrent[1]) * _Kangle->getValue();
+//	float yawRate = 1.4 * (rpyTarget[2] - _yawFromGyro) * _Kangle->getValue();
+//
+//	BoundAbs(rollRate, 3.14);
+//	BoundAbs(pitchRate, 3.14);
+//
+//
+//	pidRoll.setGainParameters(_Krate->getValue(), 0.01, 0.0);
+//	pidPitch.setGainParameters(_Krate->getValue(), 0.01, 0.0);
+//
+//	pidRoll.update(rollRate - _gyroRot[0], 1/freqHz);
+//	pidPitch.update(pitchRate - _gyroRot[1], 1/freqHz);
+//
+//	_tau = Vect3D(pidRoll.getOutput(),
+//			pidPitch.getOutput(),
+//			1.3 *_Krate->getValue() * (yawRate - _gyroRot[2]));
+//
+//	//	 Control altitude
+//	//	 ---
+//	stabilizeAltitude();
 
 }
 
