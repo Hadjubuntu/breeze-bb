@@ -37,6 +37,7 @@ AHRS::AHRS(Baro *baro) : Processing(), _grot(Vect3D::zero()),
 	_vZ = 0.0;
 	_analyzedAccZ = 0.0;
 	_baro = baro;
+	healthy = false;
 }
 
 void AHRS::calibrateOffset()
@@ -148,6 +149,8 @@ void AHRS::process()
 
 	// Integrate delta accZ to have estimation on vertical speed
 	computeVz();
+
+	healthy = true;
 }
 
 void AHRS::computeVz()

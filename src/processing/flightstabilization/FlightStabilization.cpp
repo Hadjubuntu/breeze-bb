@@ -44,27 +44,17 @@ _tau(Vect3D::zero())
 	_flightControl = flightControl;
 	_sonar = sonar;
 	_meanAccZ = 1.0;
-
-	healthy = false;
 }
 
 
 void FlightStabilization::updateInputParameters()
 {
-	try {
 		_targetAttitude = _flightControl->getAttitudeDesired();
 		_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
 
 		_currentAttitude = _ahrs->getAttitude();
 		_yawFromGyro = _ahrs->getYawFromGyro();
 		_gyroRot = _ahrs->getGyro().getGyroFiltered();
-
-		healthy = true;
-	}
-	catch (std::exception &e)
-	{
-		healthy = false;
-	}
 
 }
 
@@ -96,10 +86,9 @@ void FlightStabilization::process()
 	//	}
 	//#endif
 
+	if (_ahrs->isHealthy()) {
 	updateInputParameters();
 
-	if (healthy)
-	{
 		// DEBUG simple PID
 		float rpyTarget[3];
 		_targetAttitude.toRollPitchYaw(rpyTarget);
@@ -130,6 +119,7 @@ void FlightStabilization::process()
 		//	 ---
 		stabilizeAltitude();
 	}
+
 }
 
 void FlightStabilization::stabilizeAltitude()
