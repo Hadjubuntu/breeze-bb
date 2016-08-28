@@ -52,9 +52,9 @@ void FlightStabilization::updateInputParameters()
 	_targetAttitude = _flightControl->getAttitudeDesired();
 	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
 	//
-	_currentAttitude = _ahrs->getAttitude();
-	//	_yawFromGyro = _ahrs->getYawFromGyro();
-	//	_gyroRot = _ahrs->getGyro().getGyroFiltered();
+//	_currentAttitude = _ahrs->getAttitude();
+//	_yawFromGyro = _ahrs->getYawFromGyro();
+//	_gyroRot = _ahrs->getGyro().getGyroFiltered();
 
 }
 
