@@ -55,9 +55,6 @@ private:
 
 public:
 
-	// Debug
-	float currentRollErrorAngle;
-
 	/**
 	 * Constructor
 	 */

@@ -44,9 +44,6 @@ _tau(Vect3D::zero())
 	_flightControl = flightControl;
 	_sonar = sonar;
 	_meanAccZ = 1.0;
-
-	// Debug
-	currentRollErrorAngle = 0.0;
 }
 
 
@@ -119,11 +116,7 @@ void FlightStabilization::process()
 
 	// Control altitude
 	// ---
-	stabilizeAltitude();
-
-	// Debug data
-	// ---
-	currentRollErrorAngle = rpyTarget[0] - rpyCurrent[0];
+//	stabilizeAltitude();
 }
 
 void FlightStabilization::stabilizeAltitude()
