@@ -86,7 +86,7 @@ void FlightStabilization::process()
 //	}
 //#endif
 
-//	updateInputParameters();
+	updateInputParameters();
 //
 //	// DEBUG simple PID
 //	float rpyTarget[3];
