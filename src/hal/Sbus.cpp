@@ -264,6 +264,7 @@ void Sbus::fastLoop()
 	// Call input function
 	bool sbus_updated = input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, PX4IO_RC_INPUT_CHANNELS);
 
+	printf("updated=%d\n", sbus_updated);
 	// If sbus data are updated
 	if (sbus_updated)
 	{
