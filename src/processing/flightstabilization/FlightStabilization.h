@@ -52,6 +52,7 @@ private:
 	float _throttleSlewRate;
 	float _meanAccZ;
 
+	Date firstInit;
 
 public:
 
