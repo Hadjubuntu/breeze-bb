@@ -240,6 +240,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	}
 
 	int min_pwm = 800; // TODO put in conf
+	printf("write motor[0] = %d\n", min_pwm + motorX[0]);
 	pwm0.write(min_pwm + motorX[0]);
 	pwm1.write(min_pwm + motorX[1]);
 	pwm2.write(min_pwm + motorX[2]);
