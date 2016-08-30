@@ -113,6 +113,7 @@ void FlightStabilization::process()
 			pidPitch.getOutput(),
 			1.3 *_Krate->getValue() * (yawRate - _gyroRot[2]));
 
+	printf("roll stab=%.3f\n",pidRoll.getOutput());
 	//	 Control altitude
 	//	 ---
 	stabilizeAltitude();
