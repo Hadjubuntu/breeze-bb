@@ -259,8 +259,7 @@ Date lastCall = Date::now();
 void Sbus::fastLoop()
 {
 	float duration = Date::now().durationFrom(lastCall);
-	lastCall = Date::now();
-//	printf("Delta call in ms= %.2f\n", duration);
+	printf("Delta call in ms= %.2f\n", duration * 1000.0f);
 
 	// Prepare input variables
 	bool sbus_failsafe, sbus_frame_drop;
@@ -281,4 +280,6 @@ void Sbus::fastLoop()
 
 		lastUpdate = Date::now();
 	}
+
+	lastCall = Date::now();
 }
