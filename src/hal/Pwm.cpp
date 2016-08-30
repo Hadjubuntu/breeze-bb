@@ -41,7 +41,7 @@ void Pwm::init()
 
 void Pwm::write(long dutyCycleMs)
 {
-	std::string content = std::to_string(dutyCycleMs * Constants::MS_TO_NS);
+	std::string content = std::to_string((long)(dutyCycleMs * Constants::MS_TO_NS));
 	FileTools::writeToFile(pwmDutyFilepath, content);
 	std::string cmd = "sudo echo ";
 	cmd.append(content);
