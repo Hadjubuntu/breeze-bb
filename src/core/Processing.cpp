@@ -28,6 +28,7 @@ bool Processing::isReady() {
 
 	float diffDurationWaited = durationLastExecutionSeconds - dtExecExpected;
 
+	printf("Diff duration = %.2f\n", diffDurationWaited);
 	if (diffDurationWaited > maxAwaitingProcessingSeconds)
 	{
 		printf("[WARNING] Processing waited for %.2f seconds while max awaiting is %.2f\n", diffDurationWaited, maxAwaitingProcessingSeconds);
