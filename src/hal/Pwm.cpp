@@ -41,6 +41,7 @@ void Pwm::init()
 
 void Pwm::write(long dutyCycleMs)
 {
+	printf("pwm write=%ul\n", dutyCycleMs);
 	FileTools::writeToFile(pwmDutyFilepath, std::to_string(dutyCycleMs * Constants::MS_TO_NS));
 }
 
