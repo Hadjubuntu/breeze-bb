@@ -53,10 +53,10 @@ unsigned short levelToCtrl(unsigned short level)
  * Processing constructor
  */
 ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing(),
-		pwm0(Pwm(MOTOR_FREQ_HZ, 0)),
-		pwm1(Pwm(MOTOR_FREQ_HZ, 1)),
-		pwm2(Pwm(MOTOR_FREQ_HZ, 2)),
-		pwm3(Pwm(MOTOR_FREQ_HZ, 3))
+		pwm0(Pwm(MOTOR_FREQ_HZ, 3)),
+		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
+		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
+		pwm3(Pwm(MOTOR_FREQ_HZ, 2))
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
