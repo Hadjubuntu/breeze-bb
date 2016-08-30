@@ -43,6 +43,12 @@ void Pwm::write(long dutyCycleMs)
 {
 	std::string content = std::to_string(dutyCycleMs * Constants::MS_TO_NS);
 	FileTools::writeToFile(pwmDutyFilepath, content);
+	std::string cmd = "sudo echo ";
+	cmd.append(content);
+	cmd.append(" > ");
+	cmd.append(pwmDutyFilepath);
+
+	system(cmd.c_str());
 	printf("Path=%s | Data=%s\n", pwmDutyFilepath.c_str(), content.c_str());
 }
 
