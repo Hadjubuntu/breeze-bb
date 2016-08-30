@@ -253,9 +253,15 @@ bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool 
 	return true;
 }
 
+Date lastCall = Date::now();
+
 // Must be called at least at 400Hz
 void Sbus::fastLoop()
 {
+	float duration = Date::now().durationFrom(lastCall);
+	lastCall = Date::now();
+	printf("Delta call in ms = %.2f\n", duration * 1000.0f);
+
 	// Prepare input variables
 	bool sbus_failsafe, sbus_frame_drop;
 	uint16_t r_raw_rc_values[16];
@@ -267,7 +273,6 @@ void Sbus::fastLoop()
 	// If sbus data are updated
 	if (sbus_updated)
 	{
-		printf("updated=%d\n", sbus_updated);
 		// Initialize channel (TODO check nb channels < 16 !!)
 		for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 		{
