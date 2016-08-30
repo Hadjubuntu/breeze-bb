@@ -26,7 +26,9 @@ public:
 	static long secondsToMicros(float pSeconds) {
 		return (long) (pSeconds * Constants::S_TO_US);
 	}
-
+	static long microToNanos(float pDtUs) {
+		return (long)(pDtUs * Constants::US_TO_NS);
+	}
 	static int micros() {
 		return micros();
 	}
