@@ -99,10 +99,10 @@ void setup()
 	uavBrain.addProcessing(&rfRouter);
 	uavBrain.addProcessing(&radioControler);
 	uavBrain.addProcessing(&flightControl);
-	uavBrain.addProcessing(&sonar);
-	uavBrain.addProcessing(&flightStabilization);
-	uavBrain.addProcessing(&actuatorControl);
-	uavBrain.addProcessing(&telemetry);
+//	uavBrain.addProcessing(&sonar);
+//	uavBrain.addProcessing(&flightStabilization);
+//	uavBrain.addProcessing(&actuatorControl);
+//	uavBrain.addProcessing(&telemetry);
 	//	uavBrain.addProcessing(&fsAutotune);
 
 	// Initialize all processings
