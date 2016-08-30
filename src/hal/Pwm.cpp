@@ -41,8 +41,9 @@ void Pwm::init()
 
 void Pwm::write(long dutyCycleMs)
 {
-	FileTools::writeToFile(pwmDutyFilepath, std::to_string(dutyCycleMs * Constants::MS_TO_NS));
-	printf("Path=%s | Data=%s\n", pwmDutyFilepath, std::to_string(dutyCycleMs * Constants::MS_TO_NS));
+	std::string content = std::to_string(dutyCycleMs * Constants::MS_TO_NS);
+	FileTools::writeToFile(pwmDutyFilepath, content);
+	printf("Path=%s | Data=%s\n", pwmDutyFilepath, content.c_str());
 }
 
 void Pwm::enable()
