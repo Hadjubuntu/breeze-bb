@@ -13,7 +13,7 @@
 RadioControler::RadioControler() : Processing()
 {
 	// 100 Hz updater
-	freqHz = 200;
+	freqHz = 1000;
 }
 
 /**

@@ -17,25 +17,29 @@ callbackTrigger(false), callbackStartDate(Date::now()), callbackDtUs(0l)
 
 
 bool Processing::isReady() {
-	// Retrieve now date
-	Date now = Date::now();
-
-	// Compute duration from last execution
-	float durationLastExecutionSeconds = now.durationFrom(lastExecutionDate);
-
-	// Compute delta time between two execution of the processing
-	float dtExecExpected = 1.0/freqHz;
-
-	float diffDurationWaited = durationLastExecutionSeconds - dtExecExpected;
-
-	if (diffDurationWaited > maxAwaitingProcessingSeconds)
-	{
-		printf("[WARNING] Processing waited for %.2f seconds while max awaiting is %.2f\n", diffDurationWaited, maxAwaitingProcessingSeconds);
+	if (freqHz >= 1000) {
+		return true;
 	}
+	else {
+		// Retrieve now date
+		Date now = Date::now();
 
-	// Returns yes if processing needs to be executed
-//	return diffDurationWaited >= 0;
-	return true;
+		// Compute duration from last execution
+		float durationLastExecutionSeconds = now.durationFrom(lastExecutionDate);
+
+		// Compute delta time between two execution of the processing
+		float dtExecExpected = 1.0/freqHz;
+
+		float diffDurationWaited = durationLastExecutionSeconds - dtExecExpected;
+
+		if (diffDurationWaited > maxAwaitingProcessingSeconds)
+		{
+			printf("[WARNING] Processing waited for %.2f seconds while max awaiting is %.2f\n", diffDurationWaited, maxAwaitingProcessingSeconds);
+		}
+
+		// Returns yes if processing needs to be executed
+		return diffDurationWaited >= 0;
+	}
 }
 
 bool Processing::isCallbackReady() {
