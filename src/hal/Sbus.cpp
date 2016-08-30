@@ -104,7 +104,7 @@ bool Sbus::input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bo
 	 * if we didn't drop bytes...
 	 */
 
-	if ((Date::now().durationFrom(last_rx_time)) > 3000)
+	if ((Date::now().durationFrom(last_rx_time)) > DateUtils::microToSeconds(3000l))
 	{
 		if (partial_frame_count > 0)
 		{
@@ -253,7 +253,7 @@ bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool 
 	return true;
 }
 
-// Must be called at least at 100Hz
+// Must be called at least at 400Hz
 void Sbus::fastLoop()
 {
 	// Prepare input variables
