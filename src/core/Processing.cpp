@@ -34,7 +34,8 @@ bool Processing::isReady() {
 	}
 
 	// Returns yes if processing needs to be executed
-	return diffDurationWaited >= 0;
+//	return diffDurationWaited >= 0;
+	return true;
 }
 
 bool Processing::isCallbackReady() {
