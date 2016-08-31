@@ -12,6 +12,16 @@
 #include <array>
 
 /**
+ * Beaglebone pin mapping for pwm (proto board)
+ *
+ * proto 0 => pwm 2
+ * proto 1 => pwm 0
+ * proto 2 => pwm 1
+ * proto 3 => pwm 3
+ * proto 4 => pwm 4
+ * proto 5 => pwm 5
+ * proto 6 => pwm 6
+ *
  * Timer map
  * Timer 	Ch. 1 pin 	Ch. 2 pin 	Ch. 3 pin 	Ch. 4 pin
 Timer1 	6 	7 	8 	–
@@ -23,7 +33,7 @@ Timer4 	5 	9 	14 	24
 #define MAX_DELTA_RADIO_SIGNAL 680
 
 
-#define MOTOR_FREQ_HZ 490 // MOCK FOR SERVO FIXME
+#define MOTOR_FREQ_HZ 490 // MOCK FOR SERVO
 
 // This picks the smallest prescaler that allows an overflow < 2^16.
 #define CYCLES_PER_MICROSECOND 100000000000000 // FIXME How to manage ESC motors on beaglebone ?
@@ -51,12 +61,13 @@ unsigned short levelToCtrl(unsigned short level)
 
 /**
  * Processing constructor
+ * FIXME configure pwm pin => see bb-setup.sh in scripts directory
  */
 ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing(),
-		pwm0(Pwm(MOTOR_FREQ_HZ, 3)),
+		pwm0(Pwm(MOTOR_FREQ_HZ, 2)),
 		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
 		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
-		pwm3(Pwm(MOTOR_FREQ_HZ, 2))
+		pwm3(Pwm(MOTOR_FREQ_HZ, 3))
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;

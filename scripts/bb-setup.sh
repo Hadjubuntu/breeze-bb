@@ -14,8 +14,8 @@ config-pin overlay cape-universaln
 
 # Initialize pin (uart, pwm, i2c ?..)
 # ---------------------------------
-pwm_pin_list=(9.14 9.16 9.42 8.13 8.19 9.21 9.22 9.29 9.31 8.34 8.36 8.45 8.46);
-pwm_freq_list=(50 50 50 50 50 50 50 50 50 50 50 50 50);
+pwm_pin_list=(9.14 9.16 9.42 8.13 8.19 9.21 9.22);
+pwm_freq_list=(50 50 50 50 50 50 50 50 50);
 uart_pin_list=(9.24 9.26);
 
 pwmIdx=(0 1 2 3 4 5 6 7);
