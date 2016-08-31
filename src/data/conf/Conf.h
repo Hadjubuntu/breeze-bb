@@ -62,7 +62,7 @@ public:
 
 
 	// Firmware
-	const int firmware = Firmware::YCOPTER;
+	const int firmware = Firmware::FIXED_WING;
 
 
 	/**

@@ -192,6 +192,12 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 	// Wings / Roll
 	Vect3D torqueCmd = _flightStabilization->getTau();
 	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
+	int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 150.0f);
+
+
+	int meanPwm = 1450; // TODO put in conf
+	pwm0.write(meanPwm + rollDeltaSignal);
+	pwm1.write(meanPwm + pitchDeltaSignal);
 
 	//	pwmWrite(D14, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
 	//	pwmWrite(D24, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
