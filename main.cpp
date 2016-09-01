@@ -152,16 +152,15 @@ void loop()
 
 int main(int argc, char *argv[])
 {
-	int iter = 0;
+	bool brainRun = true;
 
 	printf("Start setup");
 	setup();
 	printf("................done\n");
 
 	printf("Start brain\n");
-	while (iter < 1000000) {
+	while (brainRun) {
 		loop();
-		iter ++;
 	}
 	printf("Brain......................shutdown\n");
 	return 0;
