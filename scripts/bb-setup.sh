@@ -7,7 +7,19 @@
 # @author Adrien Hadj-Salah
 # -----------------------------------------
 
+# Input variables
+# --------------------------------
 user="adrien"
+firmware=$1 # hcopter, ycopter, fixed_wing
+
+if [[ -z "${1}" ]]; then
+    firmware="hcopter"
+    echo "By default, firmware ${firmware} is set"
+else 
+	echo "Firmware=${firmware}"
+fi
+
+
 
 # Define beaglebone tree-overlay
 config-pin overlay cape-universaln
@@ -17,6 +29,12 @@ config-pin overlay cape-universaln
 pwm_pin_list=(9.14 9.16 9.42 8.13 8.19 9.21 9.22);
 pwm_freq_list=(50 50 50 50 50 50 50 50 50);
 uart_pin_list=(9.24 9.26);
+
+# Define pwm freq depending on firmware
+if [ "${firmware}" == "hcopter" ]; then
+	echo "Hcopter => configuring pwm to 490 Hz for first 4 pwm signals"
+	pwm_freq_list=(490 490 490 490 50 50 50 50 50);
+fi
 
 pwmIdx=(0 1 2 3 4 5 6 7);
 for j in "${pwmIdx[@]}"

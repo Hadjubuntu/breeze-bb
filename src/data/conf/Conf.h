@@ -62,7 +62,7 @@ public:
 
 
 	// Firmware
-	const int firmware = Firmware::FIXED_WING;
+	const int firmware = Firmware::HCOPTER;
 
 
 	/**
@@ -78,6 +78,24 @@ public:
 	void setRfControler(RfControler *pControler)
 	{
 		_rfControler = pControler;
+	}
+
+	std::string firmwareToString()
+	{
+		if (firmware == Firmware::HCOPTER)
+		{
+			return std::string("hcopter");
+		}
+		else if (firmware == Firmware::YCOPTER)
+		{
+			return std::string("ycopter");
+		}
+		else if (firmware == Firmware::FIXED_WING)
+		{
+			return std::string("fixed_wing");
+		}
+
+		return std::string("hcopter"); // default
 	}
 };
 

@@ -76,7 +76,7 @@ void calibration()
 void setupPwmUart()
 {
 	std::string scriptDirectory = FileTools::searchDirectory(".","scripts");
-	std::string scriptSetup = "sudo ./" + scriptDirectory + "/bb-setup.sh ";
+	std::string scriptSetup = "sudo ./" + scriptDirectory + "/bb-setup.sh " + Conf::getInstance().firmwareToString();
 	int result = system(scriptSetup.c_str());
 	printf("Setup pwm and uart results=%d\n", result);
 }
