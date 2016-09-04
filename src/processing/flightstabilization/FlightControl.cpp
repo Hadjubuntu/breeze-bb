@@ -41,7 +41,7 @@ void FlightControl::init()
 {
 	// Init throttle at minimum value [us]
 	//TODO wait until value between 300 and 500 ..
-	//	_throttleInitUs = _radioController->getHandler().Channel(3);
+	_throttleInitUs = _radioController->getHandler().Channel(3);
 
 	_initDate = Date::now();
 }
