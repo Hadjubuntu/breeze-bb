@@ -117,31 +117,6 @@ void ActuatorControl::init()
 	pwm2.init();
 	pwm3.init();
 
-	// Prepare all pin output
-	// -----------------------
-	// Timer 3 for motors at 480 Hz
-//	pinMode(D28, PWM);
-//	pinMode(D27, PWM);
-//	pinMode(D11, PWM);
-//	pinMode(D12, PWM);
-//
-//	// Timer 4 for servos at 50 Hz
-//	pinMode(D14, PWM);
-//	//	pinMode(D24, PWM);
-//	//	pinMode(D5, PWM);
-//	//	pinMode(D9, PWM);
-//
-//
-//	// Set frequency for timers
-//	Timer3.setPeriod((uint32) HZ_TO_US(490)); // 490 Hz
-//	Timer4.setPeriod(20000); // 20000 microseconds = 50hz refresh
-//
-//	// For multicopter only
-//	pwmWrite(D28, levelToCtrl(0));
-//	pwmWrite(D27, levelToCtrl(0));
-//	pwmWrite(D11, levelToCtrl(0));
-//	pwmWrite(D12, levelToCtrl(0));
-
 	// Initialize motor repartition especially for Ycopter
 	initMotorRepartition();
 }
