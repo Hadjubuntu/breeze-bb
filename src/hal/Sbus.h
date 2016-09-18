@@ -79,6 +79,7 @@ static const struct sbus_bit_pick sbus_decoder[SBUS_INPUT_CHANNELS][3] = {
 		/* 15 */ { {20, 5, 0x07, 0}, {21, 0, 0xff, 3}, { 0, 0, 0x00,  0} }
 };
 
+bool defaultValueInitialized = false;
 
 class Sbus {
 private:
@@ -94,7 +95,6 @@ private:
 	unsigned sbus_frame_drops;
 
 	bool sbus_failsafe, sbus_frame_drop;
-	bool defaultValueInitialized;
 
 
 public:
@@ -118,11 +118,11 @@ public:
 		if (sbus_failsafe == false && defaultValueInitialized == false)
 		{
 			printf("setup calibration | failsafe=%d | initialized=%d\n", sbus_failsafe, defaultValueInitialized);
+			defaultValueInitialized = true;
 			for (int i=0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 			{
 				channelsCalib[i] = channels[i];
 			}
-			defaultValueInitialized = true;
 		}
 	}
 

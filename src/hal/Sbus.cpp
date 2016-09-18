@@ -27,7 +27,6 @@ Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_t
 
 	sbus_failsafe = true;
 	sbus_frame_drop = false;
-	defaultValueInitialized = false;
 }
 
 Sbus::~Sbus()
