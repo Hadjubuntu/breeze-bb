@@ -117,6 +117,7 @@ void setup()
 	setupPwmUart();
 }
 
+Date start = Date::now();
 
 
 void loop()
@@ -144,7 +145,7 @@ void loop()
 
 		//
 
-		printf("com lost:%d\n", radioControler.getHandler().isComLost());
+		printf("com lost:%d\n", radioControler.getLastUpdate().durationFrom(start));
 
 		float rpyTarget[3];
 		flightStabilization.getTargetAttitude().toRollPitchYaw(rpyTarget);
