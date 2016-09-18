@@ -143,9 +143,13 @@ void loop()
 		//		rfControler.addPacketToSend(packet);
 
 		//
-		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | auto=%d\n",
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f,
-				flightControl.isAutoMode());
+
+
+		float rpyTarget[3];
+		flightStabilization.getTargetAttitude().toRollPitchYaw(rpyTarget);
+		printf("AHRS [roll=%.2f; pitch=%.2f; yaw=%.2f] | Target[roll=%.2f; pitch=%.2f; yaw=%.2f]\n",
+				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), FastMath::toDegrees(rpy[2]),
+				FastMath::toDegrees(rpyTarget[0]), FastMath::toDegrees(rpyTarget[1]), FastMath::toDegrees(rpyTarget[2]));
 
 //		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
 //				flightStabilization.getTau().getX(),
