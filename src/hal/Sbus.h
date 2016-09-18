@@ -117,6 +117,7 @@ public:
 		// Set default values when radio controller is not failsafe
 		if (sbus_failsafe == false && defaultValueInitialized == false)
 		{
+			printf("setup calibration\n");
 			for (int i=0; i < PX4IO_RC_INPUT_CHANNELS; i ++)
 			{
 				channelsCalib[i] = channels[i];

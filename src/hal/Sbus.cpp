@@ -77,7 +77,8 @@ int Sbus::init(const char *device)
 	// Initialize channel
 	for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 	{
-		channels[i] = 1000;
+		channels[i] = RADIO_OFFSET;
+		channelsCalib[i] = RADIO_OFFSET;
 	}
 
 	return sbus_fd;
