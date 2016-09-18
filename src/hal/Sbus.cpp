@@ -272,7 +272,7 @@ void Sbus::fastLoop()
 		{
 			channels[i] = r_raw_rc_values[i];
 		}
-		printf("sbus update\n");
+		printf("failsafe:%d\n", sbus_failsafe);
 	}
 
 //	lastCall = Date::now();
