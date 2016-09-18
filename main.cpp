@@ -148,11 +148,10 @@ void loop()
 //				flightControl.isAutoMode(),
 //				radioControler.getHandler().Channel(1));
 
-		printf("m0:%d | m1:%d | m2:%d | m3:%d\n",
-				actuatorControl.motors[0],
-				actuatorControl.motors[1],
-				actuatorControl.motors[2],
-				actuatorControl.motors[3]);
+		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
+				flightStabilization.getTau().getX(),
+				flightStabilization.getTau().getY(),
+				flightStabilization.getTau().getZ());
 	}
 }
 
