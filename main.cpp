@@ -144,6 +144,7 @@ void loop()
 
 		//
 
+		printf("com lost:%d\n", radioControler.getHandler().isComLost());
 
 		float rpyTarget[3];
 		flightStabilization.getTargetAttitude().toRollPitchYaw(rpyTarget);
