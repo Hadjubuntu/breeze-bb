@@ -93,6 +93,9 @@ private:
 
 	unsigned sbus_frame_drops;
 
+	bool sbus_failsafe, sbus_frame_drop;
+	bool defaultValueInitialized;
+
 
 public:
 
@@ -109,21 +112,27 @@ public:
 
 	void 	fastLoop();
 
-	int16_t Channel(uint8_t ch) {
-		// Read channel data
-		if ((ch>0)&&(ch<=16)){
-			return channels[ch-1];
-		}
-		else{
-			return 1023;
+	void setDefaultValues()
+	{
+		// Set default values when radio controller is not failsafe
+		if (sbus_failsafe == false && defaultValueInitialized == false)
+		{
+			for (int i=0; i < PX4IO_RC_INPUT_CHANNELS; i ++)
+			{
+				channelsCalib[i] = channels[i];
+			}
+			defaultValueInitialized = true;
 		}
 	}
 
 	float getChannelNormed(uint8_t ch)
 	{
-		// FIXME protection on com lost
-		int16_t channelValue =  Channel(ch);
-		return (channelValue - RADIO_OFFSET) / RADIO_VAR;
+		setDefaultValues();
+		return (channels[ch] - channelsCalib[ch-1]) / RADIO_VAR;
+	}
+
+	bool isFailsafe() {
+		return sbus_failsafe;
 	}
 };
 

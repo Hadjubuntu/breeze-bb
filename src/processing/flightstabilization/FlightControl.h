@@ -29,7 +29,7 @@ private:
 	float _pitchDesired;
 
 	short _auto;
-	Date _initDate;
+	Date initDate;
 
 	// Output
 	Quaternion _attitudeDesired;

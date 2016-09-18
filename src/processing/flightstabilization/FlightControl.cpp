@@ -11,7 +11,7 @@
 #include "../../data/conf/Conf.h"
 #include "../../math/common/FastMath.h"
 
-FlightControl::FlightControl(RadioControler *radioController) : Processing(), _initDate(Date::zero()), _attitudeDesired(Quaternion::zero())
+FlightControl::FlightControl(RadioControler *radioController) : Processing(), initDate(Date::zero()), _attitudeDesired(Quaternion::zero())
 {
 	_radioController = radioController;
 
@@ -38,7 +38,7 @@ FlightControl::FlightControl(RadioControler *radioController) : Processing(), _i
  */
 void FlightControl::init()
 {
-	_initDate = Date::now();
+	initDate = Date::now();
 }
 
 void FlightControl::process()
@@ -48,10 +48,10 @@ void FlightControl::process()
 
 	// AUTO mode
 	// ------------------
-	float currentAutoMode = _radioController->getHandler().getChannelNormed(7);
+	float currentAutoMode = _radioController->getHandler().getChannelNormed(6);
 
 	// Do not allow auto mode before 30 seconds from power-up
-	if (Date::now().durationFrom(_initDate) > 30.0) {
+	if (Date::now().durationFrom(initDate) > 30.0) {
 		if (currentAutoMode > 0.5) {
 			_auto = 1;
 		}
@@ -67,11 +67,11 @@ void FlightControl::process()
 	// ------------------
 
 	// Compute roll, pitch, yaw desired by using the radio values
-	_rollDesired = radioToRad(_radioController->getHandler().getChannelNormed(1), _maxAbsRollAngle->getValue());
-	_pitchDesired = radioToRad(_radioController->getHandler().getChannelNormed(2), _maxAbsPitchAngle->getValue());
-	float yaw = radioToRad(_radioController->getHandler().getChannelNormed(4), _maxAbsCombinedAngle->getValue());
+	_rollDesired = radioToRad(_radioController->getHandler().getChannelNormed(0), _maxAbsRollAngle->getValue());
+	_pitchDesired = radioToRad(_radioController->getHandler().getChannelNormed(1), _maxAbsPitchAngle->getValue());
+	float yaw = radioToRad(_radioController->getHandler().getChannelNormed(3), _maxAbsCombinedAngle->getValue());
 	// Throttle from 0 to 1
-	float throttle = _radioController->getHandler().getChannelNormed(3);
+	float throttle = _radioController->getHandler().getChannelNormed(2);
 	Bound(throttle, 0.0, 1.0);
 
 	// Integrate desired yaw

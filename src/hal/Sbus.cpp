@@ -24,6 +24,10 @@ Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_t
 	last_rx_time = Date::now();
 	partial_frame_count = 0;
 	sbus_frame_drops = 0;
+
+	sbus_failsafe = true;
+	sbus_frame_drop = false;
+	defaultValueInitialized = false;
 }
 
 Sbus::~Sbus()
@@ -257,7 +261,6 @@ void Sbus::fastLoop()
 //	printf("Delta call in ms= %.2f\n", duration * 1000.0f);
 
 	// Prepare input variables
-	bool sbus_failsafe, sbus_frame_drop;
 	uint16_t r_raw_rc_values[16];
 	uint16_t r_raw_rc_count[16];
 
@@ -272,7 +275,6 @@ void Sbus::fastLoop()
 		{
 			channels[i] = r_raw_rc_values[i];
 		}
-		printf("failsafe:%d\n", sbus_failsafe);
 	}
 
 //	lastCall = Date::now();

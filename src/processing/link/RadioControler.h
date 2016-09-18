@@ -40,6 +40,11 @@ public:
 	{
 		return handler;
 	}
+
+	bool isFailsafe()
+	{
+		return handler.isFailsafe();
+	}
 };
 
 #endif /* PROCESSING_LINK_RADIOCONTROLER_H_ */
