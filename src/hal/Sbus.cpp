@@ -17,24 +17,19 @@
 #include <stropts.h>
 #include "Sbus.h"
 
-Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_txframe_time(Date::zero()), lastUpdate(Date::zero())
+Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_txframe_time(Date::zero())
 {
 	sbus_fd = -1;
 	last_frame_time = Date::now();
 	last_rx_time = Date::now();
 	partial_frame_count = 0;
 	sbus_frame_drops = 0;
-	lastUpdate = Date::now();
 }
 
 Sbus::~Sbus()
 {
 }
 
-bool Sbus::isComLost()
-{
-	return (Date::now().durationFrom(lastUpdate) > DateUtils::secondsToMicros(5.0));
-}
 
 int Sbus::init(const char *device)
 {
@@ -277,8 +272,7 @@ void Sbus::fastLoop()
 		{
 			channels[i] = r_raw_rc_values[i];
 		}
-
-		lastUpdate = Date::now();
+		printf("sbus update\n");
 	}
 
 //	lastCall = Date::now();

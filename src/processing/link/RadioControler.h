@@ -40,13 +40,6 @@ public:
 	{
 		return handler;
 	}
-
-	/**
-	 * Returns last update
-	 */
-	Date getLastUpdate() {
-		return handler.getLastUpdate();
-	}
 };
 
 #endif /* PROCESSING_LINK_RADIOCONTROLER_H_ */

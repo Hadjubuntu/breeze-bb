@@ -145,7 +145,6 @@ void loop()
 
 		//
 
-		printf("com lost:%.2f\n", radioControler.getLastUpdate().durationFrom(start));
 
 		float rpyTarget[3];
 		flightStabilization.getTargetAttitude().toRollPitchYaw(rpyTarget);

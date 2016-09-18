@@ -17,7 +17,6 @@ class FlightControl : public Processing {
 private:
 	RadioControler *_radioController;
 
-	float _throttleInitUs;
 	float _yawInt;
 
 	// Configuration parameters

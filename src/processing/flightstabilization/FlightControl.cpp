@@ -19,7 +19,6 @@ FlightControl::FlightControl(RadioControler *radioController) : Processing(), _i
 
 	// Runs at 50Hz
 	freqHz = 50;
-	_throttleInitUs = 370;
 
 	// Retrieve conf parameters
 	_maxAbsRollAngle = Conf::getInstance().get("maxAbsRollAngle");
@@ -39,10 +38,6 @@ FlightControl::FlightControl(RadioControler *radioController) : Processing(), _i
  */
 void FlightControl::init()
 {
-	// Init throttle at minimum value [us]
-	//TODO wait until value between 300 and 500 ..
-	_throttleInitUs = _radioController->getHandler().Channel(3);
-
 	_initDate = Date::now();
 }
 
@@ -76,7 +71,7 @@ void FlightControl::process()
 	_pitchDesired = radioToRad(_radioController->getHandler().getChannelNormed(2), _maxAbsPitchAngle->getValue());
 	float yaw = radioToRad(_radioController->getHandler().getChannelNormed(4), _maxAbsCombinedAngle->getValue());
 	// Throttle from 0 to 1
-	float throttle = (_radioController->getHandler().Channel(3) - _throttleInitUs) / 1310.0;
+	float throttle = _radioController->getHandler().getChannelNormed(3);
 	Bound(throttle, 0.0, 1.0);
 
 	// Integrate desired yaw

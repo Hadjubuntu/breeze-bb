@@ -90,7 +90,6 @@ private:
 	Date last_rx_time;
 	Date last_frame_time;
 	Date last_txframe_time;
-	Date lastUpdate;
 
 	unsigned sbus_frame_drops;
 
@@ -110,8 +109,6 @@ public:
 
 	void 	fastLoop();
 
-	bool isComLost();
-
 	int16_t Channel(uint8_t ch) {
 		// Read channel data
 		if ((ch>0)&&(ch<=16)){
@@ -122,18 +119,11 @@ public:
 		}
 	}
 
-	float getChannelNormed(uint8_t ch) {
-			int16_t channelValue = RADIO_OFFSET;
-
-			if (!isComLost()) {
-				channelValue = Channel(ch);
-			}
-			return (channelValue - RADIO_OFFSET) / RADIO_VAR;
-		}
-
-	Date getLastUpdate()
+	float getChannelNormed(uint8_t ch)
 	{
-		return lastUpdate;
+		// FIXME protection on com lost
+		int16_t channelValue =  Channel(ch);
+		return (channelValue - RADIO_OFFSET) / RADIO_VAR;
 	}
 };
 
