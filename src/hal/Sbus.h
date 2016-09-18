@@ -118,7 +118,7 @@ public:
 		if (sbus_failsafe == false && defaultValueInitialized == false)
 		{
 			printf("setup calibration | failsafe=%d | initialized=%d\n", sbus_failsafe, defaultValueInitialized);
-			for (int i=0; i < PX4IO_RC_INPUT_CHANNELS; i ++)
+			for (int i=0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 			{
 				channelsCalib[i] = channels[i];
 			}
