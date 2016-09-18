@@ -143,10 +143,16 @@ void loop()
 		//		rfControler.addPacketToSend(packet);
 
 		//
-		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | auto=%d | motor_actuator_ctrl[0]=%d\n",
-				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f,
-				flightControl.isAutoMode(),
-				radioControler.getHandler().Channel(1), actuatorControl.motors[0]);
+//		printf("AHRS [roll=%.2f; pitch=%.2f] | baro=%.1f | auto=%d\n",
+//				FastMath::toDegrees(rpy[0]), FastMath::toDegrees(rpy[1]), baro.getAltitudeMeters()*100.0f,
+//				flightControl.isAutoMode(),
+//				radioControler.getHandler().Channel(1));
+
+		printf("m0:%d | m1:%d | m2:%d | m3:%d\n",
+				actuatorControl.motors[0],
+				actuatorControl.motors[1],
+				actuatorControl.motors[2],
+				actuatorControl.motors[3]);
 	}
 }
 
