@@ -14,6 +14,7 @@ RadioControler::RadioControler() : Processing()
 {
 	// 100 Hz updater
 	freqHz = 1000;
+	iterCalibration = 0;
 }
 
 /**
@@ -23,18 +24,28 @@ void RadioControler::init()
 {
 	// Start serial for sbus radio
 	handler.init("/dev/ttyO1");
-
-	// Wait for two seconds
-	wait(2.0);
-
-	// Set calibration values
-	for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
-	{
-		handler.channelsCalib[i] = handler.channels[i];
-	}
 }
 
 void RadioControler::process()
 {
 	handler.fastLoop();
+
+	if (iterCalibration < 100 && handler.isFailsafe() == false)
+	{
+		if (iterCalibration >= 90)
+		{
+			for (int k=0; k < NB_CHANNELS_OPERATIONNAL; k ++)
+			{
+				handler.channelsCalib[k] = handler.channels[k];
+			}
+
+			printf("Initialize done");
+		}
+
+		iterCalibration ++;
+	}
+	else {
+		iterCalibration = 0;
+	}
+
 }

@@ -112,23 +112,9 @@ public:
 
 	void 	fastLoop();
 
-	void setDefaultValues()
-	{
-		// Set default values when radio controller is not failsafe
-		if (sbus_failsafe == false && defaultValueInitialized == false)
-		{
-			printf("setup calibration | failsafe=%d | initialized=%d\n", sbus_failsafe, defaultValueInitialized);
-			defaultValueInitialized = true;
-			for (int i=0; i < NB_CHANNELS_OPERATIONNAL; i ++)
-			{
-				channelsCalib[i] = channels[i];
-			}
-		}
-	}
 
 	float getChannelNormed(uint8_t ch)
 	{
-		setDefaultValues();
 		return (channels[ch] - channelsCalib[ch-1]) / RADIO_VAR;
 	}
 
