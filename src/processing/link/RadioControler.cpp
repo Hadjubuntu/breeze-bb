@@ -30,22 +30,24 @@ void RadioControler::process()
 {
 	handler.fastLoop();
 
-	if (iterCalibration < 100 && handler.isFailsafe() == false)
-	{
-		if (iterCalibration >= 90)
-		{
-			for (int k=0; k < NB_CHANNELS_OPERATIONNAL; k ++)
-			{
-				handler.channelsCalib[k] = handler.channels[k];
-			}
-
-			printf("Initialize done");
-		}
-
-		iterCalibration ++;
+	if (iterCalibration == 99) {
+		// Do nothing
 	}
 	else {
-		iterCalibration = 0;
+		if (iterCalibration < 100 && handler.isFailsafe() == false)
+		{
+			if (iterCalibration >= 90)
+			{
+				for (int k=0; k < NB_CHANNELS_OPERATIONNAL; k ++)
+				{
+					handler.channelsCalib[k] = handler.channels[k];
+				}
+
+				printf("Initialize done");
+			}
+
+			iterCalibration ++;
+		}
 	}
 
 }
