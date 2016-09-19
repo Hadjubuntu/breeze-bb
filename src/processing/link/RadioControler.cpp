@@ -26,7 +26,7 @@ void RadioControler::init()
 	handler.init("/dev/ttyO1");
 
 	printf("Radio controller calibration is progrss..\n");
-	while (handler.isFailsafe())
+	while (handler.channels[2] == RADIO_OFFSET || handler.channels[2] > RADIO_OFFSET  + 100)
 	{
 		handler.fastLoop();
 	}
