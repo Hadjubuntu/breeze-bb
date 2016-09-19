@@ -16,7 +16,6 @@ class RadioControler : public Processing
 private:
 	/** Radio sbus handler */
 	Sbus handler;
-	int iterCalibration;
 public:
 	/**
 	 * Constructor
