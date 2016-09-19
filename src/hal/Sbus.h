@@ -119,7 +119,7 @@ public:
 	}
 
 	bool isFailsafe() {
-		return sbus_failsafe;
+		return sbus_failsafe || sbus_frame_drop;
 	}
 };
 
