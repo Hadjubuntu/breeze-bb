@@ -91,6 +91,9 @@ void setup()
 	//---------------------
 	uavBrain.enableI2C();
 
+	// Setup pwm, uart through bash script
+	setupPwmUart();
+
 	// Add processings
 	//----------------------
 	uavBrain.addProcessing(&baro);
@@ -113,8 +116,6 @@ void setup()
 	//----------------------
 	calibration();
 
-	// Setup pwm, uart through bash script
-	setupPwmUart();
 }
 
 Date start = Date::now();
