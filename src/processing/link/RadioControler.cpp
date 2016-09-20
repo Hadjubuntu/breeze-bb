@@ -45,10 +45,12 @@ void RadioControler::waitUntilFullYawBackAndForth()
 
 	while (isDone == false)
 	{
+		printf("delta : %d\n", abs(handler.channels[3] - firstValueYaw) );
 		if (abs(handler.channels[3] - firstValueYaw) > 200)
 		{
 			initYawBack = Date::now();
 			backDone = true;
+			printf("Delta ok\n");
 		}
 
 		if (backDone && Date::now().durationFrom(initYawBack) > 1.0)
