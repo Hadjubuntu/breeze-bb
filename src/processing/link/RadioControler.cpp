@@ -32,7 +32,11 @@ void RadioControler::init()
 		iter ++;
 	}
 
-	printf("throttle:%d\n", handler.channels[2]);
+	while (handler.channels[2] > RADIO_OFFSET + 100)
+	{
+		wait(0.5);
+	}
+	printf("Throttle down ok\n");
 
 	// Setup calibration
 	for (int k = 0; k < NB_CHANNELS_OPERATIONNAL;  k ++)
