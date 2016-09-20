@@ -27,7 +27,6 @@ Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_t
 
 	sbus_failsafe = true;
 	sbus_frame_drop = false;
-	firstValue = false;
 }
 
 Sbus::~Sbus()
@@ -271,16 +270,6 @@ void Sbus::fastLoop()
 		for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 		{
 			channels[i] = r_raw_rc_values[i];
-		}
-
-		if (firstValue == false)
-		{
-			for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
-			{
-				channelsCalib[i] = r_raw_rc_values[i];
-			}
-
-			firstValue = true;
 		}
 	}
 

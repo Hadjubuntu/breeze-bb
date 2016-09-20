@@ -27,7 +27,10 @@ public:
 	 */
 	void init();
 
-	bool handlerNoChange();
+	float getRollCommandNormed();
+	float getPitchCommandNormed();
+	float getThrottleCommandNormed();
+	float getYawCommandNormed();
 
 	/**
 	 * Update radio output signals

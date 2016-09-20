@@ -97,7 +97,6 @@ private:
 
 public:
 
-	bool firstValue;
 	uint16_t channels[16];
 	uint16_t channelsCalib[16];
 
