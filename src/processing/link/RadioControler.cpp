@@ -31,6 +31,7 @@ void RadioControler::init()
 	for (int k = 0; k < NB_CHANNELS_OPERATIONNAL;  k ++)
 	{
 		handler.channelsCalib[k] = handler.channels[k];
+		printf("Channel[%d] = %d\n", k, handler.channelsCalib[k]);
 	}
 }
 
