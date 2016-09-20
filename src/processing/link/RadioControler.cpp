@@ -32,7 +32,7 @@ void RadioControler::init()
 		iter ++;
 	}
 
-	printf("throttle:%d\n", handler.channels[k]);
+	printf("throttle:%d\n", handler.channels[2]);
 
 	// Setup calibration
 	for (int k = 0; k < NB_CHANNELS_OPERATIONNAL;  k ++)
