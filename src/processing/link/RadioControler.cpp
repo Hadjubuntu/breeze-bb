@@ -32,7 +32,7 @@ void RadioControler::init()
 		iter ++;
 	}
 	iter = 0;
-	while (iter < 1000 && (handler.channels[3] > (RADIO_OFFSET + RADIO_VAR / 5.0)))
+	while (iter < 1000  ||  (handler.channels[3] > (RADIO_OFFSET + RADIO_VAR / 10.0)))
 	{
 		handler.fastLoop();
 		iter ++;
