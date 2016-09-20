@@ -114,7 +114,7 @@ public:
 
 	float getChannelNormed(uint8_t ch)
 	{
-		return (channels[ch] - channelsCalib[ch-1]) / RADIO_VAR;
+		return (channels[ch] - channelsCalib[ch]) / RADIO_VAR;
 	}
 
 	bool isFailsafe() {
