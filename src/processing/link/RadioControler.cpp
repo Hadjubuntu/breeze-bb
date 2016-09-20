@@ -35,7 +35,7 @@ void RadioControler::init()
 
 void RadioControler::waitUntilFullYawBackAndForth()
 {
-	bool isDone = false;
+	bool isDone = false, backDone = false;
 	int firstValueYaw = handler.channels[3];
 	Date initYawBack = Date::zero();
 
@@ -48,15 +48,18 @@ void RadioControler::waitUntilFullYawBackAndForth()
 		if (abs(handler.channels[3] - firstValueYaw) > 200)
 		{
 			initYawBack = Date::now();
+			backDone = true;
 		}
 
-		if (Date::now().durationFrom(initYawBack) > 1.0)
+		if (backDone && Date::now().durationFrom(initYawBack) > 1.0)
 		{
 			if (abs(handler.channels[3] - firstValueYaw) < 30)
 			{
 				isDone = true;
 			}
 		}
+
+		handler.fastLoop();
 	}
 
 	printf("Yaw is back and forth, initialization done\n");
