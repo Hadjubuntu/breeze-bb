@@ -35,6 +35,8 @@ public:
 	void process();
 	void callback() { };
 
+	void waitUntilFullYawBackAndForth();
+
 	/**
 	 * Get radio sbus handler
 	 */
