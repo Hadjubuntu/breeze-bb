@@ -24,52 +24,11 @@ void RadioControler::init()
 	// Start serial for sbus radio
 	handler.init("/dev/ttyO1");
 
-	waitUntilFullYawBackAndForth();
-
 	// Setup calibration
 	for (int k = 0; k < NB_CHANNELS_OPERATIONNAL;  k ++)
 	{
 		handler.channelsCalib[k] = handler.channels[k];
 	}
-}
-
-void RadioControler::waitUntilFullYawBackAndForth()
-{
-	bool isDone = false, backDone = false;
-
-	for (int i = 0; i < 100; i ++)
-	{
-		handler.fastLoop();
-	}
-	int firstValueYaw = handler.channels[3];
-	Date initYawBack = Date::zero();
-
-
-	printf("Waiting yaw back and forth operation to activate UAV\n");
-
-
-	while (isDone == false)
-	{
-		printf("delta : %d\n", abs(handler.channels[3] - firstValueYaw) );
-		if (abs(handler.channels[3] - firstValueYaw) > 200)
-		{
-			initYawBack = Date::now();
-			backDone = true;
-			printf("Delta ok\n");
-		}
-
-		if (backDone && Date::now().durationFrom(initYawBack) > 1.0)
-		{
-			if (abs(handler.channels[3] - firstValueYaw) < 30)
-			{
-				isDone = true;
-			}
-		}
-
-		handler.fastLoop();
-	}
-
-	printf("Yaw is back and forth, initialization done\n");
 }
 
 
