@@ -36,6 +36,11 @@ void RadioControler::init()
 void RadioControler::waitUntilFullYawBackAndForth()
 {
 	bool isDone = false, backDone = false;
+
+	for (int i = 0; i < 100; i ++)
+	{
+		handler.fastLoop();
+	}
 	int firstValueYaw = handler.channels[3];
 	Date initYawBack = Date::zero();
 
