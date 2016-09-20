@@ -27,7 +27,7 @@ void RadioControler::init()
 
 	int iter = 0;
 	printf("waiting for throttle down\n");
-	while (iter < 100) {
+	while (handler.sbus_updated == false) {
 		handler.fastLoop();
 		iter ++;
 	}

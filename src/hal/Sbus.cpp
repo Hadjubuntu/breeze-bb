@@ -27,6 +27,7 @@ Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_t
 
 	sbus_failsafe = true;
 	sbus_frame_drop = false;
+	sbus_updated = false;
 }
 
 Sbus::~Sbus()
@@ -261,7 +262,7 @@ void Sbus::fastLoop()
 	uint16_t r_raw_rc_count[16];
 
 	// Call input function
-	bool sbus_updated = input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, PX4IO_RC_INPUT_CHANNELS);
+	sbus_updated = input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, PX4IO_RC_INPUT_CHANNELS);
 
 	// If sbus data are updated
 	if (sbus_updated)
