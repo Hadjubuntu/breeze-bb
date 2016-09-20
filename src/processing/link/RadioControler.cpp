@@ -32,14 +32,7 @@ void RadioControler::init()
 		iter ++;
 	}
 
-	iter = 0;
-	while (iter < 1000  ||  (handler.channels[2] > (RADIO_OFFSET + RADIO_VAR / 10.0)))
-	{
-		handler.fastLoop();
-		iter ++;
-	}
-	wait(1.0);
-	printf("throttle done ok => calibration\n");
+	printf("throttle:%d\n", handler.channels[k]);
 
 	// Setup calibration
 	for (int k = 0; k < NB_CHANNELS_OPERATIONNAL;  k ++)
