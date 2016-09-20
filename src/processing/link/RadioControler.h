@@ -27,6 +27,8 @@ public:
 	 */
 	void init();
 
+	bool handlerNoChange();
+
 	/**
 	 * Update radio output signals
 	 */

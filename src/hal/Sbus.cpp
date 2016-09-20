@@ -27,7 +27,7 @@ Sbus::Sbus() : last_rx_time(Date::zero()), last_frame_time(Date::zero()), last_t
 
 	sbus_failsafe = true;
 	sbus_frame_drop = false;
-	defaultValueInitialized = false;
+	firstValue = false;
 }
 
 Sbus::~Sbus()
@@ -253,14 +253,10 @@ bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool 
 	return true;
 }
 
-//Date lastCall = Date::now();
 
 // Must be called at least at 400Hz
 void Sbus::fastLoop()
 {
-//	float duration = Date::now().durationFrom(lastCall);
-//	printf("Delta call in ms= %.2f\n", duration * 1000.0f);
-
 	// Prepare input variables
 	uint16_t r_raw_rc_values[16];
 	uint16_t r_raw_rc_count[16];
@@ -276,7 +272,17 @@ void Sbus::fastLoop()
 		{
 			channels[i] = r_raw_rc_values[i];
 		}
+
+		if (firstValue == false)
+		{
+			for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
+			{
+				channelsCalib[i] = r_raw_rc_values[i];
+			}
+
+			firstValue = true;
+		}
 	}
 
-//	lastCall = Date::now();
+	//	lastCall = Date::now();
 }

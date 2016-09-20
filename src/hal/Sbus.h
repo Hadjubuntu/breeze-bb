@@ -94,11 +94,10 @@ private:
 	unsigned sbus_frame_drops;
 
 	bool sbus_failsafe, sbus_frame_drop;
-	bool defaultValueInitialized;
-
 
 public:
 
+	bool firstValue;
 	uint16_t channels[16];
 	uint16_t channelsCalib[16];
 
