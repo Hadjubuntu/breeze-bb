@@ -13,13 +13,31 @@
 #include <sstream>          // need for tostr() function
 #include <cstdio>           // need for popen() function in executeShellCmd()
 #include <dirent.h>         // need for dirent struct in searchDirectory()
+#include <iostream>
 #include "FileTools.h"
 
+using namespace std;
 
-
-bool FileTools::writeToFile(std::string pFilepath, std::string pContent)
+vector<string> FileTools::readLinesInFile(string pFilepath)
 {
-	std::ofstream enableFile;
+	string line;
+	vector<string> results;
+	ifstream myfile (pFilepath);
+	if (myfile.is_open())
+	{
+		while ( getline (myfile,line) )
+		{
+			results.push_back(line);
+		}
+		myfile.close();
+	}
+
+	return results;
+}
+
+bool FileTools::writeToFile(string pFilepath, string pContent)
+{
+	ofstream enableFile;
 	enableFile.open(pFilepath.c_str());
 	enableFile << pContent.c_str();
 	enableFile.close();
@@ -27,9 +45,9 @@ bool FileTools::writeToFile(std::string pFilepath, std::string pContent)
 	return true;
 }
 
-std::string FileTools::searchDirectory(std::string searchPath, std::string searchPattern)
+string FileTools::searchDirectory(string searchPath, string searchPattern)
 {
-	std::string str;
+	string str;
 	DIR *path;
 	dirent *entry;
 

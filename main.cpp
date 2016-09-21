@@ -144,9 +144,6 @@ void loop()
 		//		RfPacket packet(Date::now(), "LOG", str);
 		//		rfControler.addPacketToSend(packet);
 
-		//
-
-
 		float rpyTarget[3];
 		flightStabilization.getTargetAttitude().toRollPitchYaw(rpyTarget);
 		printf("AHRS [roll=%.2f; pitch=%.2f; yaw=%.2f] | Target[roll=%.2f; pitch=%.2f; yaw=%.2f] | throttle:%.1f\n",

@@ -27,11 +27,12 @@ void RadioControler::init()
 
 	int iter = 0;
 	printf("waiting for throttle down\n");
+	// Wait until a first value is setted
 	while (handler.sbus_updated == false) {
 		handler.fastLoop();
 		iter ++;
 	}
-
+	// Then wait until throttle is down
 	while (handler.channels[2] > RADIO_OFFSET + 100)
 	{
 		wait(0.5);

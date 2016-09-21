@@ -9,6 +9,7 @@
 #define SRC_CORE_FILETOOLS_H_
 
 #include <string>
+#include <vector>
 
 class FileTools {
 public:
@@ -17,6 +18,7 @@ public:
 
 	static bool writeToFile(std::string pFilepath, std::string pContent);
 	static std::string searchDirectory(std::string searchPath, std::string searchPattern);
+	static std::vector<std::string> readLinesInFile(std::string pFilepath);
 
 };
 
