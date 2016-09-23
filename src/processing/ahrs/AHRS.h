@@ -103,6 +103,16 @@ public:
 		return _baro;
 	}
 
+	void printOffset()
+	{
+		float rpy[3];
+		_attitudeOffset.toRollPitchYaw(rpy);
+		printf("Offset attitude=%.2f, %.2f, %.2f\n",
+				FastMath::toDegrees(rpy[0]),
+				FastMath::toDegrees(rpy[1]),
+				FastMath::toDegrees(rpy[2]));
+	}
+
 };
 
 #endif /* PROCESSING_AHRS_AHRS_H_ */
