@@ -5,7 +5,6 @@
  *      Author: adrien
  */
 #include <stdio.h>
-#include "../../math/common/FastMath.h"
 #include "Gyro.h"
 
 
@@ -19,12 +18,13 @@ void Gyro::init()
 	int num_samples = 50;
 	float accumulator[] = {0.0, 0.0, 0.0};
 
-	// Throw first
+	// Throw first values (TODO improve code)
 	for (int i = 0 ; i < num_samples ; i++)
 	{
 		update();
 	}
 
+	// Calibration
 	for (int i = 0 ; i < num_samples ; i++)
 	{
 		update();
@@ -57,8 +57,4 @@ void Gyro::update()
 
 	// Filter gyro data
 	gyroFiltered =  gyroFiltered * (1.0 - filterNewDataCoeff) + cGyro * filterNewDataCoeff;
-
-
-	printf("gx=%.1f; gy=%.1f; gz=%.1f\n",
-			FastMath::toDegrees(gyroFiltered.getX()), FastMath::toDegrees(gyroFiltered.getY()), FastMath::toDegrees(gyroFiltered.getZ()));
 }

@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 #include "../../hal/HAL.h"
+#include "../../math/common/FastMath.h"
 #include "Accelerometer.h"
 
 
@@ -35,7 +36,9 @@ void Accelerometer::init()
 		accumulator[i] /= num_samples;
 	}
 
-	offset = accumulator;
+//	offset = accumulator;
+
+	calibration();
 }
 
 void Accelerometer::update()
@@ -45,12 +48,16 @@ void Accelerometer::update()
 
 
 	// Retrieve offset
-	//	cAcc -= offset;
+		cAcc -= offset;
 
 	accRaw = cAcc;
 
 	//	_accFiltered = cAcc;
 	accFiltered = accFiltered * (1.0 - filterNewDataCoeff) + cAcc * filterNewDataCoeff;
+
+
+	printf("gx=%.1f; gy=%.1f; gz=%.1f\n",
+			FastMath::toDegrees(accFiltered.getX()), FastMath::toDegrees(accFiltered.getY()), FastMath::toDegrees(accFiltered.getZ()));
 }
 
 
