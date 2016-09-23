@@ -118,7 +118,7 @@ void setup()
 
 	// Calibration on AHRS
 	//----------------------
-	calibration();
+//	calibration();
 
 }
 
