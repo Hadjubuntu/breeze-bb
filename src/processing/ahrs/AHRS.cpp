@@ -44,7 +44,10 @@ void AHRS::calibrateOffset()
 	float rpy[3];
 	_attitude.toRollPitchYaw(rpy);
 	_attitudeOffset = Quaternion(-rpy[0], -rpy[1], -rpy[2]);
-	printf("Offset attitude=%.2f, %.2f, %.2f\n", rpy[0], rpy[1], rpy[2]);
+	printf("Offset attitude=%.2f, %.2f, %.2f\n",
+			FastMath::toDegrees(rpy[0]),
+			FastMath::toDegrees(rpy[1]),
+			FastMath::toDegrees(rpy[2]));
 }
 
 void AHRS::init()
