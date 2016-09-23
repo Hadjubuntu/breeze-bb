@@ -62,15 +62,15 @@ Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 
 void calibration()
 {
-	int nbCalibrationMeasure = 500;
+	int nbCalibrationMeasure = 100;
 
 	for (int i = 0; i < nbCalibrationMeasure; i++)
 	{
 		uavBrain.loop();
+		ahrs.calibrateOffset();
 		HAL::delayMs(10);
 	}
 
-	ahrs.calibrateOffset();
 	ahrs.printOffset();
 }
 // Execute script to setup pwm pin and uart
@@ -115,7 +115,7 @@ void setup()
 
 	// Calibration on AHRS
 	//----------------------
-	calibration();
+//	calibration();
 
 }
 

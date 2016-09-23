@@ -143,7 +143,7 @@ void AHRS::process()
 
 	// Integrate gyro rotation Z to have an estimation of the yaw
 	_yawFromGyro += gyros.getZ() / freqHz;
-	_yawFromGyro = 0.99 * _yawFromGyro;
+	_yawFromGyro = 0.9 * _yawFromGyro;
 	_yawFromGyro = FastMath::constrainAngleMinusPiPlusPi(_yawFromGyro);
 
 	// Integrate delta accZ to have estimation on vertical speed
