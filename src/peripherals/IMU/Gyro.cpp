@@ -19,7 +19,13 @@ void Gyro::init()
 	int num_samples = 50;
 	float accumulator[] = {0.0, 0.0, 0.0};
 
-	for(int i = 0 ; i < num_samples ; i++)
+	// Throw first
+	for (int i = 0 ; i < num_samples ; i++)
+	{
+		update();
+	}
+
+	for (int i = 0 ; i < num_samples ; i++)
 	{
 		update();
 
