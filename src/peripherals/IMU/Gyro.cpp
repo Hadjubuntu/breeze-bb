@@ -22,9 +22,9 @@ void Gyro::init()
 	{
 		update();
 
-		accumulator[0] += _gyroRaw.getX();
-		accumulator[1] += _gyroRaw.getY();
-		accumulator[2] += _gyroRaw.getZ();
+		accumulator[0] += gyroRaw.getX();
+		accumulator[1] += gyroRaw.getY();
+		accumulator[2] += gyroRaw.getZ();
 
 		HAL::delayMs(5);
 	}
@@ -34,7 +34,7 @@ void Gyro::init()
 		accumulator[i] /= num_samples;
 	}
 
-	_offset = accumulator;
+	offset = accumulator;
 }
 
 void Gyro::update()
@@ -43,11 +43,15 @@ void Gyro::update()
 	Vect3D cGyro = provider.read();
 
 	// Retrieve offset
-	cGyro -= _offset;
+	cGyro -= offset;
 
 	// Store data and filter gyro output
-	_gyroRaw = cGyro ;
+	gyroRaw = cGyro ;
 
 	// Filter gyro data
-	_gyroFiltered =  _gyroFiltered * (1.0 - _filterNewDataCoeff) + cGyro * _filterNewDataCoeff;
+	gyroFiltered =  gyroFiltered * (1.0 - filterNewDataCoeff) + cGyro * filterNewDataCoeff;
+
+
+	printf("gx=%.1f; gy=%.1f; gz=%.1f\n",
+			FastMath::toDegrees(gyroFiltered.getX()), FastMath::toDegrees(gyroFiltered.getY()), FastMath::toDegrees(gyroFiltered.getZ()));
 }

@@ -70,12 +70,8 @@ Vect3D GyroMPU6050::read()
 	// Create gyro vector from raw data
 	Vect3D cGyro(result[0], result[1], result[2]);
 
-
 	// Scale gyro from LSB to deg/s
 	cGyro *= GYRO_LSB_TO_DEGS;
-
-
-	printf("gx=%.1f; gy=%.1f; gz=%.1f\n", cGyro.getX(), cGyro.getY(), cGyro.getZ());
 
 
 	cGyro = cGyro.toRad();

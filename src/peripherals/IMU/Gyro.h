@@ -21,26 +21,26 @@ private:
 	GyroMPU6050 provider;
 
 	/** Raw data acceleration */
-	Vect3D _gyroRaw;
+	Vect3D gyroRaw;
 
 	/** Filtered gyro */
-	Vect3D _gyroFiltered;
+	Vect3D gyroFiltered;
 
 	/** Initial offset acceleration */
-	Vect3D _offset;
+	Vect3D offset;
 
 	/** Filter coefficient */
-	float _filterNewDataCoeff;
+	float filterNewDataCoeff;
 
 public:
 	/**
 	 * Constructor
 	 */
 	Gyro() :
-		_gyroRaw(Vect3D::zero()),
-		_gyroFiltered(Vect3D::zero()),
-		_offset(Vect3D::zero()),
-		_filterNewDataCoeff(0.5)
+		gyroRaw(Vect3D::zero()),
+		gyroFiltered(Vect3D::zero()),
+		offset(Vect3D::zero()),
+		filterNewDataCoeff(0.5)
 	{
 
 	}
@@ -59,8 +59,8 @@ public:
 	/****************************************************
 	 * GETTERS
 	 ***************************************************/
-	Vect3D getGyroRaw() { return _gyroRaw; }
-	Vect3D getGyroFiltered() { return _gyroFiltered; }
+	Vect3D getGyroRaw() { return gyroRaw; }
+	Vect3D getGyroFiltered() { return gyroFiltered; }
 
 	/****************************************************
 	 * Instance
