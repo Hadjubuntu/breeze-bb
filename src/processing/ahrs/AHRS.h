@@ -13,6 +13,7 @@
 
 #include "../../core/Processing.h"
 #include "../../math/vector/Quaternion.h"
+#include "../../math/common/FastMath.h"
 #include "../../peripherals/IMU/Accelerometer.h"
 #include "../../peripherals/IMU/Baro.h"
 #include "../../peripherals/IMU/Gyro.h"
