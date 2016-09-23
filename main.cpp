@@ -67,7 +67,7 @@ void calibration()
 	for (int i = 0; i < nbCalibrationMeasure; i++)
 	{
 		uavBrain.loop();
-		//		ahrs.calibrateOffset();
+		ahrs.calibrateOffset();
 
 		HAL::delayMs(10);
 	}
