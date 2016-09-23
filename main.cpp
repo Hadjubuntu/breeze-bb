@@ -62,13 +62,16 @@ Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 
 void calibration()
 {
-	int nbCalibrationMeasure = 100;
+	int nbCalibrationMeasure = 1000;
 
 	for (int i = 0; i < nbCalibrationMeasure; i++)
 	{
 		uavBrain.loop();
-		ahrs.calibrateOffset();
-		HAL::delayMs(10);
+
+		if (i > nbCalibrationMeasure / 2.0)
+		{
+			ahrs.calibrateOffset();
+		}
 	}
 
 	ahrs.printOffset();
@@ -115,7 +118,7 @@ void setup()
 
 	// Calibration on AHRS
 	//----------------------
-//	calibration();
+	calibration();
 
 }
 
@@ -152,10 +155,10 @@ void loop()
 				FastMath::toDegrees(rpyTarget[0]), FastMath::toDegrees(rpyTarget[1]), FastMath::toDegrees(rpyTarget[2]),
 				flightControl.getThrottleOut());
 
-		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
-				flightStabilization.getTau().getX(),
-				flightStabilization.getTau().getY(),
-				flightStabilization.getTau().getZ());
+//		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
+//				flightStabilization.getTau().getX(),
+//				flightStabilization.getTau().getY(),
+//				flightStabilization.getTau().getZ());
 	}
 }
 
