@@ -5,6 +5,7 @@
  *      Author: adrien
  */
 #include <stdio.h>
+#include "../../math/common/FastMath.h"
 #include "Gyro.h"
 
 
