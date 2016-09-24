@@ -60,22 +60,7 @@ Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 //FsAutotune fsAutotune(&flightStabilization);
 
 
-void calibration()
-{
-	int nbCalibrationMeasure = 1000;
 
-	for (int i = 0; i < nbCalibrationMeasure; i++)
-	{
-		uavBrain.loop();
-
-		if (i > nbCalibrationMeasure / 2.0)
-		{
-			ahrs.calibrateOffset();
-		}
-	}
-
-	ahrs.printOffset();
-}
 // Execute script to setup pwm pin and uart
 void setupPwmUart()
 {
@@ -101,7 +86,7 @@ void setup()
 	// Add processings
 	//----------------------
 	uavBrain.addProcessing(&baro);
-	uavBrain.addProcessing(&ahrs);
+	uavBrain.addProcessing(&ahrs); // Calibration done on accelerometer
 	uavBrain.addProcessing(&rfControler);
 	uavBrain.addProcessing(&rfRouter);
 	uavBrain.addProcessing(&radioControler);
@@ -115,10 +100,6 @@ void setup()
 	// Initialize all processings
 	//----------------------
 	uavBrain.initProcessings();
-
-	// Calibration on AHRS
-	//----------------------
-//	calibration();
 
 }
 
