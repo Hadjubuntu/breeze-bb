@@ -85,11 +85,11 @@ void ActuatorControl::initMotorRepartition() {
 		}
 
 		// Left motor
-		_motorActivation[0][0] = 1.0;
+		_motorActivation[0][0] = -1.0;
 		_motorActivation[0][1] = 1.0;
 
 		// Right motor
-		_motorActivation[1][0] = -1.0;
+		_motorActivation[1][0] = 1.0;
 		_motorActivation[1][1] = 1.0;
 
 		// Rear motor
@@ -235,7 +235,15 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	pwm0.write(min_pwm + motorX[0]);
 	pwm1.write(min_pwm + motorX[1]);
 	pwm2.write(min_pwm + motorX[2]);
-	pwm3.write(min_pwm + motorX[3]);
+
+	if (nbMotors == 4)
+	{
+		pwm3.write(min_pwm + motorX[3]);
+	}
+	else
+	{
+		pwm3.write(1400 - yawDeltaSignal);
+	}
 
 	// Write pulse for motors
 //	pwmWrite(D28, levelToCtrl(motorX[0]));

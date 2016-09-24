@@ -34,6 +34,12 @@ uart_pin_list=(9.24 9.26);
 if [ "${firmware}" == "hcopter" ]; then
 	echo "Hcopter => configuring pwm to 490 Hz for first 4 pwm signals"
 	pwm_freq_list=(490 490 490 490 50 50 50 50 50);
+else if [ "${firmware}" == "ycopter" ]; then
+	echo "Ycopter => configuring pwm to 490 Hz for first 3 pwm signals, third at 50Hz"
+	pwm_freq_list=(490 490 490 50 50 50 50 50 50);
+else if [ "${firmware}" == "fixed_wing" ]; then
+	echo "FixedWing => configuring first pwm to 490 Hz others at 50Hz"
+	pwm_freq_list=(490 50 50 50 50 50 50 50 50);
 fi
 
 pwmIdx=(0 1 2 3 4 5 6 7);
