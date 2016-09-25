@@ -242,7 +242,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	}
 	else
 	{
-		pwm3.write(1400 - yawDeltaSignal);
+		pwm3.write(1450 - yawDeltaSignal);
 	}
 
 	// Write pulse for motors
