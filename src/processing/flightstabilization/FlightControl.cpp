@@ -67,8 +67,7 @@ void FlightControl::process()
 	// ------------------
 
 	// Compute roll, pitch, yaw desired by using the radio values
-	int rollSignCtrl = -1; // FIXME improve sign mngt ..
-	_rollDesired = rollSignCtrl * radioToRad(_radioController->getRollCommandNormed(), _maxAbsRollAngle->getValue());
+	_rollDesired = radioToRad(_radioController->getRollCommandNormed(), _maxAbsRollAngle->getValue());
 	_pitchDesired = radioToRad(_radioController->getPitchCommandNormed(), _maxAbsPitchAngle->getValue());
 	float yaw = radioToRad(_radioController->getYawCommandNormed(), _maxAbsCombinedAngle->getValue());
 	// Throttle from 0 to 1
