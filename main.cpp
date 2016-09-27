@@ -136,10 +136,10 @@ void loop()
 				FastMath::toDegrees(rpyTarget[0]), FastMath::toDegrees(rpyTarget[1]), FastMath::toDegrees(rpyTarget[2]),
 				flightControl.getThrottleOut());
 
-//		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
-//				flightStabilization.getTau().getX(),
-//				flightStabilization.getTau().getY(),
-//				flightStabilization.getTau().getZ());
+		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f\n",
+				flightStabilization.getTau().getX(),
+				flightStabilization.getTau().getY(),
+				flightStabilization.getTau().getZ());
 	}
 }
 
