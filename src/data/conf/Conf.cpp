@@ -27,20 +27,20 @@ Conf Conf::INSTANCE = Conf();
 Conf::Conf()
 {
 	// 0.34 for 20 degress, 0.5 for approx 30 degrees, go higher to 0.8 for 45 degrees
-	_parameters.push_back(Param<float>("maxAbsRollAngle", 0.7f));
-	_parameters.push_back(Param<float>("maxAbsPitchAngle", 0.7f));
-	_parameters.push_back(Param<float>("maxAbsCombinedAngle", 0.8f));
+	_parameters.push_back(Param<float>("maxAbsRollAngle", 1.0f));
+	_parameters.push_back(Param<float>("maxAbsPitchAngle", 1.0f));
+	_parameters.push_back(Param<float>("maxAbsCombinedAngle", 1.0f));
 	// Max command on the torque in Nm
 	_parameters.push_back(Param<float>("maxCommandNm", 8.0f));
 	// Flight stabilization
 	_parameters.push_back(Param<float>("flightStabilization_Pq", 15.0f));
 	_parameters.push_back(Param<float>("flightStabilization_Pw", 1.0f));
-	_parameters.push_back(Param<float>("commandNmToSignalUs", 60.0f));
+	_parameters.push_back(Param<float>("commandNmToSignalUs", 50.0f));
 
 	// Flight stabilization with simple PID
-	_parameters.push_back(Param<float>("flightStabilization_Kangle", 3.5f));
-	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 1.8f));
-	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 1.8f));
+	_parameters.push_back(Param<float>("flightStabilization_Kangle", 5.0f));
+	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 1.3f));
+	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 1.3f));
 
 	// Flight stab altitude controller
 	_parameters.push_back(Param<float>("flightStabilization_throttleHover", 0.45f));
