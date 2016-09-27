@@ -35,12 +35,12 @@ Conf::Conf()
 	// Flight stabilization
 	_parameters.push_back(Param<float>("flightStabilization_Pq", 15.0f));
 	_parameters.push_back(Param<float>("flightStabilization_Pw", 1.0f));
-	_parameters.push_back(Param<float>("commandNmToSignalUs", 40.0f));
+	_parameters.push_back(Param<float>("commandNmToSignalUs", 60.0f));
 
 	// Flight stabilization with simple PID
 	_parameters.push_back(Param<float>("flightStabilization_Kangle", 3.5f));
-	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 2.5f));
-	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 2.5f));
+	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 2.8f));
+	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 2.8f));
 
 	// Flight stab altitude controller
 	_parameters.push_back(Param<float>("flightStabilization_throttleHover", 0.45f));

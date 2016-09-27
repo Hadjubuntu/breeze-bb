@@ -30,7 +30,7 @@ Timer3 	12 	11 	27 	28
 Timer4 	5 	9 	14 	24
  */
 
-#define MAX_DELTA_RADIO_SIGNAL 680
+#define MAX_DELTA_RADIO_SIGNAL 720
 
 
 #define MOTOR_FREQ_HZ 490 // MOCK FOR SERVO
@@ -204,7 +204,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	// Compute delta signal from torque command
 	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), _commandNmToSignalUs->getValue());
 	int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), _commandNmToSignalUs->getValue());
-	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue() * 5.0);
+	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue() * 4.0);
 
 	int motorX[nbMotors];
 
