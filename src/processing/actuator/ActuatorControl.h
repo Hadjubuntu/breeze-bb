@@ -20,10 +20,10 @@ private:
 	// Others param
 	FlightStabilization *_flightStabilization;
 	float _motorActivation[4][3] = {
-			{-1, 1, -1},
-			{1, 1, 1},
-			{-1, -1, 1},
-			{1, -1, -1}
+			{-1, 1, 1},
+			{1, 1, -1},
+			{-1, -1, -1},
+			{1, -1, 1}
 	};
 
 	Pwm pwm0, pwm1, pwm2, pwm3;
