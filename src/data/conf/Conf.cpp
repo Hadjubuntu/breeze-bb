@@ -39,8 +39,8 @@ Conf::Conf()
 
 	// Flight stabilization with simple PID
 	_parameters.push_back(Param<float>("flightStabilization_Kangle", 6.0f));
-	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 1.6f));
-	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 1.6f));
+	_parameters.push_back(Param<float>("flightStabilization_KrateRoll", 2.25f));
+	_parameters.push_back(Param<float>("flightStabilization_KratePitch", 2.25f));
 
 	// Flight stab altitude controller
 	_parameters.push_back(Param<float>("flightStabilization_throttleHover", 0.45f));
