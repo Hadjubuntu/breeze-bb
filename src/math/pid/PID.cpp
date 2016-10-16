@@ -9,7 +9,7 @@
 #include "PID.h"
 
 
-PID::PID()
+PID::PID() : errorIntegral(RingFloatArray(100))
 {
 	init(1.0, 0.1, 0.01, 10);
 }
@@ -76,6 +76,9 @@ void PID::update(float e, float dtSeconds)
 
 	// Computes output
 	_output = _Ke * (_Kp * _error + _Ki * _i + _Kd * _d);
+
+	// Store data in integral
+	errorIntegral.add(_error);
 }
 
 void PID::setUseEnhancePID(bool pUseEnhancePID)

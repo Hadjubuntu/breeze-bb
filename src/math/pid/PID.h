@@ -8,6 +8,8 @@
 #ifndef MATH_PID_PID_H_
 #define MATH_PID_PID_H_
 
+#include "../../hal/RingFloatArray.h"
+
 class PID {
 protected:
 	float _Kp;
@@ -27,6 +29,8 @@ protected:
 	bool _useEnhancePID;
 	float _Kboost;
 	float _KboostMax;
+
+	RingFloatArray errorIntegral;
 public:
 	PID();
 	void init(float pKp, float pKi, float pKd, float pMaxI);
@@ -40,6 +44,11 @@ public:
 	float getError();
 	float getKe();
 	void setUseEnhancePID(bool useEnhancePID);
+
+	RingFloatArray getErrorIntegral()
+	{
+		return errorIntegral;
+	}
 };
 
 #endif /* MATH_PID_PID_H_ */
