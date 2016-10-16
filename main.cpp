@@ -113,10 +113,10 @@ void loop()
 	uavBrain.loop();
 
 
-	if (uavBrain.getTickId() % 500 == 0)
-	{
-		printf("integral error pid roll = %.2f\n", flightStabilization.getPidRoll().getErrorIntegral().integralValue());
-	}
+//	if (uavBrain.getTickId() % 500 == 0)
+//	{
+//		printf("integral error pid roll = %.2f\n", flightStabilization.getPidRoll().getErrorIntegral().integralValue());
+//	}
 	// Prints infos
 	// ----
 	if (uavBrain.getTickId() % 1000 == 0)

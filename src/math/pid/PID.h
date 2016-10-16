@@ -30,7 +30,7 @@ protected:
 	float _Kboost;
 	float _KboostMax;
 
-	RingFloatArray errorIntegral;
+//	RingFloatArray errorIntegral;
 public:
 	PID();
 	void init(float pKp, float pKi, float pKd, float pMaxI);
@@ -45,10 +45,10 @@ public:
 	float getKe();
 	void setUseEnhancePID(bool useEnhancePID);
 
-	RingFloatArray getErrorIntegral()
-	{
-		return errorIntegral;
-	}
+//	RingFloatArray getErrorIntegral()
+//	{
+//		return errorIntegral;
+//	}
 };
 
 #endif /* MATH_PID_PID_H_ */
