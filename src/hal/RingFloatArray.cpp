@@ -22,6 +22,12 @@ void RingFloatArray::add(float pElement)
 {
 	values[posIdx] = pElement;
 	posIdx ++;
+
+	// proceed to a ring
+	if (posIdx >= size)
+	{
+		posIdx = 0;
+	}
 }
 
 float RingFloatArray::integralValue()
