@@ -335,9 +335,10 @@ void I2C::readFrom(uint8_t DATA_REGADD,
 
 		uint8_t buffer[1];
 		buffer[0] = DATA_REGADD;
+		int res = write(file, buffer, 1);
 
-		if (write(file, buffer, 1) != 1) {
-			printf("Can not write data. Address %d.", DEV_ADD);
+		if (res != 1) {
+			printf("Can not write data. Address %d. Error %d.\n", DEV_ADD, res);
 		}
 
 		if (read(file, data, length) != length) {
