@@ -5,7 +5,7 @@
  *      Author: adrien
  */
 
-
+#include <errno.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -339,6 +339,7 @@ void I2C::readFrom(uint8_t DATA_REGADD,
 
 		if (res != 1) {
 			printf("Can not write data. Address %d. Error %d.\n", DEV_ADD, res);
+			printf("%s\n", strerror(errno));
 		}
 
 		if (read(file, data, length) != length) {
