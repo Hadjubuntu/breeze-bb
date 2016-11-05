@@ -183,7 +183,7 @@ void I2C::writeTo(uint8_t DATA_REGADD, uint8_t data) {
 
 		int res = write(file, buffer, 2);
 		if (res != 2) {
-			printf("Can not write data. Address %d. Error %d.", DEV_ADD, res);
+			printf("Can not write data. Address %d. Error %d.\n", DEV_ADD, res);
 		}
 
 		close(file);
@@ -207,11 +207,11 @@ void I2C::writeByteBuffer(uint8_t DATA_REGADD, uint8_t *data,
 	buffer[0] = DATA_REGADD;
 
 	if (write(file, buffer, 1) != 1) {
-		printf("Can not write data. Address %d.", DEV_ADD);
+		printf("Can not write data. Address %d.\n", DEV_ADD);
 	}
 
 	if (write(file, data, length) != length) {
-		printf("Can not write data. Address %d.", DEV_ADD);
+		printf("Can not write data. Address %d.\n", DEV_ADD);
 	}
 
 	close(file);
