@@ -296,14 +296,15 @@ uint8_t I2C::readByte(uint8_t DATA_REGADD) {
 	uint8_t buffer[1];
 	buffer[0] = DATA_REGADD;
 
-	if (write(file, buffer, 1) != 1) {
-		printf("Can not write data. Address %d.", DEV_ADD);
+	int res = write(file, buffer, 1);
+	if (res != 1) {
+		printf("Can not write data. Address %d. Error %d.\n", DEV_ADD, res);
 	}
 
 	uint8_t value[1];
 
 	if (read(file, value, 1) != 1) {
-		printf("Can not read data. Address %d.", DEV_ADD);
+		printf("Can not read data. Address %d.\n", DEV_ADD);
 	}
 
 	close(file);
