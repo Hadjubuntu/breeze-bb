@@ -31,7 +31,7 @@ _tau(Vect3D::zero())
 	_Kangle = Conf::getInstance().get("flightStabilization_Kangle");
 	_KrateRoll = Conf::getInstance().get("flightStabilization_KrateRoll");
 	_KratePitch = Conf::getInstance().get("flightStabilization_KratePitch");
-	_KrateYaw = Conf::getInstance().get("flightStabilization_KrateYaw");
+//	_KrateYaw = Conf::getInstance().get("flightStabilization_KrateYaw");
 	_throttleHover = Conf::getInstance().get("flightStabilization_throttleHover");
 
 	// Note that we use radian angles. It means 5 * 0.01 for integral means 2.86° correction for integral terms
@@ -113,7 +113,7 @@ void FlightStabilization::process()
 
 	_tau = Vect3D(pidRoll.getOutput(),
 			pidPitch.getOutput(),
-			_KrateYaw->getValue() * (yawRate - _gyroRot[2]));
+			_KratePitch->getValue() * (yawRate - _gyroRot[2]));
 
 	//	 Control altitude
 	//	 ---
