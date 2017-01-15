@@ -113,7 +113,7 @@ void FlightStabilization::process()
 
 	_tau = Vect3D(pidRoll.getOutput(),
 			pidPitch.getOutput(),
-			_KrateYaw->getValue() * (yawRate - _gyroRot[2]));
+			_KratePitch->getValue() * (yawRate - _gyroRot[2]));
 
 	//	 Control altitude
 	//	 ---
