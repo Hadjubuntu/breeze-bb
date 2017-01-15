@@ -81,20 +81,20 @@ void ActuatorControl::initMotorRepartition() {
 	switch (Conf::getInstance().firmware) {
 	case YCOPTER:
 		for (int j = 0; j < 4; j++) {
-			_motorActivation[j][2] = 0;
+			motorActivation[j][2] = 0;
 		}
 
 		// Left motor
-		_motorActivation[0][0] = -1.0;
-		_motorActivation[0][1] = 1.0;
+		motorActivation[0][0] = -1.0;
+		motorActivation[0][1] = 1.0;
 
 		// Right motor
-		_motorActivation[1][0] = 1.0;
-		_motorActivation[1][1] = 1.0;
+		motorActivation[1][0] = 1.0;
+		motorActivation[1][1] = 1.0;
 
 		// Rear motor
-		_motorActivation[2][0] = 0;
-		_motorActivation[2][1] = -1.8; // Boost coefficient to compensate rear servo weight
+		motorActivation[2][0] = 0;
+		motorActivation[2][1] = -1.8; // Boost coefficient to compensate rear servo weight
 
 
 		break;
@@ -204,7 +204,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	// Compute delta signal from torque command
 	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), _commandNmToSignalUs->getValue());
 	int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), _commandNmToSignalUs->getValue());
-	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue() * 3.0);
+	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue() * 1.5);
 
 	int motorX[nbMotors];
 
@@ -220,9 +220,9 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 		for (int i = 0; i < nbMotors; i ++)
 		{
 			motorX[i] = (int)(throttle
-					+ _motorActivation[i][0] * rollDeltaSignal
-					+ _motorActivation[i][1] * pitchDeltaSignal
-					+ _motorActivation[i][2] * yawDeltaSignal);
+					+ motorActivation[i][0] * rollDeltaSignal
+					+ motorActivation[i][1] * pitchDeltaSignal
+					+ motorActivation[i][2] * yawDeltaSignal);
 
 			Bound(motorX[i], 0, 900);
 
