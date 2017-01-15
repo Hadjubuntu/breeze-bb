@@ -33,6 +33,7 @@ private:
 	Param<float> *_Kangle;
 	Param<float> *_KratePitch;
 	Param<float> *_KrateRoll;
+	Param<float> *_KrateYaw;
 	Quaternion _targetAttitude;
 	Quaternion _currentAttitude;
 	Vect3D _gyroRot;
