@@ -152,6 +152,12 @@ bool Sbus::input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bo
 }
 
 
+/**
+ * Decode packets.
+ * Returns code is true if there packet up-to-date.
+ * At first packets missing leads to a frame lost status.
+ * After several packets missing, the return code goes to failsafe.
+ */
 bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sbus_frame_drop,
 		uint16_t max_values)
 {
@@ -234,7 +240,6 @@ bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool 
 		/* report that we failed to read anything valid off the receiver */
 		*sbus_failsafe = true;
 		*sbus_frame_drop = true;
-		printf("failsafe\n");
 
 	} else if (frame[SBUS_FLAGS_BYTE] & (1 << SBUS_FRAMELOST_BIT)) { /* a frame was lost */
 		/* set a special warning flag
@@ -246,13 +251,9 @@ bool Sbus::decode(Date frame_time, uint16_t *values, uint16_t *num_values, bool 
 		*sbus_failsafe = false;
 		*sbus_frame_drop = true;
 
-		printf("frame lost\n");
-
 	} else {
 		*sbus_failsafe = false;
 		*sbus_frame_drop = false;
-
-		printf("ok\n");
 	}
 
 	return true;
@@ -270,12 +271,22 @@ void Sbus::fastLoop()
 	sbus_updated = input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, RC_INPUT_CHANNELS);
 
 	// If sbus data are updated
-	if (sbus_updated)
+	if (sbus_failsafe)
 	{
-		// Initialize channel (TODO check nb channels < 16 !!)
+		if (sbus_updated)
+		{
+			// Initialize channel (TODO check nb channels < 16 !!)
+			for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
+			{
+				channels[i] = r_raw_rc_values[i];
+			}
+		}
+	}
+	else
+	{
 		for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 		{
-			channels[i] = r_raw_rc_values[i];
+			channels[i] = RADIO_OFFSET;
 		}
 	}
 
