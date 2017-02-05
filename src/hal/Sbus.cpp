@@ -271,7 +271,7 @@ void Sbus::fastLoop()
 	sbus_updated = input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, RC_INPUT_CHANNELS);
 
 	// If sbus data are updated
-	if (sbus_failsafe)
+	if (!sbus_failsafe)
 	{
 		if (sbus_updated)
 		{
