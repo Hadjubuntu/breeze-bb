@@ -10,7 +10,7 @@
 
 #include "../math/time/Date.h"
 
-#define PX4IO_RC_INPUT_CHANNELS 18
+#define RC_INPUT_CHANNELS 18
 
 
 #define SBUS_FRAME_SIZE		25

@@ -1,3 +1,8 @@
+/**
+ * Breeze-bb main entry source code
+ * (c) Adrien HADJ-SALAH
+ * 192.168.1.15
+ */
 #include <stdio.h>
 
 

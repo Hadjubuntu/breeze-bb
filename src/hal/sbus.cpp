@@ -49,7 +49,7 @@
 #include <asm/termios.h> // custom baud rate
 #include <stropts.h>
 
-#define PX4IO_RC_INPUT_CHANNELS 18
+#define RC_INPUT_CHANNELS 18
 
 
 #define SBUS_FRAME_SIZE		25
@@ -391,7 +391,7 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 	}
 
 	/* decode switch channels if data fields are wide enough */
-	if (PX4IO_RC_INPUT_CHANNELS > 17 && chancount > 15) {
+	if (RC_INPUT_CHANNELS > 17 && chancount > 15) {
 		chancount = 18;
 
 		/* channel 17 (index 16) */
@@ -444,7 +444,7 @@ int main() {
 		uint16_t r_raw_rc_values[16];
 		uint16_t r_raw_rc_count[16];
 
-		bool sbus_updated = sbus_input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, PX4IO_RC_INPUT_CHANNELS);
+		bool sbus_updated = sbus_input(r_raw_rc_values, r_raw_rc_count, &sbus_failsafe, &sbus_frame_drop, RC_INPUT_CHANNELS);
 
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
