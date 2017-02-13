@@ -40,6 +40,7 @@ BREEZE_MODULES += $(SRCROOT)/src/math/pid
 BREEZE_MODULES += $(SRCROOT)/src/math/time
 BREEZE_MODULES += $(SRCROOT)/src/math/vector
 BREEZE_MODULES += $(SRCROOT)/src/math/filter
+BREEZE_MODULES += $(SRCROOT)/src/math/frame
 BREEZE_MODULES += $(SRCROOT)/src/data/conf
 BREEZE_MODULES += $(SRCROOT)/src/hal
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/sensor
