@@ -7,12 +7,10 @@
 
 #include "Frame.h"
 
-Frame::Frame() {
-	// TODO Auto-generated constructor stub
 
-}
 
-Frame::~Frame() {
-	// TODO Auto-generated destructor stub
+Frame::Frame(Frame *pParent, Quaternion pRot, Vect3D pTranslate) : parent(pParent), rotation(pRot), translation(pTranslate)
+{
+
 }
 

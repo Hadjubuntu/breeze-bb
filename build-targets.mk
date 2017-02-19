@@ -1,13 +1,16 @@
 # main project target
 $(BUILD_PATH)/main.o: $(SRCROOT)/main.cpp
 	$(SILENT_CXX) $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $< 
-
+$(BUILD_PATH)/SIL.o: $(SRCROOT)/SIL.cpp
+	$(SILENT_CXX) $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $< 
 
 .PHONY: library
 
 $(BUILD_PATH)/breezebb: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o
 	 $(CXX) -o $@ $(TGT_BIN) $(BUILD_PATH)/main.o
 
+$(BUILD_PATH)/SIL: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/SIL.o
+	 $(CXX) -o $@ $(TGT_BIN) $(BUILD_PATH)/SIL.o
 
 $(BUILDDIRS):
 	@mkdir -p $@
