@@ -75,6 +75,11 @@ string FileTools::searchDirectory(string searchPath, string searchPattern)
 	return "";
 }
 
+void FileTools::appendToFile(std::vector<std::string> pMessages, std::string pFilepath)
+{
+	// TODO to be implemented
+}
+
 FileTools::FileTools() {
 	// TODO Auto-generated constructor stub
 

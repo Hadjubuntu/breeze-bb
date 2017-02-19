@@ -9,11 +9,22 @@
 #include "Logger.h"
 
 #include "../hal/HAL.h"
+#include "FileTools.h"
 
 
-Logger::Logger()  : _mode(DEBUG) {
+Logger::Logger()  : _mode(DEBUG), history(History<std::string>::create(100)) {
 	// Initialize serial
 //	Serial3.begin(57600);
+}
+
+void Logger::log(std::string pMessage)
+{
+	history.add(pMessage);
+}
+
+void Logger::appendLogfile()
+{
+	FileTools::appendToFile(history.toVector(), logFilepath);
 }
 
 void Logger::info(const char str[])
