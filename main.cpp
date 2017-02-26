@@ -104,7 +104,9 @@ void setup()
 
 	// Initialize all processings
 	//----------------------
+	printf("Init processings\n");
 	uavBrain.initProcessings();
+	printf("Processings activated\n");
 
 }
 
