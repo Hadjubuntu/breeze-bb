@@ -153,8 +153,8 @@ void loop()
 				flightStabilization.getTau().getY(),
 				flightStabilization.getTau().getZ(),
 				actuatorControl.motors[0],
-				ahrs.getGyroHyperFiltered().getX() * 57.0,
-				ahrs.getGyroHyperFiltered().getY() * 57.0
+				ahrs.getGyroFiltered().getX() * 57.0,
+				ahrs.getGyroFiltered().getY() * 57.0
 				);
 	}
 }
