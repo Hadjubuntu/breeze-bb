@@ -224,7 +224,7 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 					+ motorActivation[i][1] * pitchDeltaSignal
 					+ motorActivation[i][2] * yawDeltaSignal);
 
-			Bound(motorX[i], 0, 900);
+			Bound(motorX[i], 0, 1000);
 
 			// Debug
 			motors[i] = motorX[i];
