@@ -217,9 +217,12 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	// Otherwise cut-off motors
 	if (throttle > 15)
 	{
+		// TEST
+		int testThrottle = 0;
+
 		for (int i = 0; i < nbMotors; i ++)
 		{
-			motorX[i] = (int)(throttle
+			motorX[i] = (int)(testThrottle
 					+ motorActivation[i][0] * rollDeltaSignal
 					+ motorActivation[i][1] * pitchDeltaSignal
 					+ motorActivation[i][2] * yawDeltaSignal);
