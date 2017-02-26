@@ -31,11 +31,11 @@ Conf::Conf()
 	_parameters.push_back(Param<float>("maxAbsPitchAngle", 1.0f));
 	_parameters.push_back(Param<float>("maxAbsCombinedAngle", 1.0f));
 	// Max command on the torque in Nm
-	_parameters.push_back(Param<float>("maxCommandNm", 2.5f));
+	_parameters.push_back(Param<float>("maxCommandNm", 6.0f));
 	// Flight stabilization
 	_parameters.push_back(Param<float>("flightStabilization_Pq", 15.0f));
 	_parameters.push_back(Param<float>("flightStabilization_Pw", 1.0f));
-	_parameters.push_back(Param<float>("commandNmToSignalUs", 120.0f));
+	_parameters.push_back(Param<float>("commandNmToSignalUs", 50.0f));
 
 	// Flight stabilization with simple PID
 	_parameters.push_back(Param<float>("flightStabilization_Kangle", 4.0f));
