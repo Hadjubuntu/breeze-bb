@@ -35,8 +35,8 @@ _tau(Vect3D::zero())
 	_throttleHover = Conf::getInstance().get("flightStabilization_throttleHover");
 
 	// Note that we use radian angles. It means 5 * 0.01 for integral means 2.86° correction for integral terms
-	pidRoll.init(_KrateRoll->getValue(), 0.01, 0.01, 3.0);
-	pidPitch.init(_KratePitch->getValue(), 0.01, 0.01, 3.0);
+	pidRoll.init(_KrateRoll->getValue(), 0.01, 0.05, 2.0);
+	pidPitch.init(_KratePitch->getValue(), 0.01, 0.05, 2.0);
 	_pidAltitude.init(0.55, 0.04, 0.01, 4);
 
 	_ahrs = ahrs;
