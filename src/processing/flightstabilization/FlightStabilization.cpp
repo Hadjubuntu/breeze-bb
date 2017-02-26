@@ -56,7 +56,7 @@ void FlightStabilization::updateInputParameters()
 	//
 	_currentAttitude = _ahrs->getAttitude();
 	_yawFromGyro = _ahrs->getYawFromGyro();
-	_gyroRot = _ahrs->getGyroFiltered()();
+	_gyroRot = _ahrs->getGyroFiltered();
 }
 
 
@@ -108,8 +108,8 @@ void FlightStabilization::process()
 	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.0);
 	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0.0);
 
-	pidRoll.update(rollRate - _gyroRot[0], 1/freqHz);
-	pidPitch.update(pitchRate - _gyroRot[1], 1/freqHz);
+	pidRoll.update(rollRate , 1/freqHz); // FIXME temp removed : - _gyroRot[0]
+	pidPitch.update(pitchRate , 1/freqHz); // FIXME temp removed : - _gyroRot[1]
 
 	_tau = Vect3D(pidRoll.getOutput(),
 			pidPitch.getOutput(),
