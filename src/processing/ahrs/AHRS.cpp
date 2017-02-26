@@ -23,7 +23,8 @@ AHRS::AHRS(Baro *baro) : Processing(), _grot(Vect3D::zero()),
 		_accelerometer(Accelerometer::create()),
 		_yawFromGyro(0.0),
 		_lastPositiveAccPeak(Date::now()),
-		_lastNegativeAccPeak(Date::now())
+		_lastNegativeAccPeak(Date::now()),
+		gyroHyperFilted(Vect3D::zero())
 //		_baro(Baro::create())
 {
 	// 400 Hz update
@@ -145,6 +146,8 @@ void AHRS::process()
 	_yawFromGyro += gyros.getZ() / freqHz;
 	_yawFromGyro = 0.9 * _yawFromGyro;
 	_yawFromGyro = FastMath::constrainAngleMinusPiPlusPi(_yawFromGyro);
+
+	setGyroHyperFiltered(gyros);
 
 	// Integrate delta accZ to have estimation on vertical speed
 	computeVz();

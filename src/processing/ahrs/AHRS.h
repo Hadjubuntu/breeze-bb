@@ -51,6 +51,8 @@ private:
 	float _vZ;
 	float _analyzedAccZ;
 
+	Vect3D gyroHyperFilted;
+
 public:
 	AHRS(Baro *);
 
@@ -69,6 +71,15 @@ public:
 	float* getGyroCorr();
 
 	void calibrateOffset();
+
+	void setGyroHyperFiltered(Vect3D pGyros)
+	{
+		gyroHyperFilted = pGyros;
+	}
+	Vect3D getGyroHyperFiltered()
+	{
+		return gyroHyperFilted;
+	}
 
 	/******************************************************
 	 * GETTERS
