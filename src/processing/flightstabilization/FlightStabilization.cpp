@@ -35,8 +35,8 @@ _tau(Vect3D::zero())
 	_throttleHover = Conf::getInstance().get("flightStabilization_throttleHover");
 
 	// Note that we use radian angles. It means 5 * 0.01 for integral means 2.86° correction for integral terms
-	pidRoll.init(_KrateRoll->getValue(), 0.01, 0.1, 3.0);
-	pidPitch.init(_KratePitch->getValue(), 0.01, 0.1, 3.0);
+	pidRoll.init(_KrateRoll->getValue(), 0.01, 0.0, 3.0);
+	pidPitch.init(_KratePitch->getValue(), 0.01, 0.0, 3.0);
 	_pidAltitude.init(0.55, 0.04, 0.01, 4);
 
 	_ahrs = ahrs;
@@ -56,7 +56,7 @@ void FlightStabilization::updateInputParameters()
 	//
 	_currentAttitude = _ahrs->getAttitude();
 	_yawFromGyro = _ahrs->getYawFromGyro();
-	_gyroRot = _ahrs->getGyroFiltered();
+	_gyroRot = _ahrs->getGyroHyperFiltered();
 }
 
 
@@ -105,11 +105,15 @@ void FlightStabilization::process()
 	BoundAbs(pitchRate, 3.14);
 
 
-	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.1);
-	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 01);
+	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.0);
+	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0);
 
-	pidRoll.update(rollRate , 1/freqHz); // FIXME temp removed : - _gyroRot[0]
-	pidPitch.update(pitchRate , 1/freqHz); // FIXME temp removed : - _gyroRot[1]
+	// TODO
+	// *****************************
+	// Compute gyro rate from history of attitude
+	// *****************************
+	pidRoll.update(rollRate - _gyroRot[0], 1/freqHz);
+	pidPitch.update(pitchRate  - _gyroRot[1], 1/freqHz);
 
 	_tau = Vect3D(pidRoll.getOutput(),
 			pidPitch.getOutput(),

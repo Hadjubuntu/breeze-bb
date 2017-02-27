@@ -51,6 +51,8 @@ private:
 	float _vZ;
 	float _analyzedAccZ;
 
+	Date lastAttitudeDateStored;
+	Quaternion lastAttitude;
 	Vect3D gyroHyperFilted;
 
 public:
@@ -72,10 +74,7 @@ public:
 
 	void calibrateOffset();
 
-	void setGyroHyperFiltered(Vect3D pGyros)
-	{
-		gyroHyperFilted = pGyros;
-	}
+
 	Vect3D getGyroHyperFiltered()
 	{
 		return gyroHyperFilted;

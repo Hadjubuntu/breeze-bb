@@ -24,6 +24,8 @@ AHRS::AHRS(Baro *baro) : Processing(), _grot(Vect3D::zero()),
 		_yawFromGyro(0.0),
 		_lastPositiveAccPeak(Date::now()),
 		_lastNegativeAccPeak(Date::now()),
+		lastAttitude(Quaternion::zero()),
+		lastAttitudeDateStored(Date::now()),
 		gyroHyperFilted(Vect3D::zero())
 //		_baro(Baro::create())
 {
@@ -65,7 +67,6 @@ void AHRS::process()
 	const float accelKi = 0.000174;
 	const float accelKp = 0.00174;
 	const float rollPitchBiasRate = 0.999999;
-
 
 	_accelerometer.update();
 	_gyro.update();
@@ -147,7 +148,14 @@ void AHRS::process()
 	_yawFromGyro = 0.9 * _yawFromGyro;
 	_yawFromGyro = FastMath::constrainAngleMinusPiPlusPi(_yawFromGyro);
 
-	setGyroHyperFiltered(gyros);
+	// Store attitude and delta
+	float dtAttitude = Date::now().durationFrom(lastAttitudeDateStored);
+	if (dtAttitude > 0.5)
+	{
+		 gyroHyperFilted = (_attitude.toRollPitchYawVect3D() - lastAttitude.toRollPitchYawVect3D()) / dtAttitude;
+		lastAttitude = _attitude;
+		lastAttitudeDateStored = Date::now();
+	}
 
 	// Integrate delta accZ to have estimation on vertical speed
 	computeVz();

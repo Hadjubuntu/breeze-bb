@@ -46,6 +46,14 @@ public:
 	Vect3D operator*(float scalar) const {
 		return Vect3D(_x * scalar, _y * scalar, _z * scalar);
 	}
+	Vect3D operator/(float scalar) const {
+		if (scalar > 1e-6 || scalar < -1e-6) {
+		return Vect3D(_x / scalar, _y / scalar, _z / scalar);
+		}
+		else {
+			return Vect3D::zero();
+		}
+	}
 	Vect3D operator+(const Vect3D &vect) const {
 		return Vect3D(_x + vect._x, _y + vect._y, _z + vect._z);
 	}
