@@ -33,6 +33,7 @@ private:
 
 	Date lastExitModeStartDate;
 	short exitCommand;
+	short awaitExit;
 
 	// Output
 	Quaternion attitudeDesired;

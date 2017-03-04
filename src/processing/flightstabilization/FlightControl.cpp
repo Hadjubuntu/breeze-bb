@@ -36,6 +36,7 @@ FlightControl::FlightControl(RadioControler *radioController) : Processing(),
 	throttleOut = 0.0;
 
 	exitCommand = 0;
+	awaitExit = 0;
 }
 
 /**
@@ -96,19 +97,23 @@ void FlightControl::process()
 
 	if (throttle < 0.1 && FastMath::fabs(_radioController->getRollCommandNormed()) > 0.6 && FastMath::fabs(_radioController->getYawCommandNormed()) > 0.6)
 	{
-		if (!exitCommand)
+		if (awaitExit == 0)
 		{
 			lastExitModeStartDate = Date::now();
+			awaitExit = 1;
 		}
 		else {
 			if (Date::now().durationFrom(lastExitModeStartDate) > 5.0)
 			{
 				exitCommand = 1;
+				awaitExit = 0;
 			}
 		}
 	}
 	else {
 		lastExitModeStartDate = Date::zero();
+		awaitExit = 0;
+		exitCommand = 0;
 	}
 }
 
