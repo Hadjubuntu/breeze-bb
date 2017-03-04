@@ -68,10 +68,10 @@ int Sbus::init(const char *device)
 		partial_frame_count = 0;
 		last_rx_time = Date::now();
 
-		printf("S.Bus: ready");
+		printf("S.Bus: ready\n");
 
 	} else {
-		printf("S.Bus: open failed");
+		printf("S.Bus: open failed\n");
 	}
 
 	// Initialize channel
