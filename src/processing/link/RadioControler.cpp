@@ -34,7 +34,7 @@ void RadioControler::init()
 	int iter = 0;
 	printf("RadioControler is waiting for throttle down..\n");
 	// Execute screen temporary command
-	std::string cmdScreen = "./scripts/bb-screen.sh";
+	std::string cmdScreen = "sudo ./scripts/bb-screen.sh";
 	system(cmdScreen.c_str());
 
 	// Wait until a first value is setted
