@@ -33,6 +33,10 @@ void RadioControler::init()
 
 	int iter = 0;
 	printf("waiting for throttle down\n");
+	// Execute screen temporary command
+	std::string cmdScreen = "timeout 3s sudo screen /dev/ttyO1 57600 3s";
+	system(cmdScreen.c_str());
+
 	// Wait until a first value is setted
 	while (handler.sbus_updated == false) {
 		handler.fastLoop();
@@ -41,7 +45,8 @@ void RadioControler::init()
 	// Then wait until throttle is down
 	while (handler.channels[2] > RADIO_OFFSET + 100)
 	{
-		wait(0.5);
+		printf("Throttle still at: %d\n", handler.channels[2]);
+		wait(1.0);
 	}
 	printf("Throttle down ok\n");
 

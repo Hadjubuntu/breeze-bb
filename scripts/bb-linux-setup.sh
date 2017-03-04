@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dirPath="/etc/init.d/"
-scriptName="bb-superscript"
+scriptName="bb-superscript.sh"
 fullpath="${dirPath}${scriptName}"
 
 echo "fullpath: ${fullpath}"
