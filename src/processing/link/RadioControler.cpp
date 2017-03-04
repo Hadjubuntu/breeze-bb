@@ -35,8 +35,10 @@ void RadioControler::init()
 	printf("RadioControler is waiting for throttle down..\n");
 	// Execute screen temporary command
 	std::string cmdScreen = "sudo ./scripts/bb-screen.sh";
-	system(cmdScreen.c_str());
+	int resCmd = system(cmdScreen.c_str());
+	printf("bb screen result: %d\n", resCmd);
 
+	printf("Entering fast loop\n");
 	// Wait until a first value is setted
 	while (handler.sbus_updated == false) {
 		handler.fastLoop();
