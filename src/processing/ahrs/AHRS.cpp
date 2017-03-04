@@ -150,7 +150,7 @@ void AHRS::process()
 
 	// Store attitude and delta
 	float dtAttitude = Date::now().durationFrom(lastAttitudeDateStored);
-	if (dtAttitude > 0.5)
+	if (dtAttitude > 0.1)
 	{
 		 gyroHyperFilted = (_attitude.toRollPitchYawVect3D() - lastAttitude.toRollPitchYawVect3D()) / dtAttitude;
 		lastAttitude = _attitude;
