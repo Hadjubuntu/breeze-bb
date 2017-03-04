@@ -27,16 +27,18 @@ RadioControler::RadioControler() : Processing()
  */
 void RadioControler::init()
 {
+
+	// Execute screen temporary command
+	std::string cmdScreen = "sudo screen -dm /dev/ttyO1 57600 && sudo killall screen";
+	int resCmd = system(cmdScreen.c_str());
+	printf("bb screen result: %d\n", resCmd);
+
 	// Start serial for sbus radio
 	handler.init("/dev/ttyO1");
 
 
 	int iter = 0;
 	printf("RadioControler is waiting for throttle down..\n");
-	// Execute screen temporary command
-	std::string cmdScreen = "sudo screen -dm /dev/ttyO1 57600 && sudo killall screen";
-	int resCmd = system(cmdScreen.c_str());
-	printf("bb screen result: %d\n", resCmd);
 
 	printf("Entering fast loop\n");
 	// Wait until a first value is setted
