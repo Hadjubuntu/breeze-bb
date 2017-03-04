@@ -105,8 +105,8 @@ void FlightStabilization::process()
 	BoundAbs(pitchRate, 3.14);
 
 
-	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.1);
-	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0.1);
+	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.5);
+	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0.5);
 
 	// TODO
 	// *****************************
