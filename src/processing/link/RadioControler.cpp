@@ -7,6 +7,12 @@
 
 #include "RadioControler.h"
 
+#define CH_ROLL 0
+#define CH_PITCH 1
+#define CH_THROTTLE 2
+#define CH_YAW 3
+#define CH_ROLL_MIX 7 // Fixed-wing only
+
 /**
  * Constructor
  */
@@ -46,26 +52,60 @@ void RadioControler::init()
 	}
 }
 
+
+// ---------------------------------------------
+// Normed commands
+// ---------------------------------------------
+
 float RadioControler::getRollCommandNormed()
 {
-	return handler.getChannelNormed(0);
+	return handler.getChannelNormed(CH_ROLL);
 }
 
 float RadioControler::getPitchCommandNormed()
 {
-	return handler.getChannelNormed(1);
+	return handler.getChannelNormed(CH_PITCH);
 }
 
 float RadioControler::getThrottleCommandNormed()
 {
-	return handler.getChannelNormed(2);
+	return handler.getChannelNormed(CH_THROTTLE);
 }
 
 float RadioControler::getYawCommandNormed()
 {
-	return handler.getChannelNormed(3);
+	return handler.getChannelNormed(CH_YAW);
 }
 
+// ---------------------------------------------
+// Raw commands
+// ---------------------------------------------
+int RadioControler::getRollRawCommand()
+{
+	return handler.getChannel(CH_ROLL);
+}
+
+int RadioControler::getRollMixRawCommand()
+{
+	return handler.getChannel(CH_ROLL_MIX);
+}
+
+int RadioControler::getPitchRawCommand()
+{
+	return handler.getChannelNormed(CH_PITCH);
+}
+
+int RadioControler::getThrottleRawCommand()
+{
+	return handler.getChannel(CH_THROTTLE);
+}
+
+int RadioControler::getYawRawCommand()
+{
+	return handler.getChannelNormed(CH_YAW);
+}
+
+// Process in fast loop mode
 void RadioControler::process()
 {
 	handler.fastLoop();

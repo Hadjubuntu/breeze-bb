@@ -25,8 +25,8 @@ FlightControl::FlightControl(RadioControler *radioController) : Processing(), in
 	_maxAbsPitchAngle = Conf::getInstance().get("maxAbsPitchAngle");
 	_maxAbsCombinedAngle = Conf::getInstance().get("maxAbsCombinedAngle");
 
-	_rollDesired = 0.0;
-	_pitchDesired = 0.0;
+	rollDesired = 0.0;
+	pitchDesired = 0.0;
 	_yawInt = 0.0;
 
 	_auto = 0;
@@ -67,8 +67,8 @@ void FlightControl::process()
 	// ------------------
 
 	// Compute roll, pitch, yaw desired by using the radio values
-	_rollDesired = radioToRad(_radioController->getRollCommandNormed(), _maxAbsRollAngle->getValue());
-	_pitchDesired = radioToRad(_radioController->getPitchCommandNormed(), _maxAbsPitchAngle->getValue());
+	rollDesired = radioToRad(_radioController->getRollCommandNormed(), _maxAbsRollAngle->getValue());
+	pitchDesired = radioToRad(_radioController->getPitchCommandNormed(), _maxAbsPitchAngle->getValue());
 	float yaw = radioToRad(_radioController->getYawCommandNormed(), _maxAbsCombinedAngle->getValue());
 	// Throttle from 0 to 1
 	float throttle = _radioController->getThrottleCommandNormed();
@@ -81,7 +81,7 @@ void FlightControl::process()
 	Bound(_yawInt, -PI, PI); //FIXME when max left and turns left, go other side ..
 
 	// Transform RPY to quaternion
-	_attitudeDesired = Quaternion::fromEuler(_rollDesired, _pitchDesired, _yawInt);
+	_attitudeDesired = Quaternion::fromEuler(rollDesired, pitchDesired, _yawInt);
 
 	_throttleOut = throttle;
 }

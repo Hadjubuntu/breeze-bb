@@ -63,18 +63,21 @@ unsigned short levelToCtrl(unsigned short level)
  * Processing constructor
  * FIXME configure pwm pin => see bb-setup.sh in scripts directory
  */
-ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing(),
+ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl *pFlightControl) : Processing(),
 		pwm0(Pwm(MOTOR_FREQ_HZ, 2)),
 		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
 		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
-		pwm3(Pwm(MOTOR_FREQ_HZ, 3))
+		pwm3(Pwm(MOTOR_FREQ_HZ, 3)),
+		pwm4(Pwm(MOTOR_FREQ_HZ, 4))
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
+	flightControl = pFlightControl;
 
 	// Retrieve conf params
 	_maxCommandNm = Conf::getInstance().get("maxCommandNm");
 	_commandNmToSignalUs = Conf::getInstance().get("commandNmToSignalUs");
+	motorMinPwmValue = Conf::getInstance().get("motorMinPwmValue");
 }
 
 void ActuatorControl::initMotorRepartition() {
@@ -116,6 +119,7 @@ void ActuatorControl::init()
 	pwm1.init();
 	pwm2.init();
 	pwm3.init();
+	pwm4.init();
 
 	// Initialize motor repartition especially for Ycopter
 	initMotorRepartition();
@@ -159,31 +163,46 @@ int ActuatorControl::getCommandNmToSignalUs(float commandNm, float nmToDeltaSign
 
 void ActuatorControl::processFixedWing(unsigned short int  throttle)
 {
-	// Motors - write pulse
-//	pwmWrite(D28, US_TO_COMPARE(throttle));
-
-	// Servos - write pulse
-	// -----------------------
-	// Wings / Roll
-	Vect3D torqueCmd = _flightStabilization->getTau();
-	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
-	int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 150.0f);
-
-
 	int meanPwm = 1450; // TODO put in conf
-	pwm0.write(meanPwm + rollDeltaSignal);
-	pwm1.write(meanPwm + pitchDeltaSignal);
 
-	//	pwmWrite(D14, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//	pwmWrite(D24, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//
-	//	// Pitch
-	//	pwmWrite(D5, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//
-	//	// Rubber
-	//	pwmWrite(D9, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+	if (flightControl->isAutoMode())
+	{
+		// Apply flight stabilization output
 
-	// Optionnal flaps
+		// Servos - write pulse
+		// -----------------------
+		// Wings / Roll
+		Vect3D torqueCmd = _flightStabilization->getTau();
+		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
+		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 150.0f);
+
+
+		pwm0.write(meanPwm + rollDeltaSignal);
+		pwm1.write(meanPwm + pitchDeltaSignal);
+
+		//	pwmWrite(D14, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+		//	pwmWrite(D24, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+		//
+		//	// Pitch
+		//	pwmWrite(D5, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+		//
+		//	// Rubber
+		//	pwmWrite(D9, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+
+		// Optionnal flaps
+	}
+	else {
+		// Direct control to the motors and servos
+		RadioControler *radioCtrl = flightControl->getRadioControler();
+
+		pwm0.write(radioCtrl->getThrottleRawCommand());
+		pwm1.write(radioCtrl->getRollRawCommand());
+		pwm2.write(radioCtrl->getRollMixRawCommand());
+		pwm3.write(radioCtrl->getPitchRawCommand());
+		pwm4.write(radioCtrl->getYawRawCommand());
+	}
+
+
 }
 
 
@@ -198,6 +217,7 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
  */
 void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMotors)
 {
+	int motorMinPwm = (int) motorMinPwmValue->getValue();
 	// Retrieve torque command
 	Vect3D torqueCmd = _flightStabilization->getTau();
 
@@ -231,14 +251,13 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 		}
 	}
 
-	int min_pwm = 800; // TODO put in conf
-	pwm0.write(min_pwm + motorX[0]);
-	pwm1.write(min_pwm + motorX[1]);
-	pwm2.write(min_pwm + motorX[2]);
+	pwm0.write(motorMinPwm + motorX[0]);
+	pwm1.write(motorMinPwm  + motorX[1]);
+	pwm2.write(motorMinPwm  + motorX[2]);
 
 	if (nbMotors == 4)
 	{
-		pwm3.write(min_pwm + motorX[3]);
+		pwm3.write(motorMinPwm  + motorX[3]);
 	}
 	else
 	{
@@ -246,16 +265,16 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 	}
 
 	// Write pulse for motors
-//	pwmWrite(D28, levelToCtrl(motorX[0]));
-//	pwmWrite(D27, levelToCtrl(motorX[1]));
-//	pwmWrite(D11, levelToCtrl(motorX[2]));
-//
-//	if (nbMotors == 4)
-//	{
-//		pwmWrite(D12, levelToCtrl(motorX[3]));
-//	}
-//	else {
-//		// Signal goes from 650 to 2250 ms
-//		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
-//	}
+	//	pwmWrite(D28, levelToCtrl(motorX[0]));
+	//	pwmWrite(D27, levelToCtrl(motorX[1]));
+	//	pwmWrite(D11, levelToCtrl(motorX[2]));
+	//
+	//	if (nbMotors == 4)
+	//	{
+	//		pwmWrite(D12, levelToCtrl(motorX[3]));
+	//	}
+	//	else {
+	//		// Signal goes from 650 to 2250 ms
+	//		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
+	//	}
 }

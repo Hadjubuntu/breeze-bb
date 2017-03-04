@@ -10,6 +10,7 @@
 
 
 #include "../flightstabilization/FlightStabilization.h"
+#include "../flightstabilization/FlightControl.h"
 #include "../../hal/Pwm.h"
 
 class ActuatorControl : public Processing {
@@ -17,8 +18,12 @@ private:
 	// conf param
 	Param<float> *_maxCommandNm;
 	Param<float> *_commandNmToSignalUs;
+	Param<float> *motorMinPwmValue;
+
 	// Others param
 	FlightStabilization *_flightStabilization;
+	FlightControl *flightControl;
+
 	float motorActivation[4][3] = {
 			{-1, 1, -1},
 			{1, 1, 1},
@@ -26,14 +31,14 @@ private:
 			{1, -1, -1}
 	};
 
-	Pwm pwm0, pwm1, pwm2, pwm3;
+	Pwm pwm0, pwm1, pwm2, pwm3, pwm4;
 
 	void initMotorRepartition();
 
 public:
 	// debug
 	int motors[4];
-	ActuatorControl(FlightStabilization *);
+	ActuatorControl(FlightStabilization *, FlightControl *);
 
 	void init();
 

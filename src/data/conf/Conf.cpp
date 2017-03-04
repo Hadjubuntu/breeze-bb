@@ -45,6 +45,7 @@ Conf::Conf()
 
 	// Flight stab altitude controller
 	_parameters.push_back(Param<float>("flightStabilization_throttleHover", 0.45f));
+	_parameters.push_back(Param<float>("motorMinPwmValue", 800.0f));
 
 }
 

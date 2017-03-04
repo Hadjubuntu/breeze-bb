@@ -56,7 +56,7 @@ Sonar sonar;
 FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
 
 /** Motor and servo control */
-ActuatorControl actuatorControl(&flightStabilization);
+ActuatorControl actuatorControl(&flightStabilization, &flightControl);
 
 /** Telemetry to keep GCS update */
 Telemetry telemetry(&ahrs, &flightControl, &rfControler);

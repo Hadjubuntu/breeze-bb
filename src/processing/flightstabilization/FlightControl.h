@@ -25,8 +25,8 @@ private:
 	Param<float> *_maxAbsCombinedAngle;
 
 	// Angle desired (rad)
-	float _rollDesired;
-	float _pitchDesired;
+	float rollDesired;
+	float pitchDesired;
 
 	short _auto;
 	Date initDate;
@@ -50,10 +50,10 @@ public:
 	}
 
 	float getRollDesired() {
-		return _rollDesired;
+		return rollDesired;
 	}
 	float getPitchDesired() {
-		return _pitchDesired;
+		return pitchDesired;
 	}
 
 	bool isAutoMode() {
@@ -65,6 +65,11 @@ public:
 	}
 	Quaternion getAttitudeDesired() {
 		return _attitudeDesired;
+	}
+
+	RadioControler *getRadioControler()
+	{
+		return _radioController;
 	}
 };
 

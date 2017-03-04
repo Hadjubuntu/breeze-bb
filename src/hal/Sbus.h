@@ -110,6 +110,10 @@ public:
 
 	void 	fastLoop();
 
+	int getChannel(uint8_t ch)
+	{
+		return channels[ch];
+	}
 
 	float getChannelNormed(uint8_t ch)
 	{

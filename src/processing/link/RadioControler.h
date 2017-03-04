@@ -32,6 +32,13 @@ public:
 	float getThrottleCommandNormed();
 	float getYawCommandNormed();
 
+	int getRollRawCommand();
+	int getPitchRawCommand();
+	int getThrottleRawCommand();
+	int getYawRawCommand();
+	int getRollMixRawCommand();
+
+
 	/**
 	 * Update radio output signals
 	 */
