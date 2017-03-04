@@ -106,7 +106,7 @@ void FlightStabilization::process()
 
 
 	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.0);
-	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0);
+	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0.0);
 
 	// TODO
 	// *****************************

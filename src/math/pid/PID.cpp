@@ -57,7 +57,7 @@ void PID::update(float e, float dtSeconds)
 	_prevError = _error;
 
 	// Evaluate integral
-	_i = _i + _Ki * _error * dtSeconds;
+	_i = _i + _error * dtSeconds;
 	BoundAbs(_i, _maxI);
 
 	_d = (1.0 - _alphaD) * _d + _alphaD * dError;
@@ -75,7 +75,7 @@ void PID::update(float e, float dtSeconds)
 	}
 
 	// Computes output
-	_output = _Ke * (_Kp * _error +  _i + _Kd * _d);
+	_output = _Ke * (_Kp * _error +  _Ki * _i + _Kd * _d);
 
 	// Store data in integral
 //	errorIntegral.add(_error);
