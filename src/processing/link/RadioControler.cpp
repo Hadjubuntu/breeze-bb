@@ -32,7 +32,7 @@ void RadioControler::init()
 
 
 	int iter = 0;
-	printf("waiting for throttle down\n");
+	printf("RadioControler is waiting for throttle down..\n");
 	// Execute screen temporary command
 //	std::string cmdScreen = "/usr/bin/timeout 3s sudo screen /dev/ttyO1 57600 3s";
 //	system(cmdScreen.c_str());
