@@ -92,7 +92,7 @@ void FlightControl::process()
 
 
 	// To quit breeze application, when user input yaw max + roll max more than 5 seconds, then quit is commanded
-	if (throttle < 0.1 && FastMath::fabs(yaw) > 0.8 && FastMath::fabs(rollDesired) > 0.8)
+	if (throttle < 0.1 && FastMath::fabs(_radioController->getRollCommandNormed()) > 0.8 && FastMath::fabs(_radioController->getYawCommandNormed()) > 0.8)
 	{
 		if (!exitCommand)
 		{
