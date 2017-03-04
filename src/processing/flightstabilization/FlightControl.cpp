@@ -11,26 +11,31 @@
 #include "../../data/conf/Conf.h"
 #include "../../math/common/FastMath.h"
 
-FlightControl::FlightControl(RadioControler *radioController) : Processing(), initDate(Date::zero()), _attitudeDesired(Quaternion::zero())
+FlightControl::FlightControl(RadioControler *radioController) : Processing(),
+	initDate(Date::zero()),
+	attitudeDesired(Quaternion::zero()),
+	lastExitModeStartDate(Date::zero())
 {
 	_radioController = radioController;
 
-	_yawInt = 0.0;
+	yawIntegralDesired = 0.0;
 
 	// Runs at 50Hz
 	freqHz = 50;
 
 	// Retrieve conf parameters
-	_maxAbsRollAngle = Conf::getInstance().get("maxAbsRollAngle");
-	_maxAbsPitchAngle = Conf::getInstance().get("maxAbsPitchAngle");
-	_maxAbsCombinedAngle = Conf::getInstance().get("maxAbsCombinedAngle");
+	maxAbsRollAngle = Conf::getInstance().get("maxAbsRollAngle");
+	maxAbsPitchAngle = Conf::getInstance().get("maxAbsPitchAngle");
+	maxAbsCombinedAngle = Conf::getInstance().get("maxAbsCombinedAngle");
 
 	rollDesired = 0.0;
 	pitchDesired = 0.0;
-	_yawInt = 0.0;
+	yawIntegralDesired = 0.0;
 
-	_auto = 0;
-	_throttleOut = 0.0;
+	autoMode = 0;
+	throttleOut = 0.0;
+
+	exitCommand = 0;
 }
 
 /**
@@ -53,10 +58,10 @@ void FlightControl::process()
 	// Do not allow auto mode before 30 seconds from power-up
 	if (Date::now().durationFrom(initDate) > 30.0) {
 		if (currentAutoMode > 0.5) {
-			_auto = 1;
+			autoMode = 1;
 		}
 		else {
-			_auto = 0;
+			autoMode = 0;
 		}
 	}
 
@@ -67,23 +72,42 @@ void FlightControl::process()
 	// ------------------
 
 	// Compute roll, pitch, yaw desired by using the radio values
-	rollDesired = radioToRad(_radioController->getRollCommandNormed(), _maxAbsRollAngle->getValue());
-	pitchDesired = radioToRad(_radioController->getPitchCommandNormed(), _maxAbsPitchAngle->getValue());
-	float yaw = radioToRad(_radioController->getYawCommandNormed(), _maxAbsCombinedAngle->getValue());
+	rollDesired = radioToRad(_radioController->getRollCommandNormed(), maxAbsRollAngle->getValue());
+	pitchDesired = radioToRad(_radioController->getPitchCommandNormed(), maxAbsPitchAngle->getValue());
+	float yaw = radioToRad(_radioController->getYawCommandNormed(), maxAbsCombinedAngle->getValue());
 	// Throttle from 0 to 1
 	float throttle = _radioController->getThrottleCommandNormed();
 	Bound(throttle, 0.0, 1.0);
 
 	// Integrate desired yaw
 	const float Kyaw = 4.0;
-	_yawInt += Kyaw * yaw * 1/freqHz;
-	_yawInt = _yawInt * 0.96;
-	Bound(_yawInt, -PI, PI); //FIXME when max left and turns left, go other side ..
+	yawIntegralDesired += Kyaw * yaw * 1/freqHz;
+	yawIntegralDesired = yawIntegralDesired * 0.96;
+	Bound(yawIntegralDesired, -PI, PI); //FIXME when max left and turns left, go other side ..
 
 	// Transform RPY to quaternion
-	_attitudeDesired = Quaternion::fromEuler(rollDesired, pitchDesired, _yawInt);
+	attitudeDesired = Quaternion::fromEuler(rollDesired, pitchDesired, yawIntegralDesired);
 
-	_throttleOut = throttle;
+	throttleOut = throttle;
+
+
+	// To quit breeze application, when user input yaw max + roll max more than 5 seconds, then quit is commanded
+	if (throttle < 0.1 && FastMath::fabs(yaw) > 0.8 && FastMath::fabs(rollDesired) > 0.8)
+	{
+		if (!exitCommand)
+		{
+			lastExitModeStartDate = Date::now();
+		}
+		else {
+			if (Date::now().durationFrom(lastExitModeStartDate) > 5.0)
+			{
+				exitCommand = 1;
+			}
+		}
+	}
+	else {
+		lastExitModeStartDate = Date::zero();
+	}
 }
 
 

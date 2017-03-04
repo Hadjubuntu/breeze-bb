@@ -30,6 +30,8 @@
 #include "src/core/FileTools.h"
 
 
+bool brainRun = true;
+
 /** Attitude and heading reference system */
 Baro baro;
 AHRS ahrs(&baro);
@@ -99,7 +101,7 @@ void setup()
 	uavBrain.addProcessing(&sonar);
 	uavBrain.addProcessing(&flightStabilization);
 	uavBrain.addProcessing(&actuatorControl);
-//	uavBrain.addProcessing(&telemetry);
+	//	uavBrain.addProcessing(&telemetry);
 	//	uavBrain.addProcessing(&fsAutotune);
 
 	// Initialize all processings
@@ -122,14 +124,15 @@ void loop()
 	uavBrain.loop();
 
 
-//	if (uavBrain.getTickId() % 500 == 0)
-//	{
-//		printf("integral error pid roll = %.2f\n", flightStabilization.getPidRoll().getErrorIntegral().integralValue());
-//	}
 	// Prints infos
 	// ----
 	if (uavBrain.getTickId() % 1000 == 0)
 	{
+		if (flightControl.isExitCommand())
+		{
+			brainRun = false;
+		}
+
 		printf("brain loop\n");
 		float rpy[3];
 		ahrs.getAttitude().toRollPitchYaw(rpy);
@@ -157,14 +160,12 @@ void loop()
 				actuatorControl.motors[0],
 				ahrs.getGyroHyperFiltered().getX() * 57.0,
 				ahrs.getGyroHyperFiltered().getY() * 57.0
-				);
+		);
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	bool brainRun = true;
-
 	printf("Start setup");
 	setup();
 	printf("................done\n");
