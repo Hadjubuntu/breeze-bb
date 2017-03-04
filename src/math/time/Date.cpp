@@ -6,6 +6,8 @@
  */
 #include <chrono>
 #include <stdio.h>
+#include <ctime>
+#include <string.h>
 #include "Date.h"
 
 
@@ -44,4 +46,14 @@ Date Date::now()
 {
 	Date e(micros());
 	return e;
+}
+
+
+std::string Date::nowStr()
+{
+	std::chrono::time_point<std::chrono::system_clock> currentDate = std::chrono::system_clock::now();
+	std::time_t now_time = std::chrono::system_clock::to_time_t(currentDate);
+	std::string str(std::ctime(&now_time));
+
+	return str;
 }

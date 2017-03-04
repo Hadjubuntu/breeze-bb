@@ -3,4 +3,10 @@
 USERNAME="adrien"
 
 echo "Run script at startup to launch breeze-bb application"
-#/home/adrien/breeze-bb/build/breezebb
+
+# Rebuild app
+cd /home/adrien/breeze-bb/
+make
+
+# Execute app
+sudo /home/adrien/breeze-bb/build/breezebb

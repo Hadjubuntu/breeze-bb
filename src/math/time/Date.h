@@ -60,6 +60,8 @@ public:
 
 	static long micros();
 
+	static std::string nowStr();
+
 
 };
 

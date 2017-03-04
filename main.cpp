@@ -108,6 +108,8 @@ void setup()
 	uavBrain.initProcessings();
 	printf("Processings activated\n");
 
+	std::string logData = "Breeze-bb last execution at " + Date::nowStr() + "\n";
+	FileTools::writeToFile("breeze.log", logData);
 }
 
 Date start = Date::now();
