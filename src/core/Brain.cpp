@@ -15,7 +15,7 @@
 //https://github.com/opendrone/flymaple-cpp/blob/master/libmaple/examples/test-timers.cpp
 
 
-Brain::Brain() : _referenceDate(Date::zero()), _commands(History<int>::getDefault()) {
+Brain::Brain() : _referenceDate(Date::zero()) {
 	_tickId = 0;
 	_referenceDate.setTimElapsedSinceStartUs(Date::micros());
 }
