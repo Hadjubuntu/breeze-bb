@@ -30,6 +30,7 @@ void Brain::initProcessings()
 {
 	for (Processing *proc : _processings)
 	{
+		printf("Init proc ..\n");
 		proc->init();
 	}
 }
