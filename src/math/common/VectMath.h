@@ -18,7 +18,7 @@ public:
 	VectMath();
 
 
-	static float derivate(std::vector<float> X);
+//	static float derivate(std::vector<float> X);
 };
 
 #endif /* MATH_COMMON_VECTMATH_H_ */

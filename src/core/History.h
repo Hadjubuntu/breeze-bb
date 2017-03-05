@@ -17,6 +17,7 @@ template <class T>
 class History {
 private:
 	unsigned int _size;
+	int currentIdx;
 	std::vector<T> _history;
 public:
 	/**
@@ -24,6 +25,7 @@ public:
 	 */
 	History(unsigned int size) : _size(size) {
 		_history.reserve(_size);
+		currentIdx = 0;
 	}
 
 
@@ -41,9 +43,7 @@ public:
 		return _size;
 	}
 
-	std::vector<T> toVector() {
-		return _history;
-	}
+	std::vector<T> toVector();
 
 	T getLast() {
 		return _history.at(_size - 1);

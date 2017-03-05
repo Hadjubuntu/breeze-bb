@@ -8,6 +8,7 @@
  *      Author: Adrien HADJ-SALAH
  */
 
+#include <stdio.h>
 #include "LeastSquareFilter.h"
 
 LeastSquareFilter::LeastSquareFilter()
@@ -15,16 +16,15 @@ LeastSquareFilter::LeastSquareFilter()
 	// Default constructor
 }
 
-float* LeastSquareFilter::computeLinearFunc(std::vector<float> Y)
+
+
+void LeastSquareFilter::genericComputeLinearFunc(float *res, std::vector<float> X, std::vector<float> Y)
 {
 	int n = Y.size();
-	float res[2];
 	res[0] = 0.0;
 	res[1] = 0.0;
 
 	if (n > 0) {
-		std::vector<float> X = createSimpleVector(n);
-
 		float meanX = mean(X);
 		std::vector<float> x_minus_meanx = addScalar(X, -meanX);
 		std::vector<float> x_minus_meanx_square = product(x_minus_meanx, x_minus_meanx);
@@ -41,20 +41,23 @@ float* LeastSquareFilter::computeLinearFunc(std::vector<float> Y)
 		if (SSxx != 0.0) {
 			b1 = SSxy / SSxx;
 		}
+
 		float b0 = sumY / n - b1 * sumX / n;
 
 		res[0] = b0;
 		res[1] = b1;
 	}
-
-	return res;
 }
 
 float LeastSquareFilter::apply(std::vector<float> Y, int idx)
 {
 	// Compute linear function parameter
-	float *func = computeLinearFunc(Y);
+	int n = Y.size();
+	float func[2];
+	std::vector<float> X = createSimpleVector(n);
+	genericComputeLinearFunc(func, X, Y);
 
+	printf("func %.2f\n",func[0]);
 	// Use idx + 1 to simulate "future"
 	return func[0] + func[1] * (idx+1);
 }

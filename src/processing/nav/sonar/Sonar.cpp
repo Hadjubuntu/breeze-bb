@@ -18,9 +18,9 @@
 Sonar::Sonar() : Processing()
 {
 	freqHz = 10;
-	_sonarPin = 10;
-	_filteredSonarValueCm = 0.0;
-	_healthy = false;
+	sonarPin = 10;
+	filteredSonarValueCm = 0.0;
+	healthy = false;
 }
 
 void Sonar::init()
@@ -52,21 +52,21 @@ void Sonar::init()
 
 void Sonar::process()
 {
-	if (_healthy)
+	if (healthy)
 	{
 		// Read new value
 		float currentSonarVal = 0.0; // FIXME (float) analogRead(_sonarPin) * 0.3175; //
 
-		if (_filteredSonarValueCm == 0.0)
+		if (filteredSonarValueCm == 0.0)
 		{
-			_filteredSonarValueCm = currentSonarVal;
+			filteredSonarValueCm = currentSonarVal;
 		}
 		else {
-			float delta = abs(currentSonarVal - _filteredSonarValueCm);
-			float sign = currentSonarVal > _filteredSonarValueCm ? 1.0 : -1.0;
+			float delta = abs(currentSonarVal - filteredSonarValueCm);
+			float sign = currentSonarVal > filteredSonarValueCm ? 1.0 : -1.0;
 
 			float k = 1.0/(delta/8.0+1.0);
-			_filteredSonarValueCm = _filteredSonarValueCm + k * sign * delta;
+			filteredSonarValueCm = filteredSonarValueCm + k * sign * delta;
 		}
 
 		//		// Filter measured value by using mean delta
