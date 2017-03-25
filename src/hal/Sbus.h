@@ -120,6 +120,11 @@ public:
 		return (channels[ch] - channelsCalib[ch]) / RADIO_VAR;
 	}
 
+	uint16_t getCalibration(uint8_t ch)
+	{
+		return channelsCalib[ch];
+	}
+
 	bool isFailsafe() {
 		return sbus_failsafe || sbus_frame_drop;
 	}

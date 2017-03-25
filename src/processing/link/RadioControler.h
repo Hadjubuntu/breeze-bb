@@ -38,6 +38,10 @@ public:
 	int getYawRawCommand();
 	int getRollMixRawCommand();
 
+	int getRollCalib();
+	int getPitchCalib();
+	int getYawCalib();
+
 
 	/**
 	 * Update radio output signals

@@ -87,6 +87,25 @@ float RadioControler::getYawCommandNormed()
 	return handler.getChannelNormed(CH_YAW);
 }
 
+
+
+
+// ---------------------------------------------
+// Calibration commands
+// ---------------------------------------------
+int RadioControler::getRollCalib()
+{
+	return handler.getCalibration(CH_ROLL);
+}
+int RadioControler::getPitchCalib()
+{
+	return handler.getCalibration(CH_PITCH);
+}
+int RadioControler::getYawCalib()
+{
+	return handler.getCalibration(CH_YAW);
+}
+
 // ---------------------------------------------
 // Raw commands
 // ---------------------------------------------

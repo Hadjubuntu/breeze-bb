@@ -104,8 +104,8 @@ void ActuatorControl::initMotorRepartition() {
 
 		break;
 	case FIXED_WING:
-		smoothPwmRoll.setParameters(0.0, 0.0, 500.0);
-		smoothPwmPitch.setParameters(0.0, 0.0, 500.0);
+		smoothPwmRoll.setParameters(0.0, 0.0, 1000.0);
+		smoothPwmPitch.setParameters(0.0, 0.0, 1000.0);
 		break;
 	case HCOPTER:
 		break;
@@ -174,24 +174,28 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 
 	if (flightControl->isAutoMode())
 	{
+		int rollCalib = radioCtrl->getRollCalib();
+		int	pitchCalib = radioCtrl->getPitchCalib();
+		int	yawCalib = radioCtrl->getYawCalib();
+
 		// Apply flight stabilization output
 
 		// Servos - write pulse
 		// -----------------------
 		// Wings / Roll
 		Vect3D torqueCmd = _flightStabilization->getTau();
-		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 180.0f);
-		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 180.0f);
-		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 100.0f);
+		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 200.0f);
+		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 200.0f);
+		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 150.0f);
 
 		smoothPwmRoll.setTarget(rollDeltaSignal);
 		smoothPwmPitch.setTarget(pitchDeltaSignal);
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
-		pwm1.write(meanPwm+smoothPwmRoll.getCurrent());
-		pwm2.write(meanPwm-smoothPwmRoll.getCurrent());
-		pwm3.write(meanPwm+smoothPwmPitch.getCurrent());
-		pwm4.write(meanPwm+yawDeltaSignal);
+		pwm1.write(rollCalib + smoothPwmRoll.getCurrent());
+		pwm2.write(rollCalib + smoothPwmRoll.getCurrent());
+		pwm3.write(pitchCalib + smoothPwmPitch.getCurrent());
+		pwm4.write(yawCalib + yawDeltaSignal);
 	}
 	else {
 		// Direct control to the motors and servos
