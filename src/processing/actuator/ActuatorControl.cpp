@@ -68,9 +68,9 @@ ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl
 		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
 		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
 		pwm3(Pwm(MOTOR_FREQ_HZ, 3)),
-		pwm4(Pwm(MOTOR_FREQ_HZ, 4))
-//		smoothPwmRoll(0.0, 0.0),
-//		smoothPwmPitch(0.0, 0.0)
+		pwm4(Pwm(MOTOR_FREQ_HZ, 4)),
+		smoothPwmRoll(0.0, 0.0),
+		smoothPwmPitch(0.0, 0.0)
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
@@ -80,6 +80,9 @@ ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl
 	_maxCommandNm = Conf::getInstance().get("maxCommandNm");
 	_commandNmToSignalUs = Conf::getInstance().get("commandNmToSignalUs");
 	motorMinPwmValue = Conf::getInstance().get("motorMinPwmValue");
+
+	smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
+	smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
 }
 
 void ActuatorControl::initMotorRepartition() {
@@ -104,8 +107,7 @@ void ActuatorControl::initMotorRepartition() {
 
 		break;
 	case FIXED_WING:
-//		smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
-//		smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
+
 		break;
 	case HCOPTER:
 		break;
