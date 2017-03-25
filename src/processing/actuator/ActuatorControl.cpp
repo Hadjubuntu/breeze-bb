@@ -104,8 +104,8 @@ void ActuatorControl::initMotorRepartition() {
 
 		break;
 	case FIXED_WING:
-		smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
-		smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
+		smoothPwmRoll.setParameters(0.0, 0.0, 500.0);
+		smoothPwmPitch.setParameters(0.0, 0.0, 500.0);
 		break;
 	case HCOPTER:
 		break;
