@@ -39,6 +39,7 @@ public:
 	int getRollMixRawCommand();
 
 	int getRollCalib();
+	int getRollMixCalib();
 	int getPitchCalib();
 	int getYawCalib();
 

@@ -97,6 +97,10 @@ int RadioControler::getRollCalib()
 {
 	return handler.getCalibration(CH_ROLL);
 }
+int RadioControler::getRollMixCalib()
+{
+	return handler.getCalibration(CH_ROLL_MIX);
+}
 int RadioControler::getPitchCalib()
 {
 	return handler.getCalibration(CH_PITCH);
