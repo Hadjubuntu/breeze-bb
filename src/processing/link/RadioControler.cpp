@@ -11,7 +11,7 @@
 #define CH_PITCH 1
 #define CH_THROTTLE 2
 #define CH_YAW 3
-#define CH_ROLL_MIX 7 // Fixed-wing only
+#define CH_ROLL_MIX 6 // Fixed-wing only
 
 /**
  * Constructor

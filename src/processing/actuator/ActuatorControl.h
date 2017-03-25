@@ -12,6 +12,7 @@
 #include "../flightstabilization/FlightStabilization.h"
 #include "../flightstabilization/FlightControl.h"
 #include "../../hal/Pwm.h"
+#include "../../math/filter/Smoother.h"
 
 class ActuatorControl : public Processing {
 private:
@@ -32,6 +33,7 @@ private:
 	};
 
 	Pwm pwm0, pwm1, pwm2, pwm3, pwm4;
+	Smoother smoothPwmRoll, smoothPwmPitch;
 
 	void initMotorRepartition();
 
