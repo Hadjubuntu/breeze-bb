@@ -155,13 +155,14 @@ void loop()
 				FastMath::toDegrees(rpyTarget[0]), FastMath::toDegrees(rpyTarget[1]), FastMath::toDegrees(rpyTarget[2]),
 				flightControl.getThrottleOut());
 
-		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f | X1=%d | gyroRot0=%.1f | gyroRot1=%.1f\n",
+		printf("stab0:%.1f | stab1:%.1f | stab2:%.1f | X1=%d | gyroRot0=%.1f | gyroRot1=%.1f | auto=%d\n",
 				flightStabilization.getTau().getX(),
 				flightStabilization.getTau().getY(),
 				flightStabilization.getTau().getZ(),
 				actuatorControl.motors[0],
 				ahrs.getGyroHyperFiltered().getX() * 57.0,
-				ahrs.getGyroHyperFiltered().getY() * 57.0
+				ahrs.getGyroHyperFiltered().getY() * 57.0,
+				flightControl.isAutoMode()
 		);
 	}
 }
