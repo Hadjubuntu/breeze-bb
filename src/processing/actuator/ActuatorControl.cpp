@@ -176,14 +176,15 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 		// -----------------------
 		// Wings / Roll
 		Vect3D torqueCmd = _flightStabilization->getTau();
-		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
-		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 150.0f);
+		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 180.0f);
+		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 180.0f);
+		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 100.0f);
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
 		pwm1.write(meanPwm+rollDeltaSignal);
 		pwm2.write(meanPwm-rollDeltaSignal);
 		pwm3.write(meanPwm+pitchDeltaSignal);
-		pwm4.write(meanPwm);
+		pwm4.write(meanPwm+yawDeltaSignal);
 	}
 	else {
 		// Direct control to the motors and servos
