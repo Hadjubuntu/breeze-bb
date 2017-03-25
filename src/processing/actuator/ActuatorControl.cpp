@@ -81,8 +81,8 @@ ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl
 	_commandNmToSignalUs = Conf::getInstance().get("commandNmToSignalUs");
 	motorMinPwmValue = Conf::getInstance().get("motorMinPwmValue");
 
-	smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
-	smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
+//	smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
+//	smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
 }
 
 void ActuatorControl::initMotorRepartition() {
