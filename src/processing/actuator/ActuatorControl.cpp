@@ -188,9 +188,9 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 		smoothPwmPitch.setTarget(pitchDeltaSignal);
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
-		pwm1.write(meanPwm+smoothPwmRoll.getCurrent());
-		pwm2.write(meanPwm-smoothPwmRoll.getCurrent());
-		pwm3.write(meanPwm+smoothPwmPitch.getCurrent());
+		pwm1.write(meanPwm+rollDeltaSignal);
+		pwm2.write(meanPwm-rollDeltaSignal);
+		pwm3.write(meanPwm+pitchDeltaSignal);
 		pwm4.write(meanPwm+yawDeltaSignal);
 	}
 	else {
