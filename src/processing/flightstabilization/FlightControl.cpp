@@ -54,7 +54,7 @@ void FlightControl::process()
 
 	// AUTO mode
 	// ------------------
-	float currentAutoMode = _radioController->getHandler().getChannelNormed(6);
+	float currentAutoMode = _radioController->getHandler().getChannelNormed(5);
 
 	// Do not allow auto mode before 30 seconds from power-up
 	if (Date::now().durationFrom(initDate) > 30.0) {

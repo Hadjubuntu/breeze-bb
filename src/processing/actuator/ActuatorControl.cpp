@@ -166,6 +166,8 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 	int motorMinPwm = (int) motorMinPwmValue->getValue();
 	int meanPwm = 1450; // TODO put in conf
 
+	RadioControler *radioCtrl = flightControl->getRadioControler();
+
 	if (flightControl->isAutoMode())
 	{
 		// Apply flight stabilization output
@@ -177,29 +179,14 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
 		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 150.0f);
 
-		pwm0.write(motorMinPwm);
-		pwm1.write(meanPwm);
-		pwm2.write(meanPwm);
-		pwm3.write(meanPwm);
+		pwm0.write(radioCtrl->getThrottleRawCommand());
+		pwm1.write(meanPwm+rollDeltaSignal);
+		pwm2.write(meanPwm-rollDeltaSignal);
+		pwm3.write(meanPwm+pitchDeltaSignal);
 		pwm4.write(meanPwm);
-
-//		pwm0.write(meanPwm + rollDeltaSignal);
-//		pwm1.write(meanPwm + pitchDeltaSignal);
-//
-//		//	pwmWrite(D14, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-//		//	pwmWrite(D24, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-//		//
-//		//	// Pitch
-//		//	pwmWrite(D5, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-//		//
-//		//	// Rubber
-//		//	pwmWrite(D9, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-//
-//		// Optionnal flaps
 	}
 	else {
 		// Direct control to the motors and servos
-		RadioControler *radioCtrl = flightControl->getRadioControler();
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
 		pwm1.write(radioCtrl->getRollRawCommand());
