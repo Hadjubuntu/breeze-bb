@@ -68,9 +68,9 @@ ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl
 		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
 		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
 		pwm3(Pwm(MOTOR_FREQ_HZ, 3)),
-		pwm4(Pwm(MOTOR_FREQ_HZ, 4)),
-		smoothPwmRoll(0.0, 0.0),
-		smoothPwmPitch(0.0, 0.0)
+		pwm4(Pwm(MOTOR_FREQ_HZ, 4))
+//		smoothPwmRoll(0.0, 0.0),
+//		smoothPwmPitch(0.0, 0.0)
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
@@ -104,8 +104,8 @@ void ActuatorControl::initMotorRepartition() {
 
 		break;
 	case FIXED_WING:
-		smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
-		smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
+//		smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
+//		smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
 		break;
 	case HCOPTER:
 		break;
@@ -184,8 +184,8 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 180.0f);
 		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 100.0f);
 
-		smoothPwmRoll.setTarget(rollDeltaSignal);
-		smoothPwmPitch.setTarget(pitchDeltaSignal);
+//		smoothPwmRoll.setTarget(rollDeltaSignal);
+//		smoothPwmPitch.setTarget(pitchDeltaSignal);
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
 		pwm1.write(meanPwm+rollDeltaSignal);

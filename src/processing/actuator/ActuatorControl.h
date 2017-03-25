@@ -33,7 +33,7 @@ private:
 	};
 
 	Pwm pwm0, pwm1, pwm2, pwm3, pwm4;
-	Smoother smoothPwmRoll, smoothPwmPitch;
+//	Smoother smoothPwmRoll, smoothPwmPitch;
 
 	void initMotorRepartition();
 
