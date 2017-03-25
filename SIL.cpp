@@ -9,6 +9,8 @@
 #include "src/math/frame/Frame.h"
 #include "src/core/History.h"
 #include "src/math/filter/LeastSquareFilter.h"
+#include "src/math/filter/Smoother.h"
+
 
 History<float> historyValue(10);
 
@@ -36,6 +38,20 @@ int main()
 	LeastSquareFilter filter;
 	printf("interpolated: %.2f\n", filter.apply(vectValue, 11));
 
+
+	Smoother smooth(0.0, 0.0);
+	smooth.setParameters(0.0, 0.0, 1.0);
+	smooth.setTarget(10.0);
+	Date cDate = Date::now();
+
+	while (Date::now().durationFrom(cDate) < 5.0)
+	{
+		if (Date::now().durationFrom(cDate) > 2.5)
+		{
+			smooth.setTarget(0.0);
+		}
+		printf("Smoother : %.1f\n", smooth.getCurrent());
+	}
 
 
 
