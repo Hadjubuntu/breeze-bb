@@ -80,9 +80,6 @@ ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl
 	_maxCommandNm = Conf::getInstance().get("maxCommandNm");
 	_commandNmToSignalUs = Conf::getInstance().get("commandNmToSignalUs");
 	motorMinPwmValue = Conf::getInstance().get("motorMinPwmValue");
-
-	smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
-	smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
 }
 
 void ActuatorControl::initMotorRepartition() {
@@ -107,7 +104,8 @@ void ActuatorControl::initMotorRepartition() {
 
 		break;
 	case FIXED_WING:
-
+		smoothPwmRoll.setParameters(0.0, 0.0, 50.0);
+		smoothPwmPitch.setParameters(0.0, 0.0, 50.0);
 		break;
 	case HCOPTER:
 		break;
@@ -186,13 +184,13 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
 		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 180.0f);
 		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 100.0f);
 
-//		smoothPwmRoll.setTarget(rollDeltaSignal);
-//		smoothPwmPitch.setTarget(pitchDeltaSignal);
+		smoothPwmRoll.setTarget(rollDeltaSignal);
+		smoothPwmPitch.setTarget(pitchDeltaSignal);
 
 		pwm0.write(radioCtrl->getThrottleRawCommand());
-		pwm1.write(meanPwm+rollDeltaSignal);
-		pwm2.write(meanPwm-rollDeltaSignal);
-		pwm3.write(meanPwm+pitchDeltaSignal);
+		pwm1.write(meanPwm+smoothPwmRoll.getCurrent());
+		pwm2.write(meanPwm-smoothPwmRoll.getCurrent());
+		pwm3.write(meanPwm+smoothPwmPitch.getCurrent());
 		pwm4.write(meanPwm+yawDeltaSignal);
 	}
 	else {
