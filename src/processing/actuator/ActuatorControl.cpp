@@ -168,7 +168,6 @@ int ActuatorControl::getCommandNmToSignalUs(float commandNm, float nmToDeltaSign
 void ActuatorControl::processFixedWing(unsigned short int  throttle)
 {
 	int motorMinPwm = (int) motorMinPwmValue->getValue();
-	int meanPwm = 1450; // TODO put in conf
 
 	RadioControler *radioCtrl = flightControl->getRadioControler();
 
