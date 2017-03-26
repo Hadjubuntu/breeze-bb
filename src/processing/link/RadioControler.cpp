@@ -125,7 +125,7 @@ int RadioControler::getRollMixRawCommand()
 
 int RadioControler::getPitchRawCommand()
 {
-	return handler.getChannelNormed(CH_PITCH);
+	return handler.getChannel(CH_PITCH);
 }
 
 int RadioControler::getThrottleRawCommand()
@@ -135,7 +135,7 @@ int RadioControler::getThrottleRawCommand()
 
 int RadioControler::getYawRawCommand()
 {
-	return handler.getChannelNormed(CH_YAW);
+	return handler.getChannel(CH_YAW);
 }
 
 // Process in fast loop mode
