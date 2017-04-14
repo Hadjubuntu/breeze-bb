@@ -20,11 +20,7 @@ Brain::Brain() : _referenceDate(Date::zero()) {
 	_referenceDate.setTimElapsedSinceStartUs(Date::micros());
 }
 
-void Brain::enableI2C()
-{
-	// Initialize I2C com
-//	i2c_master_enable(I2C1, I2C_FAST_MODE);
-}
+
 
 void Brain::initProcessings()
 {
@@ -75,21 +71,4 @@ void Brain::processingExecution(Processing* proc) {
 	}
 }
 
-
-Processing* Brain::getProcByName(std::string pName)
-{
-//	Processing *output;
-//	std::vector<Processing>::iterator itrProc = _processings.begin();
-//
-//	while (itrProc != _processings.end() && output == NULL)
-//	{
-//		Processing current = *itrProc;
-//		if (current.getName())
-//		{
-//
-//		}
-//		itrProc ++;
-//	}
-	return 0;
-}
 

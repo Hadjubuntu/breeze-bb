@@ -20,9 +20,9 @@ else
 fi
 
 
-
 # Define beaglebone tree-overlay
 config-pin overlay cape-universaln
+
 
 # Initialize pin (uart, pwm, i2c ?..)
 # ---------------------------------
@@ -86,6 +86,8 @@ do
 		echo "Unknow directory"
 	fi
 done
+
+# Initialize uart pins
 for i in "${uart_pin_list[@]}"
 do
 	config-pin $i uart

@@ -430,6 +430,7 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 long lastIter = micros();
 long subiter = 0;
 
+/**
 int main() {
 
 	sbus_init("/dev/ttyO1");
@@ -468,7 +469,7 @@ int main() {
 
 				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
 
-				std::string scriptSetup = "sudo ../../scripts/pwm-setup.sh " + paramStr;
+				std::string scriptSetup = "sudo ../../scripts/bb/pwm-setup.sh " + paramStr;
 
 				// Execute script to setup pwm pin
 				int result = system(scriptSetup.c_str());
@@ -493,3 +494,4 @@ int main() {
 
 	return 0;
 }
+*/

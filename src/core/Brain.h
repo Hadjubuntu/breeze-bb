@@ -39,8 +39,6 @@ public:
 	Brain();
 
 
-	void enableI2C();
-
 	/** Initialize processings */
 	void initProcessings();
 
@@ -52,7 +50,6 @@ public:
 	void loop();
 
 
-	Processing* getProcByName(std::string);
 
 	// Getters
 	//--------------------

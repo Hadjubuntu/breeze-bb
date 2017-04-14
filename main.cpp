@@ -85,9 +85,6 @@ void setup()
 	//---------------------
 	Conf::getInstance().setRfControler(&rfControler);
 
-	// Initialize brain
-	//---------------------
-	uavBrain.enableI2C();
 
 	// Setup pwm, uart through bash script
 	setupPwmUart();
