@@ -4,6 +4,9 @@
 # Author  : Adrien HADJ-SALAH
 # -------------------------------------------------
 
+# TODO on raspberry pi zero: edit /boot/.. to specify wifi connection
+
+
 sudo adduser adrien
 sudo adduser adrien sudo
 # sudo apt-get install git
