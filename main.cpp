@@ -71,6 +71,7 @@ Telemetry telemetry(&ahrs, &flightControl, &rfControler);
 // Execute script to setup pwm pin and uart
 void setupPwmUart()
 {
+	// TODO call new script for Raspberry Pi Zero
 	std::string scriptDirectory = FileTools::searchDirectory(".","scripts");
 	std::string scriptSetup = "sudo ./" + scriptDirectory + "/bb-setup.sh " + Conf::getInstance().firmwareToString();
 
