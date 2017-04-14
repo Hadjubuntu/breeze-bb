@@ -11,6 +11,7 @@
 #include <vector>
 #include "../core/Logger.h"
 #include "../math/time/Date.h"
+#include "../core/Constants.h"
 
 
 /**
@@ -35,6 +36,9 @@ protected:
 	bool callbackTrigger;
 	Date callbackStartDate;
 	long callbackDtUs;
+
+	/** Max timeout for a processing execution */
+	float maxAwaitingProcessingSeconds;
 
 	/** Sub-processings */
 	std::vector<Processing*> procChildren;
@@ -62,6 +66,9 @@ public:
 
 		// Store dt
 		dt = now.durationFrom(lastExecutionDate);
+
+		// Debug
+		// printf("Proc at %d Hz | late of %.2f us\n", freqHz, (dt - 1.0/freqHz) * Constants::S_TO_US);
 
 		// Update last execution date
 		lastExecutionDate = now;

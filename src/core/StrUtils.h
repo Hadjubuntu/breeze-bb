@@ -18,6 +18,7 @@
 class StrUtils {
 public:
 	static std::vector<std::string> explode(const std::string& s, const char& c);
+	static bool startsWith(const char *s, const char *prefix);
 
 };
 

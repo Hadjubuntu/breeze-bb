@@ -9,12 +9,13 @@
 #define PROCESSING_LINK_RADIOCONTROLER_H_
 
 #include "../../core/Processing.h"
-#include "../../link/RadioSbus.h"
+#include "../../hal/Sbus.h"
 
-class RadioControler : public Processing {
+class RadioControler : public Processing
+{
 private:
 	/** Radio sbus handler */
-	RadioSbus _handler;
+	Sbus handler;
 public:
 	/**
 	 * Constructor
@@ -26,29 +27,41 @@ public:
 	 */
 	void init();
 
+	float getRollCommandNormed();
+	float getPitchCommandNormed();
+	float getThrottleCommandNormed();
+	float getYawCommandNormed();
+
+	int getRollRawCommand();
+	int getPitchRawCommand();
+	int getThrottleRawCommand();
+	int getYawRawCommand();
+	int getRollMixRawCommand();
+
+	int getRollCalib();
+	int getRollMixCalib();
+	int getPitchCalib();
+	int getYawCalib();
+
+
 	/**
 	 * Update radio output signals
 	 */
 	void process();
 	void callback() { };
 
+
 	/**
 	 * Get radio sbus handler
 	 */
-	RadioSbus getHandler()
+	Sbus getHandler()
 	{
-		return _handler;
+		return handler;
 	}
 
-	bool isComLost() {
-		return _handler.isComLost();
-	}
-
-	/**
-	 * Returns last update
-	 */
-	Date& getLastUpdate() {
-		return _handler.lastUpdate;
+	bool isFailsafe()
+	{
+		return handler.isFailsafe();
 	}
 };
 

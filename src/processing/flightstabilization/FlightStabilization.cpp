@@ -29,12 +29,14 @@ _tau(Vect3D::zero())
 	_Pq = Conf::getInstance().get("flightStabilization_Pq");
 	_Pw = Conf::getInstance().get("flightStabilization_Pw");
 	_Kangle = Conf::getInstance().get("flightStabilization_Kangle");
-	_Krate = Conf::getInstance().get("flightStabilization_Krate");
+	_KrateRoll = Conf::getInstance().get("flightStabilization_KrateRoll");
+	_KratePitch = Conf::getInstance().get("flightStabilization_KratePitch");
+//	_KrateYaw = Conf::getInstance().get("flightStabilization_KrateYaw");
 	_throttleHover = Conf::getInstance().get("flightStabilization_throttleHover");
 
 	// Note that we use radian angles. It means 5 * 0.01 for integral means 2.86° correction for integral terms
-	pidRoll.init(_Krate->getValue(), 0.01, 0.01, 5);
-	pidPitch.init(_Krate->getValue(), 0.01, 0.01, 5);
+	pidRoll.init(_KrateRoll->getValue(), 0.01, 0.0, 0.0);
+	pidPitch.init(_KratePitch->getValue(), 0.01, 0.0, 0.0);
 	_pidAltitude.init(0.55, 0.04, 0.01, 4);
 
 	_ahrs = ahrs;
@@ -44,9 +46,6 @@ _tau(Vect3D::zero())
 	_flightControl = flightControl;
 	_sonar = sonar;
 	_meanAccZ = 1.0;
-
-	// Debug
-	currentRollErrorAngle = 0.0;
 }
 
 
@@ -54,39 +53,39 @@ void FlightStabilization::updateInputParameters()
 {
 	_targetAttitude = _flightControl->getAttitudeDesired();
 	_throttle = _flightControl->getThrottleOut(); // Throttle is contained between [0; 1]
-
+	//
 	_currentAttitude = _ahrs->getAttitude();
 	_yawFromGyro = _ahrs->getYawFromGyro();
-	_gyroRot = _ahrs->getGyro().getGyroFiltered();
-
+	_gyroRot = _ahrs->getGyroHyperFiltered();
 }
+
 
 void FlightStabilization::process()
 {
 	// DEBUG - tricks on yaw
 
-#if REAL_VERSION
-	Vect3D currentAttVect3D = _currentAttitude.toRollPitchYawVect3D();
-	_currentAttitude = Quaternion(currentAttVect3D.getX(), currentAttVect3D.getY(), _yawFromGyro);
-
-	// Compute error from attitude commanded to current attitude using the combined rotation
-	Quaternion qError = _targetAttitude * (_currentAttitude.conjugate());
-
-	// Axis error
-	Vect3D axisError = qError.getVect3DPart();
-
-	// Compute tau from error and gyro rate
-	_tau = ((axisError * _Pq->getValue()) * (-1)) + ( _gyroRot * _Pw->getValue());
-
-	if (Conf::getInstance().useBoostMotors)
-	{
-		_throttleOut = boostThrottleCompensateTiltAngle(_throttle);
-	}
-	else
-	{
-		_throttleOut = _throttle;
-	}
-#endif
+	//#if REAL_VERSION
+	//	Vect3D currentAttVect3D = _currentAttitude.toRollPitchYawVect3D();
+	//	_currentAttitude = Quaternion(currentAttVect3D.getX(), currentAttVect3D.getY(), _yawFromGyro);
+	//
+	//	// Compute error from attitude commanded to current attitude using the combined rotation
+	//	Quaternion qError = _targetAttitude * (_currentAttitude.conjugate());
+	//
+	//	// Axis error
+	//	Vect3D axisError = qError.getVect3DPart();
+	//
+	//	// Compute tau from error and gyro rate
+	//	_tau = ((axisError * _Pq->getValue()) * (-1)) + ( _gyroRot * _Pw->getValue());
+	//
+	//	if (Conf::getInstance().useBoostMotors)
+	//	{
+	//		_throttleOut = boostThrottleCompensateTiltAngle(_throttle);
+	//	}
+	//	else
+	//	{
+	//		_throttleOut = _throttle;
+	//	}
+	//#endif
 
 	updateInputParameters();
 
@@ -100,29 +99,30 @@ void FlightStabilization::process()
 	// Define angle rate from angle error
 	float rollRate = (rpyTarget[0] - rpyCurrent[0]) * _Kangle->getValue();
 	float pitchRate = (rpyTarget[1] - rpyCurrent[1]) * _Kangle->getValue();
-	float yawRate = 1.4 * (rpyTarget[2] - _yawFromGyro) * _Kangle->getValue();
+	float yawRate = (rpyTarget[2] - _yawFromGyro) * _Kangle->getValue();
 
 	BoundAbs(rollRate, 3.14);
 	BoundAbs(pitchRate, 3.14);
 
 
-	pidRoll.setGainParameters(_Krate->getValue(), 0.01, 0.0);
-	pidPitch.setGainParameters(_Krate->getValue(), 0.01, 0.0);
+	pidRoll.setGainParameters(_KrateRoll->getValue(), 0.01, 0.0);
+	pidPitch.setGainParameters(_KratePitch->getValue(), 0.01, 0.0);
 
+	// TODO
+	// *****************************
+	// Compute gyro rate from history of attitude
+	// *****************************
 	pidRoll.update(rollRate - _gyroRot[0], 1/freqHz);
-	pidPitch.update(pitchRate - _gyroRot[1], 1/freqHz);
+	pidPitch.update(pitchRate  - _gyroRot[1], 1/freqHz);
 
 	_tau = Vect3D(pidRoll.getOutput(),
 			pidPitch.getOutput(),
-			1.3 *_Krate->getValue() * (yawRate - _gyroRot[2]));
+			3.0*_KratePitch->getValue() * (yawRate - _gyroRot[2]));
 
-	// Control altitude
-	// ---
+	//	 Control altitude
+	//	 ---
 	stabilizeAltitude();
 
-	// Debug data
-	// ---
-	currentRollErrorAngle = rpyTarget[0] - rpyCurrent[0];
 }
 
 void FlightStabilization::stabilizeAltitude()
@@ -193,7 +193,8 @@ void FlightStabilization::stabilizeAltitude()
 float FlightStabilization::boostThrottleCompensateTiltAngle(float throttle)
 {
 	Vect3D rpy = _currentAttitude.toRollPitchYawVect3D();
-	float combinedTilt = FastMath::fabs(FastMath::cos(rpy.getX()) * FastMath::cos(rpy.getY()));
+
+	float combinedTilt = FastMath::fabs(FastMath::fcos(rpy.getX()) * FastMath::fcos(rpy.getY()));
 	float factor = 1.0;
 
 	if (isSafeToUseBoost(throttle, combinedTilt))

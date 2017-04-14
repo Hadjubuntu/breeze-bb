@@ -8,6 +8,7 @@
 #ifndef MATH_TIME_DATE_H_
 #define MATH_TIME_DATE_H_
 
+
 #include "../../hal/HAL.h"
 #include "DateUtils.h"
 
@@ -57,6 +58,9 @@ public:
 
 	static Date now();
 
+	static long micros();
+
+	static std::string nowStr();
 
 
 };

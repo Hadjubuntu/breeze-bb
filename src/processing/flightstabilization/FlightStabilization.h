@@ -31,7 +31,9 @@ private:
 	Param<float> *_Pq;
 	Param<float> *_Pw;
 	Param<float> *_Kangle;
-	Param<float> *_Krate;
+	Param<float> *_KratePitch;
+	Param<float> *_KrateRoll;
+//	Param<float> *_KrateYaw;
 	Quaternion _targetAttitude;
 	Quaternion _currentAttitude;
 	Vect3D _gyroRot;
@@ -55,16 +57,13 @@ private:
 
 public:
 
-	// Debug
-	float currentRollErrorAngle;
-
 	/**
 	 * Constructor
 	 */
 	FlightStabilization(AHRS*, FlightControl*, Sonar*);
 
 	/**
-	 * TODO
+	 * Initialization
 	 */
 	void init() {
 

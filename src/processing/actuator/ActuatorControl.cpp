@@ -8,11 +8,20 @@
 #include "../../hal/HAL.h"
 #include "../../math/common/FastMath.h"
 #include "../../data/conf/Conf.h"
-#include "../../link/RadioSbus.h"
 #include "ActuatorControl.h"
 #include <array>
 
 /**
+ * Beaglebone pin mapping for pwm (proto board)
+ *
+ * proto 0 => pwm 2
+ * proto 1 => pwm 0
+ * proto 2 => pwm 1
+ * proto 3 => pwm 3
+ * proto 4 => pwm 4
+ * proto 5 => pwm 5
+ * proto 6 => pwm 6
+ *
  * Timer map
  * Timer 	Ch. 1 pin 	Ch. 2 pin 	Ch. 3 pin 	Ch. 4 pin
 Timer1 	6 	7 	8 	–
@@ -21,10 +30,13 @@ Timer3 	12 	11 	27 	28
 Timer4 	5 	9 	14 	24
  */
 
+#define MAX_DELTA_RADIO_SIGNAL 720
 
+
+#define MOTOR_FREQ_HZ 490 // MOCK FOR SERVO
 
 // This picks the smallest prescaler that allows an overflow < 2^16.
-#define CYCLES_PER_MICROSECOND 100000000000000 // TODO FIXME
+#define CYCLES_PER_MICROSECOND 100000000000000 // FIXME How to manage ESC motors on beaglebone ?
 #define MAX_OVERFLOW    ((1 << 16) - 1)
 #define CYC_MSEC        (1000 * CYCLES_PER_MICROSECOND)
 #define TAU_MSEC        20
@@ -49,39 +61,51 @@ unsigned short levelToCtrl(unsigned short level)
 
 /**
  * Processing constructor
+ * FIXME configure pwm pin => see bb-setup.sh in scripts directory
  */
-ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab) : Processing()
+ActuatorControl::ActuatorControl(FlightStabilization *pFlightStab, FlightControl *pFlightControl) : Processing(),
+		pwm0(Pwm(MOTOR_FREQ_HZ, 2)),
+		pwm1(Pwm(MOTOR_FREQ_HZ, 0)),
+		pwm2(Pwm(MOTOR_FREQ_HZ, 1)),
+		pwm3(Pwm(MOTOR_FREQ_HZ, 3)),
+		pwm4(Pwm(MOTOR_FREQ_HZ, 4)),
+		smoothPwmRoll(0.0, 0.0),
+		smoothPwmPitch(0.0, 0.0)
 {
 	freqHz = 50;
 	_flightStabilization = pFlightStab;
+	flightControl = pFlightControl;
 
 	// Retrieve conf params
 	_maxCommandNm = Conf::getInstance().get("maxCommandNm");
 	_commandNmToSignalUs = Conf::getInstance().get("commandNmToSignalUs");
+	motorMinPwmValue = Conf::getInstance().get("motorMinPwmValue");
 }
 
 void ActuatorControl::initMotorRepartition() {
 	switch (Conf::getInstance().firmware) {
 	case YCOPTER:
 		for (int j = 0; j < 4; j++) {
-			_motorActivation[j][2] = 0;
+			motorActivation[j][2] = 0;
 		}
 
 		// Left motor
-		_motorActivation[0][0] = 1.0;
-		_motorActivation[0][1] = 1.0;
+		motorActivation[0][0] = -1.0;
+		motorActivation[0][1] = 1.0;
 
 		// Right motor
-		_motorActivation[1][0] = -1.0;
-		_motorActivation[1][1] = 1.0;
+		motorActivation[1][0] = 1.0;
+		motorActivation[1][1] = 1.0;
 
 		// Rear motor
-		_motorActivation[2][0] = 0;
-		_motorActivation[2][1] = -1.3; // Boost coefficient to compensate rear servo weight
+		motorActivation[2][0] = 0;
+		motorActivation[2][1] = -1.8; // Boost coefficient to compensate rear servo weight
 
 
 		break;
 	case FIXED_WING:
+		smoothPwmRoll.setParameters(0.0, 0.0, 1500.0);
+		smoothPwmPitch.setParameters(0.0, 0.0, 1500.0);
 		break;
 	case HCOPTER:
 		break;
@@ -95,30 +119,11 @@ void ActuatorControl::initMotorRepartition() {
  */
 void ActuatorControl::init()
 {
-	// Prepare all pin output
-	// -----------------------
-	// Timer 3 for motors at 480 Hz
-//	pinMode(D28, PWM);
-//	pinMode(D27, PWM);
-//	pinMode(D11, PWM);
-//	pinMode(D12, PWM);
-//
-//	// Timer 4 for servos at 50 Hz
-//	pinMode(D14, PWM);
-//	//	pinMode(D24, PWM);
-//	//	pinMode(D5, PWM);
-//	//	pinMode(D9, PWM);
-//
-//
-//	// Set frequency for timers
-//	Timer3.setPeriod((uint32) HZ_TO_US(490)); // 490 Hz
-//	Timer4.setPeriod(20000); // 20000 microseconds = 50hz refresh
-//
-//	// For multicopter only
-//	pwmWrite(D28, levelToCtrl(0));
-//	pwmWrite(D27, levelToCtrl(0));
-//	pwmWrite(D11, levelToCtrl(0));
-//	pwmWrite(D12, levelToCtrl(0));
+	pwm0.init();
+	pwm1.init();
+	pwm2.init();
+	pwm3.init();
+	pwm4.init();
 
 	// Initialize motor repartition especially for Ycopter
 	initMotorRepartition();
@@ -156,31 +161,53 @@ int ActuatorControl::getCommandNmToSignalUs(float commandNm, float nmToDeltaSign
 	BoundAbs(commandNm, _maxCommandNm->getValue());
 	int deltaSignal = (int) commandNm * nmToDeltaSignalUs;
 
-	BoundAbs(deltaSignal, RADIO_VAR);
+	BoundAbs(deltaSignal, MAX_DELTA_RADIO_SIGNAL);
 	return deltaSignal;
 }
 
 void ActuatorControl::processFixedWing(unsigned short int  throttle)
 {
-	// Motors - write pulse
-//	pwmWrite(D28, US_TO_COMPARE(throttle));
+	int motorMinPwm = (int) motorMinPwmValue->getValue();
 
-	// Servos - write pulse
-	// -----------------------
-	// Wings / Roll
-	Vect3D torqueCmd = _flightStabilization->getTau();
-	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 150.0f);
+	RadioControler *radioCtrl = flightControl->getRadioControler();
 
-	//	pwmWrite(D14, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//	pwmWrite(D24, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//
-	//	// Pitch
-	//	pwmWrite(D5, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
-	//
-	//	// Rubber
-	//	pwmWrite(D9, US_TO_COMPARE(throttle + PULSE_MIN_WIDTH));
+	if (flightControl->isAutoMode())
+	{
+		int rollCalib = radioCtrl->getRollCalib();
+		int rollMixCalib = radioCtrl->getRollMixCalib();
+		int	pitchCalib = radioCtrl->getPitchCalib();
+		int	yawCalib = radioCtrl->getYawCalib();
 
-	// Optionnal flaps
+		// Apply flight stabilization output
+
+		// Servos - write pulse
+		// -----------------------
+		// Wings / Roll
+		Vect3D torqueCmd = _flightStabilization->getTau();
+		int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), 200.0f);
+		int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), 200.0f);
+		int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), 150.0f);
+
+		smoothPwmRoll.setTarget(rollDeltaSignal);
+		smoothPwmPitch.setTarget(pitchDeltaSignal);
+
+		pwm0.write(radioCtrl->getThrottleRawCommand());
+		pwm1.write(rollCalib + smoothPwmRoll.getCurrent());
+		pwm2.write(rollMixCalib - smoothPwmRoll.getCurrent()); // Opposite sign
+		pwm3.write(pitchCalib - smoothPwmPitch.getCurrent());
+		pwm4.write(yawCalib + yawDeltaSignal);
+	}
+	else {
+		// Direct control to the motors and servos
+
+		pwm0.write(radioCtrl->getThrottleRawCommand());
+		pwm1.write(radioCtrl->getRollRawCommand());
+		pwm2.write(radioCtrl->getRollMixRawCommand());
+		pwm3.write(radioCtrl->getPitchRawCommand());
+		pwm4.write(radioCtrl->getYawRawCommand());
+	}
+
+
 }
 
 
@@ -195,13 +222,14 @@ void ActuatorControl::processFixedWing(unsigned short int  throttle)
  */
 void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMotors)
 {
+	int motorMinPwm = (int) motorMinPwmValue->getValue();
 	// Retrieve torque command
 	Vect3D torqueCmd = _flightStabilization->getTau();
 
 	// Compute delta signal from torque command
 	int rollDeltaSignal = getCommandNmToSignalUs(torqueCmd.getX(), _commandNmToSignalUs->getValue());
 	int pitchDeltaSignal = getCommandNmToSignalUs(torqueCmd.getY(), _commandNmToSignalUs->getValue());
-	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue() * 5.0);
+	int yawDeltaSignal = getCommandNmToSignalUs(torqueCmd.getZ(), _commandNmToSignalUs->getValue());
 
 	int motorX[nbMotors];
 
@@ -217,28 +245,41 @@ void ActuatorControl::processMulticopter(unsigned short int throttle, int nbMoto
 		for (int i = 0; i < nbMotors; i ++)
 		{
 			motorX[i] = (int)(throttle
-					+ _motorActivation[i][0] * rollDeltaSignal
-					+ _motorActivation[i][1] * pitchDeltaSignal
-					+ _motorActivation[i][2] * yawDeltaSignal);
+					+ motorActivation[i][0] * rollDeltaSignal
+					+ motorActivation[i][1] * pitchDeltaSignal
+					+ motorActivation[i][2] * yawDeltaSignal);
 
-			Bound(motorX[i], 0, 900);
+			Bound(motorX[i], 0, 1000);
 
 			// Debug
 			motors[i] = motorX[i];
 		}
 	}
 
+	pwm0.write(motorMinPwm + motorX[0]);
+	pwm1.write(motorMinPwm  + motorX[1]);
+	pwm2.write(motorMinPwm  + motorX[2]);
+
+	if (nbMotors == 4)
+	{
+		pwm3.write(motorMinPwm  + motorX[3]);
+	}
+	else
+	{
+		pwm3.write(1450 + yawDeltaSignal);
+	}
+
 	// Write pulse for motors
-//	pwmWrite(D28, levelToCtrl(motorX[0]));
-//	pwmWrite(D27, levelToCtrl(motorX[1]));
-//	pwmWrite(D11, levelToCtrl(motorX[2]));
-//
-//	if (nbMotors == 4)
-//	{
-//		pwmWrite(D12, levelToCtrl(motorX[3]));
-//	}
-//	else {
-//		// Signal goes from 650 to 2250 ms TODO use conf parameter here
-//		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
-//	}
+	//	pwmWrite(D28, levelToCtrl(motorX[0]));
+	//	pwmWrite(D27, levelToCtrl(motorX[1]));
+	//	pwmWrite(D11, levelToCtrl(motorX[2]));
+	//
+	//	if (nbMotors == 4)
+	//	{
+	//		pwmWrite(D12, levelToCtrl(motorX[3]));
+	//	}
+	//	else {
+	//		// Signal goes from 650 to 2250 ms
+	//		pwmWrite(D14, US_TO_COMPARE(1400 - yawDeltaSignal));
+	//	}
 }

@@ -58,11 +58,11 @@ public:
 	// Default configuration parameters
 	// ------------------------------------
 	// Use boost motor to compensate roll/pitch angle
-	const bool useBoostMotors = true;
+	const bool useBoostMotors = false;
 
 
 	// Firmware
-	const int firmware = Firmware::YCOPTER;
+	const int firmware = Firmware::FIXED_WING;
 
 
 	/**
@@ -78,6 +78,24 @@ public:
 	void setRfControler(RfControler *pControler)
 	{
 		_rfControler = pControler;
+	}
+
+	std::string firmwareToString()
+	{
+		if (firmware == Firmware::HCOPTER)
+		{
+			return std::string("hcopter");
+		}
+		else if (firmware == Firmware::YCOPTER)
+		{
+			return std::string("ycopter");
+		}
+		else if (firmware == Firmware::FIXED_WING)
+		{
+			return std::string("fixed_wing");
+		}
+
+		return std::string("hcopter"); // default
 	}
 };
 

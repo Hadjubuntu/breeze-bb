@@ -17,24 +17,27 @@ class FlightControl : public Processing {
 private:
 	RadioControler *_radioController;
 
-	float _throttleInitUs;
-	float _yawInt;
+	float yawIntegralDesired;
 
 	// Configuration parameters
-	Param<float> *_maxAbsRollAngle;
-	Param<float> *_maxAbsPitchAngle;
-	Param<float> *_maxAbsCombinedAngle;
+	Param<float> *maxAbsRollAngle;
+	Param<float> *maxAbsPitchAngle;
+	Param<float> *maxAbsCombinedAngle;
 
 	// Angle desired (rad)
-	float _rollDesired;
-	float _pitchDesired;
+	float rollDesired;
+	float pitchDesired;
 
-	short _auto;
-	Date _initDate;
+	short autoMode;
+	Date initDate;
+
+	Date lastExitModeStartDate;
+	short exitCommand;
+	short awaitExit;
 
 	// Output
-	Quaternion _attitudeDesired;
-	float _throttleOut;
+	Quaternion attitudeDesired;
+	float throttleOut;
 public:
 	FlightControl(RadioControler*);
 
@@ -47,25 +50,35 @@ public:
 	float rpy[2];
 
 	float getYawInt() {
-		return _yawInt;
+		return yawIntegralDesired;
 	}
 
 	float getRollDesired() {
-		return _rollDesired;
+		return rollDesired;
 	}
 	float getPitchDesired() {
-		return _pitchDesired;
+		return pitchDesired;
 	}
 
 	bool isAutoMode() {
-		return (_auto == 1);
+		return (autoMode == 1);
+	}
+
+	bool isExitCommand()
+	{
+		return exitCommand == 1;
 	}
 
 	float getThrottleOut() {
-		return _throttleOut;
+		return throttleOut;
 	}
 	Quaternion getAttitudeDesired() {
-		return _attitudeDesired;
+		return attitudeDesired;
+	}
+
+	RadioControler *getRadioControler()
+	{
+		return _radioController;
 	}
 };
 

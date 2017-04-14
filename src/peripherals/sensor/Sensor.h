@@ -8,7 +8,7 @@
 #ifndef PERIPHERALS_SENSOR_SENSOR_H_
 #define PERIPHERALS_SENSOR_SENSOR_H_
 
-#include "../../peripherals/I2C/I2C.h"
+#include "../../hal/I2C.h"
 #include "../../math/vector/Vect3D.h"
 
 class Sensor {

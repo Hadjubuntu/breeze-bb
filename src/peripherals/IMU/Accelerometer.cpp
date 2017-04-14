@@ -8,40 +8,53 @@
 #include "../../hal/HAL.h"
 #include "Accelerometer.h"
 
-/**
- * Reference:
- * https://github.com/opendrone/flymaple/blob/testing/src/Accelerometer.cpp
- */
+
 void Accelerometer::init()
 {
-	short buff[1];
-	_i2c.readFrom(0x00, 1, buff);
+	// Init
+	provider.init();
 
-	// now we check msg_data for our 0xE5 magic number
-	short dev_id = buff[0];
+	HAL::delayMs(250);
 
+	int num_samples = 50;
+	float accumulator[] = {0.0, 0.0, 0.0};
 
-	if (dev_id != XL345_DEVID)
+	for(int i = 0 ; i < num_samples ; i++)
 	{
-		// TODO exit
+		update();
+
+		accumulator[0] += accRaw.getX();
+		accumulator[1] += accRaw.getY();
+		accumulator[2] += accRaw.getZ();
+
+		HAL::delayMs(5);
 	}
 
-	//invoke ADXL345
-	_i2c.writeTo(ADXLREG_POWER_CTL,0x00);	HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_POWER_CTL, 0xff);	HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_POWER_CTL, 0x08); HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_DATA_FORMAT, 0x08); HAL::delayMs(5);	//
-	_i2c.writeTo(ADXLREG_BW_RATE, 0x09); HAL::delayMs(5);		//25Hz
+	for(int i = 0 ; i < 3 ; i++)
+	{
+		accumulator[i] /= num_samples;
+	}
 
+//	offset = accumulator;
 
-	HAL::delayMs(100);
-
-	// Calibrate: compute accelerometer scale and offset
-	//	calibration();
-
-	// DEBUG 0 offset
-	_offset = Vect3D(0.0, 0.0, 0.0);
+	calibration();
 }
+
+void Accelerometer::update()
+{
+	// Read from provider
+	Vect3D cAcc = provider.read();
+
+
+	// Retrieve offset
+		cAcc -= offset;
+
+	accRaw = cAcc;
+
+	//	_accFiltered = cAcc;
+	accFiltered = accFiltered * (1.0 - filterNewDataCoeff) + cAcc * filterNewDataCoeff;
+}
+
 
 void Accelerometer::calibration()
 {
@@ -55,7 +68,7 @@ void Accelerometer::calibration()
 	float maxAccZ = 0.0;
 
 	update();
-	Vect3D prevAccRaw = _accRaw;
+	Vect3D prevAccRaw = accRaw;
 
 	while (countSample < nbHealthySamples && nbTrial < 1000)
 	{
@@ -63,22 +76,21 @@ void Accelerometer::calibration()
 		update();
 
 		// Sample vector
-		Vect3D delta = prevAccRaw - _accRaw;
-
+		Vect3D delta = prevAccRaw - accRaw;
 
 
 		if (delta.getNorm2() < 0.05)
 		{
-			sumAccX += _accRaw.getX();
-			sumAccY += _accRaw.getY();
-			sumAccZ += _accRaw.getZ();
+			sumAccX += accRaw.getX();
+			sumAccY += accRaw.getY();
+			sumAccZ += accRaw.getZ();
 			//
-			if ((_accRaw.getZ() > 0.0 && _accRaw.getZ() > maxAccZ)
-					|| (_accRaw.getZ() < 0.0 && _accRaw.getZ() < maxAccZ)) {
-				maxAccZ = _accRaw.getZ();
+			if ((accRaw.getZ() > 0.0 && accRaw.getZ() > maxAccZ)
+					|| (accRaw.getZ() < 0.0 && accRaw.getZ() < maxAccZ)) {
+				maxAccZ = accRaw.getZ();
 			}
 
-			prevAccRaw = _accRaw;
+			prevAccRaw = accRaw;
 			countSample ++;
 		}
 
@@ -87,38 +99,10 @@ void Accelerometer::calibration()
 
 	if (nbTrial >= 1000 && countSample < nbHealthySamples) {
 		// No calibration could be done..
-		_offset = Vect3D(0.0, 0.0, 0.0);
+		offset = Vect3D(0.0, 0.0, 0.0);
 	}
 	else
 	{
-		_offset = Vect3D(sumAccX / countSample, sumAccY / countSample,  0.0); // sumAccZ / countSample - maxAccZ
+		offset = Vect3D(sumAccX / countSample, sumAccY / countSample,  0.0); // sumAccZ / countSample - maxAccZ
 	}
-}
-
-void Accelerometer::update()
-{
-	// Retrieve raw data from I2C
-	short buff[A_TO_READ];
-
-	_i2c.readFrom(ADXLREG_DATAX0, A_TO_READ, buff);
-
-	int result[3];
-	result[1] = -((((int) buff[1]) << 8) | buff[0]) ;
-	result[0] = -((((int) buff[3]) << 8) | buff[2]) ;
-	result[2] = -((((int) buff[5]) << 8) | buff[4]) ;
-
-	// Create vector 3D from array of int16
-	Vect3D cAcc(result[0], result[1], result[2]);
-
-	// Apply scale factor from LSB to g
-	cAcc *= ACC_SENSITIVITY;
-
-	// Retrieve offset
-	cAcc -= _offset;
-
-	_accRaw = cAcc;
-
-	//	_accFiltered = cAcc;
-	_accFiltered = _accFiltered * (1.0 - _filterNewDataCoeff) + cAcc * _filterNewDataCoeff;
-
 }

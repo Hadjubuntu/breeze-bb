@@ -1,2 +1,41 @@
 # breeze-bb
 Breeze Beaglebone Black
+
+# Rest todo
+Electronics
+- Imu SDA/SCL
+- Sonar Analog pin
+- Barometer (? pin)
+- Pwm pin for motors / Servos
+- UART (Rf Serial / Serial Com)
+  UART = TCP / UDP communication ?
+
+
+
+# Install procedure (memo)
+sudo adduser adrien
+sudo adduser adrien sudo
+sudo apt-get install git
+
+ssh-keygen -t rsa -b 4096
+
+git clone git@github.com:Hadjubuntu/breeze-bb.git
+
+sudo vim /etc/apt/sources.list
+:%s/wheezy/jessie/g
+
+sudo apt-get update
+sudo apt-get install gcc-4.9 g++-4.9
+
+sudo vim /etc/apt/sources.list
+:%s/jessie/wheezy/g
+sudo apt-get update
+
+cd /usr/bin
+sudo mv g++ g++old
+sudo ln -s g++-4.9 g++
+sudo mv gcc gccold
+sudo ln -s gcc-4.9 gcc
+
+cd ~/breeze-bb
+make

@@ -24,12 +24,13 @@ protected:
 	static std::vector<float>  product(std::vector<float> A, std::vector<float> B);
 	static float sum(std::vector<float> A);
 
+	void genericComputeLinearFunc(float *, std::vector<float> , std::vector<float> );
+
 
 public:
 	LeastSquareFilter();
 
 	float apply(std::vector<float> pValues, int pIdx);
-	float* computeLinearFunc(std::vector<float> Y);
 };
 
 #endif /* MATH_FILTER_LEASTSQUAREFILTER_H_ */

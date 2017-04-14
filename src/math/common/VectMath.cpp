@@ -16,11 +16,11 @@ VectMath::VectMath() {
 
 }
 
-float VectMath::derivate(std::vector<float> X)
-{
-	LeastSquareFilter filter;
-	float *funcParam = filter.computeLinearFunc(X);
-
-	return funcParam[1];
-}
+//float VectMath::derivate(std::vector<float> X)
+//{
+//	LeastSquareFilter filter;
+//	float *funcParam = filter.apply(X);
+//
+//	return funcParam[1];
+//}
 

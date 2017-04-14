@@ -5,27 +5,41 @@
  *      Author: adrien
  */
 
+#include <stdio.h>
 #include "Processing.h"
 
 Processing::Processing() : logger(Logger()), freqHz(50), lastExecutionDate(Date::zero()), dt(0.0),
 callbackTrigger(false), callbackStartDate(Date::now()), callbackDtUs(0l)
 {
-
+	// We want to warn user if a processing have been waiting for a duration equals to its delta calling time
+	maxAwaitingProcessingSeconds = 1.0/freqHz;
 }
 
 
 bool Processing::isReady() {
-	// Retrieve now date
-	Date now = Date::now();
+	if (freqHz >= 1000) {
+		return true;
+	}
+	else {
+		// Retrieve now date
+		Date now = Date::now();
 
-	// Compute duration from last execution
-	float durationLastExecutionSeconds = now.durationFrom(lastExecutionDate);
+		// Compute duration from last execution
+		float durationLastExecutionSeconds = now.durationFrom(lastExecutionDate);
 
-	// Compute delta time between two execution of the processing
-	float dtExecExpected = 1.0/freqHz;
+		// Compute delta time between two execution of the processing
+		float dtExecExpected = 1.0/freqHz;
 
-	// Returns yes if processing needs to be executed
-	return durationLastExecutionSeconds >= dtExecExpected;
+		float diffDurationWaited = durationLastExecutionSeconds - dtExecExpected;
+
+		if (diffDurationWaited > maxAwaitingProcessingSeconds)
+		{
+			printf("[WARNING] Processing waited for %.2f seconds while max awaiting is %.2f\n", diffDurationWaited, maxAwaitingProcessingSeconds);
+		}
+
+		// Returns yes if processing needs to be executed
+		return diffDurationWaited >= 0;
+	}
 }
 
 bool Processing::isCallbackReady() {
@@ -47,6 +61,7 @@ void Processing::wait(float pDtWait)
 
 	while (Date::now().durationFrom(currentTime) < pDtWait)
 	{
+		//		printf("Duration %.4f\n", Date::now().durationFrom(currentTime));
 		// Update data
 		process();
 	}

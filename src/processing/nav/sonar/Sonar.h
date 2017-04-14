@@ -17,10 +17,10 @@
 
 class Sonar : public Processing {
 private:
-	int _sonarPin;
-	bool _healthy;
-	float _filteredSonarValueCm;
-	LeastSquareFilter _filter;
+	int sonarPin;
+	bool healthy;
+	float filteredSonarValueCm;
+	LeastSquareFilter filter;
 public:
 	Sonar();
 
@@ -30,11 +30,11 @@ public:
 	void callback() { };
 
 	float getOutput() {
-		return _filteredSonarValueCm;
+		return filteredSonarValueCm;
 	}
 
 	bool isHealthy() {
-		return _healthy;
+		return healthy;
 	}
 
 };

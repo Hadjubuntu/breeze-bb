@@ -18,14 +18,14 @@
 Sonar::Sonar() : Processing()
 {
 	freqHz = 10;
-	_sonarPin = 10;
-	_filteredSonarValueCm = 0.0;
-	_healthy = true;
+	sonarPin = 10;
+	filteredSonarValueCm = 0.0;
+	healthy = false;
 }
 
 void Sonar::init()
 {
-//	pinMode(_sonarPin, INPUT);
+	//	pinMode(_sonarPin, INPUT);
 
 	// Create zero vector at initialization
 	//	for (int i = 0; i < nSonar; i ++)
@@ -33,40 +33,40 @@ void Sonar::init()
 	//		sonarValues.add(0.0);
 	//	}
 
-	int strangeMeasure = 0;
-	int nbMeasure = 25;
-	for (int i = 0; i < 25; i ++) {
-//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
-float currentSonarVal = 0.0;
-
-		if (currentSonarVal > 150) {
-			strangeMeasure ++;
-		}
-	}
-
-	if (((float)strangeMeasure / nbMeasure) > 0.7) {
-		_healthy = false;
-//		Serial3.println("Sonar is not healthy");
-	}
+//	int strangeMeasure = 0;
+//	int nbMeasure = 25;
+//	for (int i = 0; i < 25; i ++) {
+//		//		float currentSonarVal = (float) analogRead(_sonarPin) * 0.3175;
+//		float currentSonarVal = 0.0;
+//
+//		if (currentSonarVal > 150) {
+//			strangeMeasure ++;
+//		}
+//	}
+//
+//	if (((float)strangeMeasure / nbMeasure) > 0.7) {
+//		_healthy = false;
+//		//		Serial3.println("Sonar is not healthy");
+//	}
 }
 
 void Sonar::process()
 {
-	if (_healthy)
+	if (healthy)
 	{
 		// Read new value
 		float currentSonarVal = 0.0; // FIXME (float) analogRead(_sonarPin) * 0.3175; //
 
-		if (_filteredSonarValueCm == 0.0)
+		if (filteredSonarValueCm == 0.0)
 		{
-			_filteredSonarValueCm = currentSonarVal;
+			filteredSonarValueCm = currentSonarVal;
 		}
 		else {
-			float delta = abs(currentSonarVal - _filteredSonarValueCm);
-			float sign = currentSonarVal > _filteredSonarValueCm ? 1.0 : -1.0;
+			float delta = abs(currentSonarVal - filteredSonarValueCm);
+			float sign = currentSonarVal > filteredSonarValueCm ? 1.0 : -1.0;
 
 			float k = 1.0/(delta/8.0+1.0);
-			_filteredSonarValueCm = _filteredSonarValueCm + k * sign * delta;
+			filteredSonarValueCm = filteredSonarValueCm + k * sign * delta;
 		}
 
 		//		// Filter measured value by using mean delta

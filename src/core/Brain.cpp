@@ -7,7 +7,7 @@
  */
 #include <stdio.h>
 #include "../core/Brain.h"
-#include "../hal/i2c.h"
+#include "../hal/I2C.h"
 #include "../hal/HAL.h"
 
 
@@ -15,9 +15,9 @@
 //https://github.com/opendrone/flymaple-cpp/blob/master/libmaple/examples/test-timers.cpp
 
 
-Brain::Brain() : _referenceDate(Date::zero()), _commands(History<int>::getDefault()) {
+Brain::Brain() : _referenceDate(Date::zero()) {
 	_tickId = 0;
-//	FIXME _referenceDate.setTimElapsedSinceStartUs(micros());
+	_referenceDate.setTimElapsedSinceStartUs(Date::micros());
 }
 
 void Brain::enableI2C()
@@ -30,6 +30,7 @@ void Brain::initProcessings()
 {
 	for (Processing *proc : _processings)
 	{
+		printf("Init proc ..\n");
 		proc->init();
 	}
 }

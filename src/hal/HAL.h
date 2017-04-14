@@ -12,10 +12,16 @@
 #define PERIPHERALS_HAL_HAL_H_
 
 
+#include <string>
+
+#define HAL_GPIO_INPUT 0
+#define HAL_GPIO_OUTPUT 1
+
 
 class HAL {
 public:
 	HAL();
+
 	static void delayMs(unsigned long pDtMs);
 	static void delayUs(unsigned long pDtUs);
 

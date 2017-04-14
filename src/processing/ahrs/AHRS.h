@@ -13,6 +13,7 @@
 
 #include "../../core/Processing.h"
 #include "../../math/vector/Quaternion.h"
+#include "../../math/common/FastMath.h"
 #include "../../peripherals/IMU/Accelerometer.h"
 #include "../../peripherals/IMU/Baro.h"
 #include "../../peripherals/IMU/Gyro.h"
@@ -50,6 +51,10 @@ private:
 	float _vZ;
 	float _analyzedAccZ;
 
+	Date lastAttitudeDateStored;
+	Quaternion lastAttitude;
+	Vect3D gyroHyperFilted;
+
 public:
 	AHRS(Baro *);
 
@@ -69,9 +74,20 @@ public:
 
 	void calibrateOffset();
 
+
+	Vect3D getGyroHyperFiltered()
+	{
+		return gyroHyperFilted;
+	}
+
 	/******************************************************
 	 * GETTERS
 	 *****************************************************/
+
+	Vect3D getGyroFiltered() {
+		return _gyro.getGyroFiltered();
+	}
+
 	Accelerometer getAcc() { return _accelerometer; }
 	Gyro getGyro() { return _gyro; }
 
@@ -98,6 +114,15 @@ public:
 		return _baro;
 	}
 
+	void printOffset()
+	{
+		float rpy[3];
+		_attitudeOffset.toRollPitchYaw(rpy);
+		printf("Offset attitude=%.2f, %.2f, %.2f\n",
+				FastMath::toDegrees(rpy[0]),
+				FastMath::toDegrees(rpy[1]),
+				FastMath::toDegrees(rpy[2]));
+	}
 
 };
 

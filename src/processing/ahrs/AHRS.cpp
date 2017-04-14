@@ -13,14 +13,6 @@
 float gyro_correct_int[3];
 
 
-// FIXME !!!!!!!!!!!
-float fabs(float x) {
-	return x;
-}
-bool isnan(double x) {
-	return false;
-}
-
 /**
  * Constructor
  */
@@ -31,7 +23,10 @@ AHRS::AHRS(Baro *baro) : Processing(), _grot(Vect3D::zero()),
 		_accelerometer(Accelerometer::create()),
 		_yawFromGyro(0.0),
 		_lastPositiveAccPeak(Date::now()),
-		_lastNegativeAccPeak(Date::now())
+		_lastNegativeAccPeak(Date::now()),
+		lastAttitude(Quaternion::zero()),
+		lastAttitudeDateStored(Date::now()),
+		gyroHyperFilted(Vect3D::zero())
 //		_baro(Baro::create())
 {
 	// 400 Hz update
@@ -56,8 +51,9 @@ void AHRS::calibrateOffset()
 
 void AHRS::init()
 {
-	_accelerometer.init();
+	// Initialize gyro first
 	_gyro.init();
+	_accelerometer.init();
 }
 
 float* AHRS::getGyroCorr() {
@@ -71,7 +67,6 @@ void AHRS::process()
 	const float accelKi = 0.000174;
 	const float accelKp = 0.00174;
 	const float rollPitchBiasRate = 0.999999;
-
 
 	_accelerometer.update();
 	_gyro.update();
@@ -141,7 +136,7 @@ void AHRS::process()
 
 	// If quaternion has become inappropriately short or is nan reinit.
 	// THIS SHOULD NEVER ACTUALLY HAPPEN
-	if ((fabs(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
+	if ((FastMath::fabs(inv_qmag) > 1e3f) || isnan(inv_qmag)) {
 		_attitude = Quaternion::zero();
 		logger.error("inv_qmag > 1e3f");
 	} else {
@@ -150,8 +145,18 @@ void AHRS::process()
 
 	// Integrate gyro rotation Z to have an estimation of the yaw
 	_yawFromGyro += gyros.getZ() / freqHz;
-	_yawFromGyro = 0.9925 * _yawFromGyro;
+	_yawFromGyro = 0.9 * _yawFromGyro;
 	_yawFromGyro = FastMath::constrainAngleMinusPiPlusPi(_yawFromGyro);
+
+	// Store attitude and delta
+	float dtAttitude = Date::now().durationFrom(lastAttitudeDateStored);
+	// TODO improve ..
+	if (dtAttitude > 0.01)
+	{
+		 gyroHyperFilted = (_attitude.toRollPitchYawVect3D() - lastAttitude.toRollPitchYawVect3D()) / dtAttitude;
+		lastAttitude = _attitude;
+		lastAttitudeDateStored = Date::now();
+	}
 
 	// Integrate delta accZ to have estimation on vertical speed
 	computeVz();
@@ -180,11 +185,11 @@ void AHRS::computeVz()
 	_analyzedAccZ = acc_Ef.getZ() - _meanAccZ;
 
 	// Filter low value with no-tolerance (set value to zero)
-	if (fabs(_analyzedAccZ) < 0.05) {
+	if (FastMath::fabs(_analyzedAccZ) < 0.05) {
 		_analyzedAccZ = 0.0;
 	}
 	// Filter low value with tolerance
-	else if (fabs(_analyzedAccZ) < 0.1) {
+	else if (FastMath::fabs(_analyzedAccZ) < 0.1) {
 		_analyzedAccZ = _analyzedAccZ / 4.0;
 	}
 

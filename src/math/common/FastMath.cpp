@@ -25,7 +25,7 @@ float FastMath::toDegrees(float angleRadians)
 	return angleRadians * RAD2DEG;
 }
 
-inline float FastMath::fastpow2(float p)
+float FastMath::fastpow2(float p)
 {
 	float offset = (p < 0) ? 1.0f : 0.0f;
 	float clipp = (p < -126) ? -126.0f : p;
@@ -36,13 +36,13 @@ inline float FastMath::fastpow2(float p)
 	return v.f;
 }
 
-inline float FastMath::exp(float x)
+float FastMath::exp(float x)
 {
 	return FastMath::fastpow2(1.442695040f * x);
 }
 
-inline float FastMath::sqrt(float x) {
-	return std::sqrt(x);
+float FastMath::fsqrt(float x) {
+	return sqrt(x);
 }
 
 
@@ -109,11 +109,11 @@ float FastMath::fabs(float x)
 	}
 }
 
-float pow(float a, float power) {
+float FastMath::fpow(float a, float power) {
 	return pow(a, power);
 }
 
-float cos(float x)
+float FastMath::fcos(float x)
 {
 	return cos(x);
 }

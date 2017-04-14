@@ -84,21 +84,7 @@ public:
 		return (*this);
 	}
 
-	float operator[](int x) {
-		if (x == 0) {
-			return _w;
-		} else if (x == 1) {
-			return _x;
-		} else if (x == 2) {
-			return _y;
-		} else if (x == 3) {
-			return _z;
-		} else {
-			// TODO throw error
-			return 0.0;
-		}
-	}
-
+	float operator[](int x) ;
 	Quaternion operator+=(float array[]) {
 		_w += array[0];
 		_x += array[1];

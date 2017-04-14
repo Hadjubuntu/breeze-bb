@@ -8,6 +8,8 @@
  *      Author: Adrien HADJ-SALAH
  */
 
+#include "../math/time/Date.h"
+#include "../core/Constants.h"
 #include "HAL.h"
 
 HAL::HAL() {
@@ -17,10 +19,14 @@ HAL::HAL() {
 
 void HAL::delayMs(unsigned long pDtMs)
 {
-//	FIXME for beaglebone delay(pDtMs);
+	//	FIXME for beaglebone delay(pDtMs);
 }
 
 void HAL::delayUs(unsigned long pDtUs)
 {
-	//	FIXME for beaglebone 	delayMicroseconds(pDtUs);
+
+	Date d = Date::now();
+	while (Date::now().durationFrom(d)*Constants::S_TO_US < pDtUs) {
+		// Wait
+	}
 }

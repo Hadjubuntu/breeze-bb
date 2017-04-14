@@ -40,11 +40,12 @@ BREEZE_MODULES += $(SRCROOT)/src/math/pid
 BREEZE_MODULES += $(SRCROOT)/src/math/time
 BREEZE_MODULES += $(SRCROOT)/src/math/vector
 BREEZE_MODULES += $(SRCROOT)/src/math/filter
+BREEZE_MODULES += $(SRCROOT)/src/math/frame
 BREEZE_MODULES += $(SRCROOT)/src/data/conf
 BREEZE_MODULES += $(SRCROOT)/src/hal
-BREEZE_MODULES += $(SRCROOT)/src/peripherals/I2C
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/sensor
 BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU
+BREEZE_MODULES += $(SRCROOT)/src/peripherals/IMU/provider
 BREEZE_MODULES += $(SRCROOT)/src/processing/ahrs
 BREEZE_MODULES += $(SRCROOT)/src/processing/actuator
 BREEZE_MODULES += $(SRCROOT)/src/processing/flightstabilization
@@ -70,14 +71,16 @@ include $(SRCROOT)/build-targets.mk
 
 .PHONY: install sketch clean help
 
-sketch: clean install
+sketch: install
 
 all: sketch
 
 
 #SRC = $(BUILD_PATH)/src/core/Brain.cpp \ $(BUILD_PATH)/src/core/History.cpp
 #OBJ = $(patsubst $(BUILD_PATH)/%.c,$(BUILD_PATH)/%.o,$(SRC))
-install: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o
+install: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/main.o $(BUILD_PATH)/breezebb
+
+SIL: $(BUILDDIRS) $(TGT_BIN) $(BUILD_PATH)/SIL.o $(BUILD_PATH)/SIL
     
 #$(BUILD_PATH)/%.o:%.cpp
 #	g++  $(GLOBAL_CXXFLAGS) -c $< -o $@
