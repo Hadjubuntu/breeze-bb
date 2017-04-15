@@ -4,6 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 import Tools
+import serial
 
 # Inputs
 #-------------------------
@@ -15,7 +16,7 @@ firmware = Tools.retrieveInput(0, "fixed_wing")
 minDutyPercent = 2.5 # = 0%
 maxDutyPercent = 12.5 # = 100%
 pwmPins = [11, 12, 13, 15, 16, 18]
-uartPins = [{'rx':10, 'tx':8}]
+uartPins = [{'rx': 10, 'tx': 8}]
 i2cPins = [{'sda': 3, 'scl': 5}]
 pwmObj = []
 
@@ -26,12 +27,6 @@ print("Setup GPIO for pwm, uart and i2c\n")
 GPIO.setmode(GPIO.BOARD)
 #GPIO.setmode(GPIO.BCM)
 # To retrieve the current configuration: configuration = GPIO.getmode() 
-
-GPIO.setup(16, GPIO.OUT) 
-
-pwm = GPIO.PWM(16, 50)
-
-pwm.start(7.5)
 
 # Initialize pwm pins regarding firwmare
 def initPwm(pFirmware):
@@ -55,6 +50,7 @@ def initPwm(pFirmware):
 		pwmObj.append(cPwm)
 		firstEl = False
 
+# Initialize GPIO pwm, uart and i2c
 def initGPIO(pFirmware):
 	print("Firmware: " + pFirmware)	
 	initPwm(pFirmware)
