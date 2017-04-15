@@ -21,10 +21,10 @@ pwm.start(7.5)
 
 while time.time() - appStart < 300:
 
-	p.ChangeDutyCycle(7.5)  # turn towards 90 degree
+	pwm.ChangeDutyCycle(7.5)  # turn towards 90 degree
 	time.sleep(1) # sleep 1 second
-	p.ChangeDutyCycle(2.5)  # turn towards 0 degree
+	pwm.ChangeDutyCycle(2.5)  # turn towards 0 degree
 	time.sleep(1) # sleep 1 second
-	p.ChangeDutyCycle(12.5) # turn towards 180 degree
+	pwm.ChangeDutyCycle(12.5) # turn towards 180 degree
 	time.sleep(1) # sleep 1 second 
 	
