@@ -16,19 +16,15 @@ GPIO.setup(12, GPIO.OUT)
 
 pwm = GPIO.PWM(12, 50)
 
-pwm.start(5)
+pwm.start(7.5)
 
-i=0
 
 while time.time() - appStart < 300:
 
-	duty = i * 10
-	print("Duty: " + str(duty))
-
-	pwm.ChangeDutyCycle(duty)
-	time.sleep(2)
+	p.ChangeDutyCycle(7.5)  # turn towards 90 degree
+	time.sleep(1) # sleep 1 second
+	p.ChangeDutyCycle(2.5)  # turn towards 0 degree
+	time.sleep(1) # sleep 1 second
+	p.ChangeDutyCycle(12.5) # turn towards 180 degree
+    time.sleep(1) # sleep 1 second 
 	
-	i+=1
-
-	if i == 10:
-		i = 0
