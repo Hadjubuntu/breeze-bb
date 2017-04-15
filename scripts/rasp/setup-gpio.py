@@ -23,6 +23,8 @@ i=0
 while time.time() - appStart < 30:
 
 	duty = i * 10
+	print("Duty: " + str(duty))
+	
 	pwm.ChangeDutyCycle(duty)
 	time.sleep(2)
 	
