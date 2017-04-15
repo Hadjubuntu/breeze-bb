@@ -7,7 +7,7 @@ import Tools
 
 # Inputs
 #-------------------------
-firmware = Tools.retrieveInput(0, "fiwed_wing")
+firmware = Tools.retrieveInput(0, "fixed_wing")
 
 
 # Start script
