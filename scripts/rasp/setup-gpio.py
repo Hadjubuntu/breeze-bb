@@ -12,11 +12,17 @@ GPIO.setmode(GPIO.BOARD)
 #GPIO.setmode(GPIO.BCM)
 # To retrieve the current configuration: configuration = GPIO.getmode() 
 
-GPIO.setup(12, GPIO.OUT) 
+GPIO.setup(16, GPIO.OUT) 
 
-pwm = GPIO.PWM(12, 50)
+pwm = GPIO.PWM(16, 50)
 
 pwm.start(7.5)
+
+
+# Servo
+# 0° => 1ms width => 0.5ms/20ms * 100 => 2.5%
+# 90° => 1.5ms width => 1.5ms/20ms * 100 => 7.5%
+# 180° => 1.5ms width => 2.5ms/20ms * 100 => 12.5%
 
 
 while time.time() - appStart < 300:
