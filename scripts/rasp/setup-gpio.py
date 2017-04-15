@@ -56,6 +56,7 @@ def initPwm(pFirmware):
 		firstEl = False
 
 def initGPIO(pFirmware):
+	print("Firmware: " + pFirmware)	
 	initPwm(pFirmware)
 	# initUart()
 	# initI2c()
