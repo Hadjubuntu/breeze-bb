@@ -7,7 +7,7 @@ import Tools
 
 # Inputs
 #-------------------------
-firmware = Tools.retrieveInput(0, "ycopter")
+firmware = Tools.retrieveInput(0, "fiwed_wing")
 
 
 # Start script
