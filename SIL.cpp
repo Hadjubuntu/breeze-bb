@@ -14,6 +14,17 @@
 
 History<float> historyValue(10);
 
+
+void testPythonGPIO()
+{
+	// TODO call new script for Raspberry Pi Zero
+	std::string setupGpioFilepath = "./scripts/rasp/setup-gpio.py";
+	printf("Execute script to setup GPIO: %s\n", setupGpioFilepath.c_str());
+	int result = system(setupGpioFilepath.c_str());
+
+	printf("Result execution: %d\n", result);
+}
+
 int main()
 {
 
@@ -41,18 +52,20 @@ int main()
 
 	Smoother smooth(0.0, 0.0);
 	smooth.setParameters(0.0, 0.0, 1.0);
-	smooth.setTarget(10.0);
+	smooth.setTarget(1.0);
 	Date cDate = Date::now();
 
-	while (Date::now().durationFrom(cDate) < 5.0)
+	while (Date::now().durationFrom(cDate) < 1.0)
 	{
-		if (Date::now().durationFrom(cDate) > 2.5)
+		if (Date::now().durationFrom(cDate) > 0.5)
 		{
 			smooth.setTarget(0.0);
 		}
 		printf("Smoother : %.1f\n", smooth.getCurrent());
 	}
 
+
+	testPythonGPIO();
 
 
 	return 0;

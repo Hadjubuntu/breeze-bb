@@ -45,6 +45,10 @@ bool FileTools::writeToFile(string pFilepath, string pContent)
 	return true;
 }
 
+
+/**
+ * Search a directory with a given pattern
+ */
 string FileTools::searchDirectory(string searchPath, string searchPattern)
 {
 	string str;

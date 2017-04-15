@@ -1,7 +1,9 @@
 /**
- * Breeze-bb main entry source code
+ * Breeze project
+ * ------------------------------
+ * Unmanned vehicule autopilot. Sky is not the limit !
+ * ------------------------------
  * (c) Adrien HADJ-SALAH
- * 192.168.1.15
  */
 #include <stdio.h>
 
@@ -32,52 +34,38 @@
 
 bool brainRun = true;
 
+
 /** Attitude and heading reference system */
 Baro baro;
 AHRS ahrs(&baro);
+Sonar sonar; // Sonar to measure distance
 
-/** UAV brain */
+/** OBC */
 Brain uavBrain;
 
-/** RadioFreq controller */
-RfControler rfControler;
-
-/** RadioFreq router */
-RfRouter rfRouter(&rfControler);
-
-/** Radio controller */
-RadioControler radioControler;
-
-/** Transform radio signal into radio flight control */
-FlightControl flightControl(&radioControler);
-
-/** Sonar to measure distance */
-Sonar sonar;
+/** Data link handler */
+RfControler rfControler; // Read/Send packets on UART
+RfRouter rfRouter(&rfControler); // Dipatch packet to related controller
+RadioControler radioControler; // Sbus radio controller
+FlightControl flightControl(&radioControler); // Transform radio signal into radio flight control
+Telemetry telemetry(&ahrs, &flightControl, &rfControler); // Build packet to be send to GCS
 
 /** Flight stabilization controller */
 FlightStabilization flightStabilization(&ahrs, &flightControl, &sonar);
-
-/** Motor and servo control */
-ActuatorControl actuatorControl(&flightStabilization, &flightControl);
-
-/** Telemetry to keep GCS update */
-Telemetry telemetry(&ahrs, &flightControl, &rfControler);
+ActuatorControl actuatorControl(&flightStabilization, &flightControl); // Motor/servo controller
 
 /** Flight stabilization autotune */
 //FsAutotune fsAutotune(&flightStabilization);
 
 
-
 // Execute script to setup pwm pin and uart
-void setupPwmUart()
+void setupGPIO()
 {
 	// TODO call new script for Raspberry Pi Zero
-	std::string scriptDirectory = FileTools::searchDirectory(".","scripts");
-	std::string scriptSetup = "sudo ./" + scriptDirectory + "/bb-setup.sh " + Conf::getInstance().firmwareToString();
-
-	printf("Executing script %s\n", scriptSetup.c_str());
-	int result = system(scriptSetup.c_str());
-	printf("Setup pwm and uart results=%d\n", result);
+	std::string setupGpioFilepath = "./scripts/rasp/setup-gpio.py";
+	std::strng gpioCmd = "sudo " + setupGpioFilepath + " " + Conf::getInstance().firmwareToString();
+	printf("Execute script to setup GPIO: %s\n", gpioCmd.c_str());
+	int result = system(gpioCmd.c_str());
 }
 
 void setup()
@@ -88,7 +76,7 @@ void setup()
 
 
 	// Setup pwm, uart through bash script
-	setupPwmUart();
+	setupGPIO();
 
 	// Add processings
 	//----------------------
