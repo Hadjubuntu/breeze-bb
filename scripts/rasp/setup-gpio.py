@@ -4,6 +4,9 @@
 import RPi.GPIO as GPIO
 import time
 
+appStart = time.time()
+lastChange = appStart
+
 print("Setup GPIO for pwm, uart and i2c\n")
 GPIO.setmode(GPIO.BOARD)
 #GPIO.setmode(GPIO.BCM)
@@ -11,12 +14,19 @@ GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(12, GPIO.OUT) 
 
-pwm = GPIO.PWM(12, 100)
+pwm = GPIO.PWM(12, 50)
 
 pwm.start(5)
 
-for i in range(1, 9):
-	print("Change duty cycle and sleep")
+i=0
+
+while time.time() - appStart < 30:
+
 	duty = i * 10
 	pwm.ChangeDutyCycle(duty)
 	time.sleep(2)
+	
+	i++
+
+	if i == 10:
+		i = 0
