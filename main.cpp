@@ -63,7 +63,7 @@ void setupGPIO()
 {
 	// TODO call new script for Raspberry Pi Zero
 	std::string setupGpioFilepath = "./scripts/rasp/setup-gpio.py";
-	std::strng gpioCmd = "sudo " + setupGpioFilepath + " " + Conf::getInstance().firmwareToString();
+	std::string gpioCmd = "sudo " + setupGpioFilepath + " " + Conf::getInstance().firmwareToString();
 	printf("Execute script to setup GPIO: %s\n", gpioCmd.c_str());
 	int result = system(gpioCmd.c_str());
 }
