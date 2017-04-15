@@ -3,6 +3,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import Tools
 
 # Inputs
 #-------------------------
@@ -29,20 +30,15 @@ pwm = GPIO.PWM(16, 50)
 
 pwm.start(7.5)
 
-# Retrieve input parameter
-def retrieveInput(pArgvIdx, pDefaultValue):
-	if len(sys.argv) > pArgvIdx + 1:
-		return sys.argv[pArgvIdx]
-	else:
-		return pDefaultValue
+
+def initPwm(pFirmware):
+	print("Firmware: "  + pFirmware)
 
 def initGPIO():
 	initPwm(firmware)
 	# initUart()
 	# initI2c()
 
-def initPwm(pFirmware):
-	print("Firmware: "  + pFirmware)
 
 
 # Servo
