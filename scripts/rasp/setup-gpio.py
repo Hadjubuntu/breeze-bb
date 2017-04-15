@@ -44,7 +44,7 @@ def initPwm(pFirmware):
 		# Specific configuration for servos
 		if not firstEl and pFirmware == 'fixed_wing':
 			freq = 50
-			initDutyCycle = (minDutyPercent + maxDutyPercent / 2.0)
+			initDutyCycle = (minDutyPercent + maxDutyPercent) / 2.0
 
 		GPIO.setup(pwmPin, GPIO.OUT)
 		cPwm = GPIO.PWM(pwmPin, freq)
