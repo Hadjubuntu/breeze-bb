@@ -264,7 +264,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		return false;
 	}
 	else {
-		//		 printf("ret ! partial_frame_count=%d\n", partial_frame_count);
+				 printf("ret ! partial_frame_count=%d\n", partial_frame_count);
 	}
 
 	last_rx_time = now;
@@ -449,33 +449,33 @@ int main() {
 
 		if (sbus_updated) {
 			printf("sbus update | ch_0=%d | ch_1=%d | ch_2=%d\n", r_raw_rc_values[0], r_raw_rc_values[1], r_raw_rc_values[2]);
-
-			if (subiter % 2 == 0)
-			{
-				char parameters[100];
-				sprintf(parameters, "%d %d", 3, 0);
-
-
-
-				std::string paramStr = "";
-				paramStr.append(parameters);
-
-				long periodNs = 20000000l;
-				std::stringstream periodStr;
-				periodStr << periodNs;
-
-				std::stringstream dutyCycleStr;
-				dutyCycleStr << ((long)r_raw_rc_values[0]) * 1000l;
-
-				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
-
-				std::string scriptSetup = "sudo ../../scripts/bb/pwm-setup.sh " + paramStr;
-
-				// Execute script to setup pwm pin
-				int result = system(scriptSetup.c_str());
-//				printf("Duty cycle %s\n", dutyCycleStr.c_str());
-				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
-			}
+//
+//			if (subiter % 2 == 0)
+//			{
+//				char parameters[100];
+//				sprintf(parameters, "%d %d", 3, 0);
+//
+//
+//
+//				std::string paramStr = "";
+//				paramStr.append(parameters);
+//
+//				long periodNs = 20000000l;
+//				std::stringstream periodStr;
+//				periodStr << periodNs;
+//
+//				std::stringstream dutyCycleStr;
+//				dutyCycleStr << ((long)r_raw_rc_values[0]) * 1000l;
+//
+//				paramStr.append(" " + periodStr.str() + " " + dutyCycleStr.str());
+//
+//				std::string scriptSetup = "sudo ../../scripts/bb/pwm-setup.sh " + paramStr;
+//
+//				// Execute script to setup pwm pin
+//				int result = system(scriptSetup.c_str());
+////				printf("Duty cycle %s\n", dutyCycleStr.c_str());
+//				printf("Executed command setup pwm %s\n", scriptSetup.c_str());
+//			}
 
 			subiter ++;
 		}
