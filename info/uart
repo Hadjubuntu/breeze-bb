@@ -1,0 +1,35 @@
+Enable serial port on Raspberry Pi
+Posted on August 21, 2013 by Charles	
+
+This post describe how to enable the serial port avalaible on Raspberry Pi connector. By default it is used by the Linux console and you can not use it for another usage.
+
+We will disable the Linux console mode for using the RX and TX as we want
+
+I’m connecting to my Pi with SSH because mine do not have screen or keyboard connected,
+
+Edit July 2016
+For latest Jessie version
+
+you should be able to get use of Serial just running
+sudo raspi-config
+1
+	
+sudo raspi-config
+
+go to Advanced Options/Serial and set No to “Would you like a login shell to be accessible over serial?”, valid and reboot, that’s all. Take a look for specific to Raspberry PI V3 at the end of this post.
+
+I also noticed sometimes UART is disabled in kernel. The enable it you need to check in /boot/config.txt the line enable_uart
+
+If it’s set to 0 like follow
+enable_uart=0
+1
+	
+enable_uart=0
+
+You need to change to 1 as follow
+enable_uart=1
+1
+	
+enable_uart=1
+
+And reboot of course!

@@ -430,10 +430,10 @@ sbus_decode(long frame_time, uint16_t *values, uint16_t *num_values, bool *sbus_
 long lastIter = micros();
 long subiter = 0;
 
-/**
+
 int main() {
 
-	sbus_init("/dev/ttyO1");
+	sbus_init("/dev/ttyS0");
 
 	int iter = 0;
 	while (iter < 1000000)
@@ -494,4 +494,4 @@ int main() {
 
 	return 0;
 }
-*/
+
