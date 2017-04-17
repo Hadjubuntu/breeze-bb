@@ -20,6 +20,7 @@ RadioControler::RadioControler() : Processing()
 {
 	// 100 Hz updater
 	freqHz = 1000;
+	deviceName = "/dev/ttyS0";
 }
 
 /**
@@ -30,12 +31,12 @@ void RadioControler::init()
 	// Execute screen temporary command
 	// (this has been added to fix a bug where sbus is not read until screen is launched. Screen
 	// command is then killed to limit CPU usage)
-	std::string cmdScreen = "sudo screen -dm /dev/ttyO1 57600 && sudo killall screen";
+	std::string cmdScreen = "sudo screen -dm " + deviceName + " 57600 && sudo killall screen";
 	int resCmd = system(cmdScreen.c_str());
 	printf("bb screen result: %d\n", resCmd);
 
 	// Start serial for sbus radio
-	handler.init("/dev/ttyO1");
+	handler.init(deviceName.c_str());
 
 
 	int iter = 0;

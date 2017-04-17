@@ -8,12 +8,16 @@
 #ifndef PROCESSING_LINK_RADIOCONTROLER_H_
 #define PROCESSING_LINK_RADIOCONTROLER_H_
 
+#include <string.h>
 #include "../../core/Processing.h"
 #include "../../hal/Sbus.h"
 
 class RadioControler : public Processing
 {
 private:
+	/** Sbus device name */
+	std::string deviceName;
+
 	/** Radio sbus handler */
 	Sbus handler;
 public:
