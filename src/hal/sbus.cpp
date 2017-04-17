@@ -264,7 +264,7 @@ sbus_input(uint16_t *values, uint16_t *num_values, bool *sbus_failsafe, bool *sb
 		return false;
 	}
 	else {
-//				 printf("ret ! partial_frame_count=%d\n", partial_frame_count);
+				 printf("ret ! partial_frame_count=%d\n", partial_frame_count);
 	}
 
 	last_rx_time = now;
