@@ -51,16 +51,12 @@ def initPwm(pFirmware):
 		firstEl = False
 
 
-def initUart():
-	# port = serial.Serial("/dev/ttyAMA0", baudrate=57600, timeout=3.0) 
+
 
 # Initialize GPIO pwm, uart and i2c
 def initGPIO(pFirmware):
 	print("Firmware: " + pFirmware)	
 	initPwm(pFirmware)
-	initUart()
-	# initI2c()
-
 
 initGPIO(firmware)
 
