@@ -8,7 +8,8 @@ import serial
 
 # Inputs
 #-------------------------
-firmware = Tools.retrieveInput(1, "fixed_wing")
+action = Tools.retrieveInput(1, "None")
+firmware = Tools.retrieveInput(2, "fixed_wing")
 
 
 # Start script
