@@ -12,7 +12,7 @@
 void Accelerometer::init()
 {
 	// Init
-	provider.init();
+//	provider.init(); FIXME
 
 	HAL::delayMs(250);
 
@@ -43,11 +43,11 @@ void Accelerometer::init()
 void Accelerometer::update()
 {
 	// Read from provider
-	Vect3D cAcc = provider.read();
+	Vect3D cAcc = Vect3D::zero(); // FIXME desactivated provider.read();
 
 
 	// Retrieve offset
-		cAcc -= offset;
+	cAcc -= offset;
 
 	accRaw = cAcc;
 

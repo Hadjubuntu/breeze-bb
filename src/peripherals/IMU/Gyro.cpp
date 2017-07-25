@@ -11,7 +11,7 @@
 void Gyro::init()
 {
 	// Init
-	provider.init();
+//	provider.init();
 
 	HAL::delayMs(250);
 
@@ -47,7 +47,7 @@ void Gyro::init()
 void Gyro::update()
 {
 	// Read from provider
-	Vect3D cGyro = provider.read();
+	Vect3D cGyro = Vect3D::zero(); // FIXME read desactivated provider.read();
 
 	// Retrieve offset
 	cGyro -= offset;

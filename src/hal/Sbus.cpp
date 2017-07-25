@@ -275,7 +275,6 @@ void Sbus::fastLoop()
 	{
 		if (sbus_updated)
 		{
-			printf("Sbus updated\n");
 			// Initialize channel (TODO check nb channels < 16 !!)
 			for (int i = 0; i < NB_CHANNELS_OPERATIONNAL; i ++)
 			{
