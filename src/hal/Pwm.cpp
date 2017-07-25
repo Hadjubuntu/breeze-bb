@@ -44,7 +44,10 @@ void Pwm::write(long dutyCycleMs)
 	//	FileTools::writeToFile(pwmDutyFilepath, content);
 
 	std::string controlGpio = "./scripts/rasp/gpio.py";
-	std::string gpioCmd = "sudo " + controlGpio + " control " + pinNumber + " " + dutyCyclePercent(dutyCycleMs);
+	std::string pinNumberStr = std::to_string(pinNumber);
+	std::string dutyCyclePercentStr = std::to_string(dutyCyclePercent(dutyCycleMs));
+
+	std::string gpioCmd = "sudo " + controlGpio + " control " + pinNumberStr + " " + dutyCyclePercentStr;
 	int result = system(gpioCmd.c_str());
 }
 
