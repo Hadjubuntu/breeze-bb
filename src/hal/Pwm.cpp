@@ -48,7 +48,11 @@ void Pwm::write(long dutyCycleMs)
 	std::string dutyCyclePercentStr = std::to_string(dutyCyclePercent(dutyCycleMs));
 
 	std::string gpioCmd = "sudo " + controlGpio + " control " + pinNumberStr + " " + dutyCyclePercentStr;
-	int result = system(gpioCmd.c_str());
+
+	/**
+	 * TODO currently desactived: Need to implement gpio for rasp in scripts/rasp/
+	 */
+//	int result = system(gpioCmd.c_str());
 }
 
 
