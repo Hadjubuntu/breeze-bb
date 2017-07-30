@@ -67,7 +67,7 @@ def initGPIO(pFirmware):
 	initPwm(pFirmware)
 	
 def setup():	
-	firmware = Tools.retrieveInput(2, "fixed_wing")
+	firmware = "fixed_wing" # Tools.retrieveInput(2, "fixed_wing")
 	initGPIO(firmware)
 	
 	# Servo
