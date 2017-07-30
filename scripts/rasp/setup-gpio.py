@@ -89,7 +89,7 @@ def setup():
 def control():
 	pwmIdx = int(Tools.retrieveInput(2, 0));
 	pinNumber = pwmPins[pwmIdx]
-	dutyCycle = Tools.retrieveInput(3, 2.5)
+	dutyCycle = float(Tools.retrieveInput(3, 2.5))
 	print("Command: " + str(pinNumber) + " to " + str(dutyCycle) + " duty cycle")
 	
 	
