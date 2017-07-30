@@ -9,11 +9,11 @@ import RPi.GPIO as GPIO
 import time
 import Tools
 import serial
+import sys
 
 # Inputs
 #-------------------------
 action = Tools.retrieveInput(1, "None")
-firmware = Tools.retrieveInput(2, "fixed_wing")
 
 
 # Start script
@@ -28,8 +28,7 @@ pwmObj = []
 appStart = time.time()
 lastChange = appStart
 
-print("Setup GPIO for pwm, uart and i2c\n")
-GPIO.setmode(GPIO.BOARD)
+
 #GPIO.setmode(GPIO.BCM)
 # To retrieve the current configuration: configuration = GPIO.getmode() 
 
@@ -62,20 +61,50 @@ def initPwm(pFirmware):
 def initGPIO(pFirmware):
 	print("Firmware: " + pFirmware)	
 	initPwm(pFirmware)
+	
+def setup():	
+	firmware = Tools.retrieveInput(2, "fixed_wing")
 
-initGPIO(firmware)
+	print("Setup GPIO for pwm, uart and i2c\n")
+	GPIO.setmode(GPIO.BOARD)
 
-# Servo
-# 0° => 1ms width => 0.5ms/20ms * 100 => 2.5%
-# 90° => 1.5ms width => 1.5ms/20ms * 100 => 7.5%
-# 180° => 1.5ms width => 2.5ms/20ms * 100 => 12.5%
+	initGPIO(firmware)
+	
+	# Servo
+	# 0° => 1ms width => 0.5ms/20ms * 100 => 2.5%
+	# 90° => 1.5ms width => 1.5ms/20ms * 100 => 7.5%
+	# 180° => 1.5ms width => 2.5ms/20ms * 100 => 12.5%	
+	while time.time() - appStart < 300:
+		pwmObj[1].ChangeDutyCycle(7.5)  # turn towards 90 degree
+		time.sleep(1) # sleep 1 second
+		pwmObj[1].ChangeDutyCycle(2.5)  # turn towards 0 degree
+		time.sleep(1) # sleep 1 second
+		pwmObj[1].ChangeDutyCycle(12.5) # turn towards 180 degree
+		time.sleep(1) # sleep 1 second 
+		
 
 
-while time.time() - appStart < 300:
-	pwmObj[1].ChangeDutyCycle(7.5)  # turn towards 90 degree
-	time.sleep(1) # sleep 1 second
-	pwmObj[1].ChangeDutyCycle(2.5)  # turn towards 0 degree
-	time.sleep(1) # sleep 1 second
-	pwmObj[1].ChangeDutyCycle(12.5) # turn towards 180 degree
-	time.sleep(1) # sleep 1 second 
+# Control a pwm
+# -------------------------
+def control():
+	pinNumber = pwmPins[Tools.retrieveInput(2, 0)]
+	dutyCycle = Tools.retrieveInput(3, 2.5)
+	print("Command: " + str(pinNumber) + " to " + str(dutyCycle) + " duty cycle")
+	
+	p = GPIO.PWM(pinNumber, 50)
+	p.ChangeDutyCycle(dutyCycle)
+	
+	
+	
+
+# Route action
+# -------------------------
+if action == "setup":
+	setup();
+if action == "control":
+	control();
+		
+
+	
+	
 	

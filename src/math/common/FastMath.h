@@ -47,6 +47,7 @@ public:
 	static float fabs(float);
 	static float fpow(float, float);
 	static float fcos(float);
+	static float constrain(float, float, float);
 };
 
 #endif /* MATH_COMMON_FASTMATH_H_ */

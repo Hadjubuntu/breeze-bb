@@ -15,6 +15,20 @@
 FastMath::FastMath() {
 
 }
+
+
+float FastMath::constrain(float val, float min, float max)
+{
+	if (val < min) {
+		val = min;
+	}
+	else if (val > max) {
+		val = max;
+	}
+	return val;
+}
+
+
 float FastMath::toRadians(float angleDegrees)
 {
 	return angleDegrees / RAD2DEG;
