@@ -72,10 +72,10 @@ initGPIO(firmware)
 
 
 while time.time() - appStart < 300:
-	pwmObj[0].ChangeDutyCycle(7.5)  # turn towards 90 degree
+	pwmObj[1].ChangeDutyCycle(7.5)  # turn towards 90 degree
 	time.sleep(1) # sleep 1 second
-	pwmObj[0].ChangeDutyCycle(2.5)  # turn towards 0 degree
+	pwmObj[1].ChangeDutyCycle(2.5)  # turn towards 0 degree
 	time.sleep(1) # sleep 1 second
-	pwmObj[0].ChangeDutyCycle(12.5) # turn towards 180 degree
+	pwmObj[1].ChangeDutyCycle(12.5) # turn towards 180 degree
 	time.sleep(1) # sleep 1 second 
 	
