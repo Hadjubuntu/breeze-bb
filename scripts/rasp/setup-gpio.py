@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#----------------------------
+# setup-gpio.py
+# Example of command:
+# setup-gpio.py setup fixed_wing
 
 import RPi.GPIO as GPIO
 import time
@@ -67,12 +71,11 @@ initGPIO(firmware)
 # 180° => 1.5ms width => 2.5ms/20ms * 100 => 12.5%
 
 
-# while time.time() - appStart < 300:
-
-# 	pwm.ChangeDutyCycle(7.5)  # turn towards 90 degree
-# 	time.sleep(1) # sleep 1 second
-# 	pwm.ChangeDutyCycle(2.5)  # turn towards 0 degree
-# 	time.sleep(1) # sleep 1 second
-# 	pwm.ChangeDutyCycle(12.5) # turn towards 180 degree
-# 	time.sleep(1) # sleep 1 second 
+while time.time() - appStart < 300:
+	pwm.ChangeDutyCycle(7.5)  # turn towards 90 degree
+	time.sleep(1) # sleep 1 second
+	pwm.ChangeDutyCycle(2.5)  # turn towards 0 degree
+	time.sleep(1) # sleep 1 second
+	pwm.ChangeDutyCycle(12.5) # turn towards 180 degree
+	time.sleep(1) # sleep 1 second 
 	
