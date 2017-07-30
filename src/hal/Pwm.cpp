@@ -56,6 +56,7 @@ void Pwm::write(long dutyCycleMs)
 
 	std::string gpioCmd = "sudo " + controlGpio + " control " + pinNumberStr + " " + dutyCyclePercentStr;
 
+	printf("Command from C: %s\n", gpioCmd.c_str());
 	int result = system(gpioCmd.c_str());
 }
 
