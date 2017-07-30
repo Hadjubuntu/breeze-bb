@@ -5,7 +5,7 @@ import sys
 
 # Retrieve input parameter
 def retrieveInput(pArgvIdx, pDefaultValue):
-	if len(sys.argv) > pArgvIdx + 1:
+	if len(sys.argv) > pArgvIdx:
 		return sys.argv[pArgvIdx]
 	else:
 		return pDefaultValue
