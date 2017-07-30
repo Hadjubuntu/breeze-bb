@@ -93,6 +93,7 @@ def control():
 	print("Command: pin[" + str(pwmIdx) +"] = " + str(pinNumber) + " setted to " + str(dutyCycle) + " duty cycle")
 	
 	setup();
+	time.sleep(1);
 	
 	pwmObj[pwmIdx].ChangeDutyCycle(dutyCycle)
 	
