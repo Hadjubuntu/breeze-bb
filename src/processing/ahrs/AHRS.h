@@ -23,33 +23,33 @@ class AHRS : public Processing {
 private:
 
 	/** Rotation gravity body frame */
-	Vect3D _grot;
+	Vect3D grot;
 
 	/** Quaternion of attitude */
-	Quaternion _attitude;
+	Quaternion attitude;
 
 	/** Quaternion of attitude offset */
-	Quaternion _attitudeOffset;
+	Quaternion attitudeOffset;
 
 	/** Gyroscope */
-	Gyro _gyro;
+	Gyro gyro;
 
 	/** Accelerometer */
-	Accelerometer _accelerometer;
+	Accelerometer accelerometer;
 
 	/** Barometer */
-	Baro *_baro;
+	Baro *barometer;
 
 	// Yaw computed from gyro integration
-	float _yawFromGyro;
+	float yawFromGyro;
 
-	Date _lastPositiveAccPeak;
-	Date _lastNegativeAccPeak;
+	Date lastPositiveAccPeak;
+	Date lastNegativeAccPeak;
 
-	int _itrAccZ;
-	float _meanAccZ;
-	float _vZ;
-	float _analyzedAccZ;
+	int itrAccZ;
+	float meanAccZ;
+	float vZ;
+	float analyzedAccZ;
 
 	Date lastAttitudeDateStored;
 	Quaternion lastAttitude;
@@ -85,39 +85,39 @@ public:
 	 *****************************************************/
 
 	Vect3D getGyroFiltered() {
-		return _gyro.getGyroFiltered();
+		return gyro.getGyroFiltered();
 	}
 
-	Accelerometer getAcc() { return _accelerometer; }
-	Gyro getGyro() { return _gyro; }
+	Accelerometer getAcc() { return accelerometer; }
+	Gyro getGyro() { return gyro; }
 
-	Quaternion getAttitude() { return _attitude * _attitudeOffset; }
+	Quaternion getAttitude() { return attitude * attitudeOffset; }
 
 	float getYawFromGyro() {
-		return _yawFromGyro;
+		return yawFromGyro;
 	}
 
 	float getVz() {
-		return _vZ;
+		return vZ;
 	}
 
 	float getAnalyzedAccZ() {
-		return _analyzedAccZ;
+		return analyzedAccZ;
 	}
 
 	float getAltitudeMeters()
 	{
-		return _baro->getAltitudeMeters();
+		return barometer->getAltitudeMeters();
 	}
 
 	Baro* getBaro() {
-		return _baro;
+		return barometer;
 	}
 
 	void printOffset()
 	{
 		float rpy[3];
-		_attitudeOffset.toRollPitchYaw(rpy);
+		attitudeOffset.toRollPitchYaw(rpy);
 		printf("Offset attitude=%.2f, %.2f, %.2f\n",
 				FastMath::toDegrees(rpy[0]),
 				FastMath::toDegrees(rpy[1]),

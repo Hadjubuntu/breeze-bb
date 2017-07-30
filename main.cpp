@@ -118,7 +118,7 @@ void loop()
 	{
 		if (flightControl.isExitCommand())
 		{
-			printf("Breeze receives exit command");
+			printf("Breeze receives exit command\n");
 			brainRun = false;
 		}
 
