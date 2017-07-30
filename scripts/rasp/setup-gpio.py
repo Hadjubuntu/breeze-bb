@@ -95,11 +95,13 @@ def control():
 	dutyCycle = float(Tools.retrieveInput(3, 2.5))
 	print("Command: pin[" + str(pwmIdx) +"] = " + str(pinNumber) + " setted to " + str(dutyCycle) + " duty cycle")
 	
-	setup();
+	print("Before setup delay (ms): " + str((time.time() - appStart) * 1000.0));
+	setup();	
+	print("After setup delay (ms): " + str((time.time() - appStart) * 1000.0));
 	
 	pwmObj[pwmIdx].ChangeDutyCycle(dutyCycle)
 	
-	print("Delay (ms): " + str((time.time() - appStart) * 1000.0));
+	print("After change duty cycle (ms): " + str((time.time() - appStart) * 1000.0));
 	time.sleep(5);
 	
 	
