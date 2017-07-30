@@ -92,6 +92,8 @@ def control():
 	dutyCycle = Tools.retrieveInput(3, 2.5)
 	print("Command: " + str(pinNumber) + " to " + str(dutyCycle) + " duty cycle")
 	
+	
+	GPIO.setup(pinNumber, GPIO.OUT)
 	p = GPIO.PWM(pinNumber, 50)
 	p.ChangeDutyCycle(dutyCycle)
 	
