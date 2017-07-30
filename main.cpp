@@ -122,7 +122,7 @@ void loop()
 			brainRun = false;
 		}
 
-		printf("brain loop\n");
+		printf("Breeze iteration: %d\n", uavBrain.getTickId());
 		float rpy[3];
 		ahrs.getAttitude().toRollPitchYaw(rpy);
 

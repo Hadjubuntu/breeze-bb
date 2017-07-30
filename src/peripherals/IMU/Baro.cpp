@@ -40,96 +40,96 @@ Baro::Baro() : Processing(), _i2c(I2C::getInstance(BMP085_ADDRESS))
 
 void Baro::init()
 {
-	uint8_t buff[22];
-
-
-	// We read the calibration data registers
-	_i2c.readFrom(0xAA, 22, buff) ;
-
-	ac1 = ((int16_t)buff[0] << 8) | buff[1];
-	ac2 = ((int16_t)buff[2] << 8) | buff[3];
-	ac3 = ((int16_t)buff[4] << 8) | buff[5];
-	ac4 = ((int16_t)buff[6] << 8) | buff[7];
-	ac5 = ((int16_t)buff[8] << 8) | buff[9];
-	ac6 = ((int16_t)buff[10] << 8) | buff[11];
-	b1 = ((int16_t)buff[12] << 8) | buff[13];
-	b2 = ((int16_t)buff[14] << 8) | buff[15];
-	mb = ((int16_t)buff[16] << 8) | buff[17];
-	mc = ((int16_t)buff[18] << 8) | buff[19];
-	md = ((int16_t)buff[20] << 8) | buff[21];
-
-	if (ac1 == 0) {
-		baroHealthy = false;
-		printf("ERROR: Barometer can't be initialized\n");
-	}
-	else {
-		printf("Barometer initialized successfully\n");
-		printf("ac1=%hd\n", ac1);
-		printf("ac2=%hd\n", ac2);
-		printf("ac3=%hd\n", ac3);
-		printf("ac4=%hd\n", ac4);
-		printf("ac5=%hd\n", ac5);
-		printf("ac6=%hd\n", ac6);
-		printf("b1=%hd\n", b1);
-		printf("b2=%hd\n", b2);
-		printf("mb=%hd\n", mb);
-		printf("mc=%hd\n", mc);
-		printf("md=%hd\n", md);
-	}
+//	uint8_t buff[22];
+//
+//
+//	// We read the calibration data registers
+//	_i2c.readFrom(0xAA, 22, buff) ;
+//
+//	ac1 = ((int16_t)buff[0] << 8) | buff[1];
+//	ac2 = ((int16_t)buff[2] << 8) | buff[3];
+//	ac3 = ((int16_t)buff[4] << 8) | buff[5];
+//	ac4 = ((int16_t)buff[6] << 8) | buff[7];
+//	ac5 = ((int16_t)buff[8] << 8) | buff[9];
+//	ac6 = ((int16_t)buff[10] << 8) | buff[11];
+//	b1 = ((int16_t)buff[12] << 8) | buff[13];
+//	b2 = ((int16_t)buff[14] << 8) | buff[15];
+//	mb = ((int16_t)buff[16] << 8) | buff[17];
+//	mc = ((int16_t)buff[18] << 8) | buff[19];
+//	md = ((int16_t)buff[20] << 8) | buff[21];
+//
+//	if (ac1 == 0) {
+//		baroHealthy = false;
+//		printf("ERROR: Barometer can't be initialized\n");
+//	}
+//	else {
+//		printf("Barometer initialized successfully\n");
+//		printf("ac1=%hd\n", ac1);
+//		printf("ac2=%hd\n", ac2);
+//		printf("ac3=%hd\n", ac3);
+//		printf("ac4=%hd\n", ac4);
+//		printf("ac5=%hd\n", ac5);
+//		printf("ac6=%hd\n", ac6);
+//		printf("b1=%hd\n", b1);
+//		printf("b2=%hd\n", b2);
+//		printf("mb=%hd\n", mb);
+//		printf("mc=%hd\n", mc);
+//		printf("md=%hd\n", md);
+//	}
 }
 
 void Baro::process()
 {
-	if (baroHealthy) {
-		if (state == 0)
-		{
-			state = 1;
-			readUncompensatedTempValue();
-		}
-
-		// Force to check state again since it has changed above
-		if (state == 3)
-		{
-			state = 5;
-			readUncompensatedPressureValue();
-		}
-
-		// Again
-		if (state == 6)
-		{
-			calculateTrueTemperature();
-
-			calculateTruePressure();
-
-			calculateAltitude();
-
-			state = 0;
-
-			// Note: limit iter variable to increase indefinitly
-			if (_iter < 10000) {
-				_iter ++;
-			}
-		}
-	}
+//	if (baroHealthy) {
+//		if (state == 0)
+//		{
+//			state = 1;
+//			readUncompensatedTempValue();
+//		}
+//
+//		// Force to check state again since it has changed above
+//		if (state == 3)
+//		{
+//			state = 5;
+//			readUncompensatedPressureValue();
+//		}
+//
+//		// Again
+//		if (state == 6)
+//		{
+//			calculateTrueTemperature();
+//
+//			calculateTruePressure();
+//
+//			calculateAltitude();
+//
+//			state = 0;
+//
+//			// Note: limit iter variable to increase indefinitly
+//			if (_iter < 10000) {
+//				_iter ++;
+//			}
+//		}
+//	}
 }
 
 void Baro::callback()
 {
-	if (state == 1)
-	{
-		uint8_t Data[2];
-		_i2c.readFrom(0xF6, 2, Data);
-		uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
-		state = 3;
-
-	}
-	else if (state == 5)
-	{
-		uint8_t Data[3];
-		_i2c.readFrom(0xF6, 3, Data);
-		uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
-		state = 6;
-	}
+//	if (state == 1)
+//	{
+//		uint8_t Data[2];
+//		_i2c.readFrom(0xF6, 2, Data);
+//		uncompensatedTemperature = ((Data[0] << 8) | Data[1]);
+//		state = 3;
+//
+//	}
+//	else if (state == 5)
+//	{
+//		uint8_t Data[3];
+//		_i2c.readFrom(0xF6, 3, Data);
+//		uncompensatedPressure = ((Data[0] << 16) | (Data[1] << 8) | Data[2]) >> (8 - OVERSAMPLING);
+//		state = 6;
+//	}
 }
 
 void Baro::readUncompensatedTempValue()
