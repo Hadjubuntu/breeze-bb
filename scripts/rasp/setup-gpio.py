@@ -61,6 +61,9 @@ def initPwm(pFirmware):
 
 
 
+# Checkout pipe com between C++ and python
+# https://prgwonders.blogspot.fr/2016/08/write-ipc-program-using-pipe-using-c.html
+
 # Initialize GPIO pwm, uart and i2c
 def initGPIO(pFirmware):
 	print("Firmware: " + pFirmware)	
@@ -95,6 +98,8 @@ def control():
 	setup();
 	
 	pwmObj[pwmIdx].ChangeDutyCycle(dutyCycle)
+	
+	print("Delay (ms): " + str((time.time() - appStart) * 1000.0));
 	time.sleep(5);
 	
 	
