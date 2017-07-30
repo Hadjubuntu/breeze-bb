@@ -29,6 +29,10 @@ appStart = time.time()
 lastChange = appStart
 
 
+print("Setup GPIO for pwm, uart and i2c\n")
+GPIO.setmode(GPIO.BOARD)
+
+
 #GPIO.setmode(GPIO.BCM)
 # To retrieve the current configuration: configuration = GPIO.getmode() 
 
@@ -64,10 +68,6 @@ def initGPIO(pFirmware):
 	
 def setup():	
 	firmware = Tools.retrieveInput(2, "fixed_wing")
-
-	print("Setup GPIO for pwm, uart and i2c\n")
-	GPIO.setmode(GPIO.BOARD)
-
 	initGPIO(firmware)
 	
 	# Servo
