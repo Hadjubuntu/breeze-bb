@@ -74,13 +74,13 @@ def setup():
 	# 0° => 1ms width => 0.5ms/20ms * 100 => 2.5%
 	# 90° => 1.5ms width => 1.5ms/20ms * 100 => 7.5%
 	# 180° => 1.5ms width => 2.5ms/20ms * 100 => 12.5%	
-	while time.time() - appStart < 300:
-		pwmObj[1].ChangeDutyCycle(7.5)  # turn towards 90 degree
-		time.sleep(1) # sleep 1 second
-		pwmObj[1].ChangeDutyCycle(2.5)  # turn towards 0 degree
-		time.sleep(1) # sleep 1 second
-		pwmObj[1].ChangeDutyCycle(12.5) # turn towards 180 degree
-		time.sleep(1) # sleep 1 second 
+# 	while time.time() - appStart < 300:
+# 		pwmObj[1].ChangeDutyCycle(7.5)  # turn towards 90 degree
+# 		time.sleep(1) # sleep 1 second
+# 		pwmObj[1].ChangeDutyCycle(2.5)  # turn towards 0 degree
+# 		time.sleep(1) # sleep 1 second
+# 		pwmObj[1].ChangeDutyCycle(12.5) # turn towards 180 degree
+# 		time.sleep(1) # sleep 1 second 
 		
 
 
@@ -92,10 +92,9 @@ def control():
 	dutyCycle = float(Tools.retrieveInput(3, 2.5))
 	print("Command: " + str(pinNumber) + " to " + str(dutyCycle) + " duty cycle")
 	
+	setup();
 	
-	GPIO.setup(pinNumber, GPIO.OUT)
-	p = GPIO.PWM(pinNumber, 50)
-	p.ChangeDutyCycle(dutyCycle)
+	pwmObj[pwmIdx].ChangeDutyCycle(dutyCycle)
 	
 	
 	
