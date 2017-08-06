@@ -14,7 +14,7 @@ unsigned int  setAngle(rpiPWM1 *el, unsigned int degrees){
 
 int main (void){
 
-	rpiPWM1 pwm(50.0, 3600, 2.5, rpiPWM1::MSMODE);
+	rpiPWM1 pwm(50.0, 3600, 10, rpiPWM1::MSMODE);
 
 	// 20ms = 3600 counts (Period)
 	// 2ms = 360 counts (10% duty cycle)  => angle 180
