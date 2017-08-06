@@ -6,6 +6,10 @@
  */
 
 
+/**
+ * Source code python lib:
+ * https://github.com/Tieske/rpi-gpio/blob/master/source/c_gpio.c
+ */
 #include <string.h>
 #include "HAL.h"
 #include "Pwm.h"
