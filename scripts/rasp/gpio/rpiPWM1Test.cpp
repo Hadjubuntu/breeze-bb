@@ -21,11 +21,11 @@ int main (void){
 	// 1ms = 180 counts (5% duty cycle) => angle 0
 	// 1.5ms = 180+90 = 270 (7.5%  duty cycle ) => angle = 90 //servo centered
 
-	for (int i=0; i < 270; i +=15)
+	for (int i=0; i < 270; i +=10)
 	{
 		setAngle(&pwm, i);
 		printf("Current angle: %d\n", i);
-		usleep(500000);
+		usleep(250000);
 	}
 	setAngle(&pwm, 270);
 
