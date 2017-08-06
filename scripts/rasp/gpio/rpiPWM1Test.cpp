@@ -1,17 +1,32 @@
 #include "rpiPWM1.h"
 
 
+unsigned int  setAngle(rpiPWM1 *el, unsigned int degrees){
+    unsigned int retVal = 0;
+
+    if((degrees < 0) || (degrees > 180 ))
+        retVal = 1;
+    else
+    	el->setDutyCycleCount(180 + degrees); // call the necessary rpiPWM1 method
+
+    return retVal;
+}
+
 int main (void){
-        
-    rpiPWM1 pwm(50.0, 256, 80.0, rpiPWM1::MSMODE);
-    // initialize PWM1 output to 1KHz 8-bit resolution 80% Duty Cycle & PWM mode is MSMODE
-    unsigned int dcyccount = 0; // reset Duty Cycle to Zero
-    while(dcyccount != 256){
-        pwm.setDutyCycleCount(dcyccount); // increase Duty Cycle by 16 counts every two seconds
-        dcyccount += 16;// until we hit 256 counts or 100% duty cycle
-        printf("Duty Cycle is %3.2lf \n",pwm.getDutyCycle());
-        printf("Divisor is %d\n", pwm.getDivisor());
-        usleep(2000000);
-    }
-    return 0;
+
+	rpiPWM1 pwm(50.0, 3600, 7.5, rpiPWM1::MSMODE);
+
+	// 20ms = 3600 counts (Period)
+	// 2ms = 360 counts (10% duty cycle)  => angle 180
+	// 1ms = 180 counts (5% duty cycle) => angle 0
+	// 1.5ms = 180+90 = 270 (7.5%  duty cycle ) => angle = 90 //servo centered
+
+	for (int i=0; i < 180; i ++)
+	{
+		setAngle(&pwm, i);
+		printf("Current angle: %d\n", i);
+		usleep(2000000);
+	}
+
+	return 0;
 }
