@@ -3,7 +3,7 @@
 
 int main (void){
         
-    rpiPWM1 pwm(50.0, 256, 80.0, rpiPWM1::PWMMODE);
+    rpiPWM1 pwm(50.0, 256, 80.0, rpiPWM1::MSMODE);
     // initialize PWM1 output to 1KHz 8-bit resolution 80% Duty Cycle & PWM mode is MSMODE
     unsigned int dcyccount = 0; // reset Duty Cycle to Zero
     while(dcyccount != 256){
