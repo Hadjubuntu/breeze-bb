@@ -4,10 +4,11 @@
 unsigned int  setAngle(rpiPWM1 *el, unsigned int degrees){
     unsigned int retVal = 0;
 
-    if((degrees < 0) || (degrees > 270 ))
-        retVal = 1;
-    else
-    	el->setDutyCycleCount(90+ degrees); // call the necessary rpiPWM1 method
+//    if((degrees < 0) || (degrees > 270 ))
+//        retVal = 1;
+//    else
+
+    el->setDutyCycleCount(90+ degrees); // call the necessary rpiPWM1 method
 
     return retVal;
 }
@@ -21,13 +22,12 @@ int main (void){
 	// 1ms = 180 counts (5% duty cycle) => angle 0
 	// 1.5ms = 180+90 = 270 (7.5%  duty cycle ) => angle = 90 //servo centered
 
-	for (int i=0; i < 270; i +=10)
+	for (int i=0; i <= 270; i +=10)
 	{
 		setAngle(&pwm, i);
 		printf("Current angle: %d\n", i);
 		usleep(250000);
 	}
-	setAngle(&pwm, 270);
 
 	return 0;
 }
