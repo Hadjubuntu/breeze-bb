@@ -25,7 +25,7 @@ int main (void){
 	{
 		setAngle(&pwm, i);
 		printf("Current angle: %d\n", i);
-		usleep(2000000);
+		usleep(500000);
 	}
 
 	return 0;
