@@ -7,7 +7,7 @@ unsigned int  setAngle(rpiPWM1 *el, unsigned int degrees){
     if((degrees < 0) || (degrees > 180 ))
         retVal = 1;
     else
-    	el->setDutyCycleCount(180 + degrees); // call the necessary rpiPWM1 method
+    	el->setDutyCycleCount( degrees); // call the necessary rpiPWM1 method
 
     return retVal;
 }
