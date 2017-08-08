@@ -1,6 +1,17 @@
-/**
- * https://github.com/richardghirst/PiBits/blob/master/ServoBlaster/servodebug.c
+/*
+ * servodebug.c - a utility to help debug issues with ServoBlaster
+ *
+ * This code should be compiled with the command:
+ *
+ *   gcc -Wall -O2 -o servodebug servodebug.c
+ *
+ * It should be run with the command:
+ *
+ *   sudo chrt 1 ./servodebug
+ *
+ * Richard Hirst - Nov 25th 2012
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -67,17 +78,17 @@
 #define GPLEV0			(0x34/4)
 
 typedef struct {
-	int info, src, dst, length,
+	uint32_t info, src, dst, length,
 		 stride, next, pad[2];
 } dma_cb_t;
 
-static volatile int *gpio_reg;
-static volatile int *pwm_reg;
-static volatile int *clk_reg;
-static volatile int *dma_reg;
-static volatile int *tick_reg;
+static volatile uint32_t *gpio_reg;
+static volatile uint32_t *pwm_reg;
+static volatile uint32_t *clk_reg;
+static volatile uint32_t *dma_reg;
+static volatile uint32_t *tick_reg;
 
-static int dma_chan = DMA_CHAN_DEFAULT;
+static uint32_t dma_chan = DMA_CHAN_DEFAULT;
 
 static uint8_t servo2gpio[] = {
                 4,      // P1-7
@@ -96,8 +107,8 @@ static uint8_t servo2gpio[] = {
 #define NUM_SERVOS      (sizeof(servo2gpio)/sizeof(servo2gpio[0]))
 
 struct {
-	int stamp;
-	int levels;
+	uint32_t stamp;
+	uint32_t levels;
 } trans[20];
 
 static void
@@ -122,15 +133,15 @@ msleep(int ms)
 	}
 }
 
-static void *
-map_peripheral(int base, int len)
+static uint32_t *
+map_peripheral(uint32_t base, uint32_t len)
 {
 	int fd = open("/dev/mem", O_RDWR);
-	void * vaddr;
+	uint32_t * vaddr;
 
 	if (fd < 0)
 		fatal("Failed to open /dev/mem: %m\n");
-	vaddr = mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED, fd, base);
+	vaddr = (uint32_t*)mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED, fd, base);
 	if (vaddr == MAP_FAILED)
 		fatal("Failed to map peripheral at 0x%08x: %m\n", base);
 	close(fd);
@@ -142,7 +153,7 @@ int
 main(int argc, char **argv)
 {
 	int tr, i;
-	int v1, v2, mask, t1;
+	uint32_t v1, v2, mask, t1;
 	struct timeval tv1, tv2;
 
 	printf("This code should be compiled with the command:\n\n");
@@ -151,7 +162,7 @@ main(int argc, char **argv)
 	printf("  sudo chrt 1 ./servodebug\n\n");
 	gpio_reg = map_peripheral(GPIO_BASE, GPIO_LEN);
 	dma_reg = map_peripheral(DMA_BASE, DMA_LEN);
-	dma_reg += dma_chan * DMA_CHAN_SIZE / sizeof(int);
+	dma_reg += dma_chan * DMA_CHAN_SIZE / sizeof(uint32_t);
 	pwm_reg = map_peripheral(PWM_BASE, PWM_LEN);
 	clk_reg = map_peripheral(CLK_BASE, CLK_LEN);
 	tick_reg = map_peripheral(TICK_BASE, TICK_LEN);
@@ -206,3 +217,4 @@ main(int argc, char **argv)
 
 	return 0;
 }
+
