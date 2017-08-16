@@ -42,7 +42,7 @@ def initPwm(pFirmware):
 
 	for pwmPin in pwmPins:
 		initDutyCycle = minDutyPercent
-		freq = 490
+		freq = 50
 
 		# Specific configuration for servos
 		if not firstEl and pFirmware == 'fixed_wing':
