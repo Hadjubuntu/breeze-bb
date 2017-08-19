@@ -21,7 +21,7 @@
 #include <string>
 #include "I2CDev.h"
 
-#define PCA9685_DEFAULT_ADDRESS 0x20000000//     0x40 // All address pins low, Navio default
+#define PCA9685_DEFAULT_ADDRESS 0x20 //0x40 // All address pins low, Navio default
 
 #define PCA9685_RA_MODE1            0x00
 #define PCA9685_RA_MODE2            0x01
