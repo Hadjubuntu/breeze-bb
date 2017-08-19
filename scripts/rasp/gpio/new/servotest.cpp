@@ -24,7 +24,7 @@ int main()
     static const uint8_t outputEnablePin = RPI_GPIO_27;
 
 
-    Pin pin(outputEnablePin);
+    Pin pin(12);
 
     if (pin.init()) {
         pin.setMode(Pin::GpioModeOutput);
