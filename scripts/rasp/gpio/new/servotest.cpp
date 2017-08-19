@@ -24,17 +24,16 @@ int main()
 	static const uint8_t outputEnablePin = 1;
 
 
-	for (int i=0; i < 30; i ++) {
-		Pin pin(i);
+	Pin pin(outputEnablePin);
 
-		if (pin.init()) {
-			pin.setMode(Pin::GpioModeOutput);
-			pin.write(0); /* drive Output Enable low */
-		} else {
-			fprintf(stderr, "Output Enable not set. Are you root?\n");
-			return 1;
-		}
+	if (pin.init()) {
+		pin.setMode(Pin::GpioModeOutput);
+		pin.write(0); /* drive Output Enable low */
+	} else {
+		fprintf(stderr, "Output Enable not set. Are you root?\n");
+		return 1;
 	}
+
 
 	PCA9685 pwm;
 
@@ -43,6 +42,7 @@ int main()
 
 	while (true) {
 		for (int i=0; i <= 15; i ++) {
+			printf("channel:%d\n", i);
 			pwm.setPWMmS(i, SERVO_MIN);
 		}
 		sleep(1);
