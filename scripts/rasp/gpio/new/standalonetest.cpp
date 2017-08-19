@@ -133,7 +133,7 @@ void initHardware()
 	setupRegisterMemoryMappings();
 
 	// set PWM alternate function for GPIO18
-	SET_GPIO_ALT(1, 5);
+	SET_GPIO_ALT(12, 5);
 
 	// stop clock and waiting for busy flag doesn't work, so kill clock
 	*(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
