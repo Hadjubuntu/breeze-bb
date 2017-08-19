@@ -29,6 +29,7 @@ int main()
 	if (pin.init()) {
 		pin.setMode(Pin::GpioModeOutput);
 		pin.write(0); /* drive Output Enable low */
+		printf("Pin setted\n");
 	} else {
 		fprintf(stderr, "Output Enable not set. Are you root?\n");
 		return 1;
