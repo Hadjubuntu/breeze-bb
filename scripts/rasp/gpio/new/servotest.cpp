@@ -21,7 +21,7 @@ using namespace Navio;
 
 int main()
 {
-    static const uint8_t outputEnablePin = RPI_GPIO_18;
+    static const uint8_t outputEnablePin = 1;
 
 
     Pin pin(outputEnablePin);
