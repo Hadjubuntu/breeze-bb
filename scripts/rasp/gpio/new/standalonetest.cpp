@@ -72,7 +72,7 @@ volatile unsigned *mapRegisterMemory(int base)
 	/* mmap register */
 
 	// Allocate MAP block
-	if ((mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+	if ((mem = (char *)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
 		printf("allocation error \n");
 		exit (-1);
 	}
