@@ -9,7 +9,7 @@
 
 
 
-#define NAVIO_RCOUTPUT_1 1
+#define NAVIO_RCOUTPUT_1 12
 #define SERVO_MIN 1.250 /*mS*/
 #define SERVO_MAX 1.750 /*mS*/
 
@@ -21,7 +21,7 @@ using namespace Navio;
 
 int main()
 {
-    static const uint8_t outputEnablePin = 12;
+    static const uint8_t outputEnablePin = 1;
 
 
     Pin pin(outputEnablePin);
