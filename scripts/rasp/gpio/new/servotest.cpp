@@ -21,7 +21,7 @@ using namespace Navio;
 
 int main()
 {
-    static const uint8_t outputEnablePin = 1;
+    static const uint8_t outputEnablePin = RPI_GPIO_18;
 
 
     Pin pin(outputEnablePin);
@@ -40,9 +40,13 @@ int main()
     pwm.setFrequency(50);
 
     while (true) {
-        pwm.setPWMmS(NAVIO_RCOUTPUT_1, SERVO_MIN);
+    	for (int i=0; i <= 15; i ++) {
+            pwm.setPWMmS(i, SERVO_MIN);
+    	}
         sleep(1);
-        pwm.setPWMmS(NAVIO_RCOUTPUT_1, SERVO_MAX);
+        for (int i=0; i <= 15; i ++) {
+            pwm.setPWMmS(i, SERVO_MAX);
+    	}
         sleep(1);
     }
 
