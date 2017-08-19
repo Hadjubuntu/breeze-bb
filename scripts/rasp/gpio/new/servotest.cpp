@@ -9,7 +9,7 @@
 
 
 
-#define NAVIO_RCOUTPUT_1 3
+#define NAVIO_RCOUTPUT_1 1
 #define SERVO_MIN 1.250 /*mS*/
 #define SERVO_MAX 1.750 /*mS*/
 
@@ -21,10 +21,10 @@ using namespace Navio;
 
 int main()
 {
-    static const uint8_t outputEnablePin = RPI_GPIO_27;
+    static const uint8_t outputEnablePin = 12;
 
 
-    Pin pin(12);
+    Pin pin(outputEnablePin);
 
     if (pin.init()) {
         pin.setMode(Pin::GpioModeOutput);
