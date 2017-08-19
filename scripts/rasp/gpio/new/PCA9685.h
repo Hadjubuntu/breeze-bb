@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string>
-#include "I2Cdev.h"
+#include "I2CDev.h"
 
 #define PCA9685_DEFAULT_ADDRESS     0x40 // All address pins low, Navio default
 
