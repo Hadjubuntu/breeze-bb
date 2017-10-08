@@ -13,7 +13,8 @@
 //
 // compile with "gcc pwm.c -o pwm", test with "./pwm" (needs to be root for /dev/mem access)
 //
-// Frank Buss, 2012
+
+#define PIN_NUMBER 23
 
 #define BCM2708_PERI_BASE	0x20000000
 #define GPIO_BASE		(BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
@@ -182,10 +183,10 @@ void initHardware(double pFrequencyHz)
 	setupRegisterMemoryMappings();
 
 	// Set input
-	INP_GPIO(18);
+	INP_GPIO(PIN_NUMBER);
 
 	// set PWM alternate function for GPIO18
-	SET_GPIO_ALT(18, 5);
+	SET_GPIO_ALT(PIN_NUMBER, 5);
 
 	/*GPIO 18 in ALT5 mode for PWM0 */
 	// Let's first set pin 18 to input
@@ -292,8 +293,8 @@ int main(int argc, char **argv)
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
 
-	printf("Position: 70\n");
-	setServo(70);
+	printf("Position: 80\n");
+	setServo(80);
 	sleep(2);
 
 	printf("Position: 180\n");
