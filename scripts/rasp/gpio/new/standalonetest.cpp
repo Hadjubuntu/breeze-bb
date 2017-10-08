@@ -87,10 +87,10 @@ volatile unsigned *mapRegisterMemory(int base)
 
 	// Now map it
 	map = (char *)mmap(
-			(caddr_t)mem,
+			NULL, // (caddr_t)mem replaced by NULL
 			BLOCK_SIZE,
 			PROT_READ|PROT_WRITE|PROT_EXEC,
-			MAP_SHARED|MAP_FIXED,
+			MAP_SHARED|MAP_LOCKED,
 			mem_fd,
 			base
 	);
