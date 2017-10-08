@@ -57,7 +57,7 @@ volatile unsigned *clk;
 #define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
 
 // map 4k register memory for direct access from user space and return a user space pointer to it
-volatile unsigned *mapRegisterMemory(int base)
+volatile unsigned *mapRegisterMemory(unsigned long base)
 {
 	static int mem_fd = 0;
 	//	char *mem, *map;
@@ -100,6 +100,12 @@ volatile unsigned *mapRegisterMemory(int base)
 	if ((long)map < 0) {
 		printf("mmap error %d\n", (int)map);
 		exit (-1);
+	}
+
+	if(close(mem_fd) < 0){ //No need to keep mem_fd open after mmap
+		//i.e. we can close /dev/mem
+		perror("couldn't close /dev/mem file descriptor");
+		exit(1);
 	}
 
 	// Always use volatile pointer!
@@ -185,7 +191,7 @@ void initHardware(double pFrequencyHz)
 
 	// filled with 0 for 20 milliseconds = 320 bits
 	// TODO 320 replaced by 3600
-	  *(pwm + PWM_RNG1) = COUNTS; usleep(10);
+	*(pwm + PWM_RNG1) = COUNTS; usleep(10);
 
 	// 32 bits = 2 milliseconds, init with 1 millisecond
 	//	setServo(0); TODO replaced by
@@ -206,38 +212,38 @@ void close()
 	*(pwm + PWM_CTL) = 0;
 	*(pwm + PWM_RNG1) = 0x20;
 	*(pwm + PWM_DAT1) = 0;
-    // unmap the memory block containing PWM registers
-    if(munmap((void*)pwm, BLOCK_SIZE) < 0){
+	// unmap the memory block containing PWM registers
+	if(munmap((void*)pwm, BLOCK_SIZE) < 0){
 		perror("munmap (pwm) failed");
 		exit(1);
 	}
 	//lets put the PWM Clock peripheral registers in their original state
-    //kill PWM clock
-    *(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
-    usleep(10);
+	//kill PWM clock
+	*(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
+	usleep(10);
 
-    // wait until busy flag is set
-    while ( (*(clk + PWMCLK_CNTL)) & 0x00000080){}
+	// wait until busy flag is set
+	while ( (*(clk + PWMCLK_CNTL)) & 0x00000080){}
 
-    //reset divisor
-    *(clk + PWMCLK_DIV) = 0x5A000000;
-    usleep(10);
+	//reset divisor
+	*(clk + PWMCLK_DIV) = 0x5A000000;
+	usleep(10);
 
-    // source=osc and enable clock
-    *(clk + PWMCLK_CNTL) = 0x5A000011;
+	// source=osc and enable clock
+	*(clk + PWMCLK_CNTL) = 0x5A000011;
 
-    // unmap the memory block containing PWM Clock registers
-    if(munmap((void*)clk, BLOCK_SIZE) < 0){
+	// unmap the memory block containing PWM Clock registers
+	if(munmap((void*)clk, BLOCK_SIZE) < 0){
 		perror("munmap (clk) failed");
 		exit(1);
 	}
 
-   //lets put the GPIO peripheral registers in their original state
-   //first put it in input mode (default)
-   //taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-   *(gpio+1) &= ~(7 << 24);
-   //then munmap
-    if(munmap((void*)gpio, BLOCK_SIZE) < 0){
+	//lets put the GPIO peripheral registers in their original state
+	//first put it in input mode (default)
+	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+	*(gpio+1) &= ~(7 << 24);
+	//then munmap
+	if(munmap((void*)gpio, BLOCK_SIZE) < 0){
 		perror("munmap (gpio) failed");
 		exit(1);
 	}
