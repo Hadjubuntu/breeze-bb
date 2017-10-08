@@ -114,20 +114,21 @@ void setupRegisterMemoryMappings()
 
 void setServo(int percent)
 {
-	int bitCount;
-	unsigned int bits = 0;
-
-	// 32 bits = 2 milliseconds
-	bitCount = 16 + 16 * percent / 100;
-	if (bitCount > 32) bitCount = 32;
-	if (bitCount < 1) bitCount = 1;
-	bits = 0;
-	while (bitCount) {
-		bits <<= 1;
-		bits |= 1;
-		bitCount--;
-	}
-	*(pwm + PWM_DAT1) = bits;
+	// TODO replace by percent directly
+//	int bitCount;
+//	unsigned int bits = 0;
+//
+//	// 32 bits = 2 milliseconds
+//	bitCount = 16 + 16 * percent / 100;
+//	if (bitCount > 32) bitCount = 32;
+//	if (bitCount < 1) bitCount = 1;
+//	bits = 0;
+//	while (bitCount) {
+//		bits <<= 1;
+//		bits |= 1;
+//		bitCount--;
+//	}
+	*(pwm + PWM_DAT1) = percent;
 }
 
 // init hardware
@@ -141,20 +142,6 @@ void initHardware()
 
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(18, 5);
-
-	/**
-	 * Equivalent to
-	 */
-
-	  /*GPIO 18 in ALT5 mode for PWM0 */
-	  // Let's first set pin 18 to input
-	  //taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-	  *(gpio+1) &= ~(7 << 24);
-	  //then set it to ALT5 function PWM0
-	  //taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
-	  *(gpio+1) |= (2<<24);
-
-	  // -----
 
 	// stop clock and waiting for busy flag doesn't work, so kill clock
 	*(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
@@ -181,14 +168,18 @@ void initHardware()
 	usleep(10);
 
 	// filled with 0 for 20 milliseconds = 320 bits
-	*(pwm + PWM_RNG1) = 320;
+	// TODO 320 replaced by 3600
+	*(pwm + PWM_RNG1) = 3600;
 
 	// 32 bits = 2 milliseconds, init with 1 millisecond
-	setServo(0);
+//	setServo(0); TODO replaced by
+	*(pwm + PWM_DAT1) = (int) ((10.0/100.0) * 3600); usleep(10);
 
 	// start PWM1 in serializer mode
 //	*(pwm + PWM_CTL) = 3; TODO previous
 	// Replace with
+
+	printf("Value of pwm_ctl: %d\n\n", ( (1 << 7) | (1 << 0) ))
 	*(pwm + PWM_CTL) |= ( (1 << 7) | (1 << 0) );
 }
 
@@ -199,8 +190,8 @@ int main(int argc, char **argv)
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
 
-	printf("Position: 0\n");
-	setServo(0);
+	printf("Position: 90\n");
+	setServo(90);
 	sleep(1);
 
 
