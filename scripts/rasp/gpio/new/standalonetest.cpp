@@ -107,9 +107,9 @@ volatile unsigned *mapRegisterMemory(int base)
 // set up a memory regions to access GPIO, PWM and the clock manager
 void setupRegisterMemoryMappings()
 {
+	clk = mapRegisterMemory(CLOCK_BASE);
 	gpio = mapRegisterMemory(GPIO_BASE);
 	pwm = mapRegisterMemory(PWM_BASE);
-	clk = mapRegisterMemory(CLOCK_BASE);
 }
 
 void setServo(int percent)
