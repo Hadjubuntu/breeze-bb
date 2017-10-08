@@ -308,8 +308,8 @@ int main(int argc, char **argv)
 	setServo(450);
 	sleep(2);
 
-	printf("Position: 550\n");
-	setServo(550);
+	printf("Position: 500\n");
+	setServo(500);
 	sleep(2);
 
 	close();
