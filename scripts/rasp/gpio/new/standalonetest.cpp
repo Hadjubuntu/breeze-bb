@@ -179,7 +179,7 @@ void initHardware()
 //	*(pwm + PWM_CTL) = 3; TODO previous
 	// Replace with
 
-	printf("Value of pwm_ctl: %d\n\n", ( (1 << 7) | (1 << 0) ))
+//	printf("Value of pwm_ctl: %d\n\n", ( (1 << 7) | (1 << 0) ))
 	*(pwm + PWM_CTL) |= ( (1 << 7) | (1 << 0) );
 }
 
