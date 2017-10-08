@@ -90,7 +90,7 @@ volatile unsigned *mapRegisterMemory(int base)
 			(caddr_t)mem,
 			BLOCK_SIZE,
 			PROT_READ|PROT_WRITE|PROT_EXEC,
-			MAP_SHARED|MAP_LOCKED,
+			MAP_SHARED|MAP_FIXED,
 			mem_fd,
 			base
 	);
