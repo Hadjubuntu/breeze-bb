@@ -188,13 +188,13 @@ void initHardware(double pFrequencyHz)
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(PIN_NUMBER, 5);
 
-	/*GPIO 18 in ALT5 mode for PWM0 */
-	// Let's first set pin 18 to input
-	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-	*(gpio+1) &= ~(7 << 24);
-	//then set it to ALT5 function PWM0
-	//taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
-	*(gpio+1) |= (2<<24);
+//	/*GPIO 18 in ALT5 mode for PWM0 */
+//	// Let's first set pin 18 to input
+//	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+//	*(gpio+1) &= ~(7 << 24);
+//	//then set it to ALT5 function PWM0
+//	//taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+//	*(gpio+1) |= (2<<24);
 
 	// ------------------------
 
