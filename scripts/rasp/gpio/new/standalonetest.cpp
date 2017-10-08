@@ -83,12 +83,12 @@ volatile unsigned *mapRegisterMemory(int base)
 
 	// Now map it
 	map = (char *)mmap(
-		(caddr_t)mem,
-		BLOCK_SIZE,
-		PROT_READ|PROT_WRITE,
-		MAP_SHARED|MAP_FIXED,
-		mem_fd,
-		base
+			(caddr_t)mem,
+			BLOCK_SIZE,
+			PROT_READ|PROT_WRITE,
+			MAP_SHARED|MAP_FIXED,
+			mem_fd,
+			base
 	);
 
 	if ((long)map < 0) {
@@ -175,17 +175,15 @@ int main(int argc, char **argv)
 	initHardware();
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
-	while (1) {
-		setServo(0);
-		sleep(1);
-		setServo(25);
-		sleep(1);
-		setServo(50);
-		sleep(1);
-		setServo(75);
-		sleep(1);
-		setServo(100);
-		sleep(1);
-	}
+
+	printf("Position: 0");
+	setServo(0);
+	sleep(1);
+
+
+	printf("Position: 100");
+	setServo(100);
+	sleep(1);
+
 	return 0;
 }
