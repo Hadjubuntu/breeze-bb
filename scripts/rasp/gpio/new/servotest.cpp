@@ -21,7 +21,7 @@ using namespace Navio;
 
 int main()
 {
-	static const uint8_t outputEnablePin = 18;
+	static const uint8_t outputEnablePin = 12;
 
 
 	Pin pin(outputEnablePin);
