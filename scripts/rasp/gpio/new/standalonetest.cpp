@@ -292,8 +292,8 @@ int main(int argc, char **argv)
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
 
-	printf("Position: 80\n");
-	setServo(80);
+	printf("Position: 70\n");
+	setServo(70);
 	sleep(2);
 
 	printf("Position: 180\n");
@@ -308,8 +308,8 @@ int main(int argc, char **argv)
 	setServo(450);
 	sleep(2);
 
-	printf("Position: 470\n");
-	setServo(470);
+	printf("Position: 480\n");
+	setServo(480);
 	sleep(2);
 
 	close();
