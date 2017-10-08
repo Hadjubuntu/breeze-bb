@@ -59,59 +59,93 @@ volatile unsigned *clk;
 // map 4k register memory for direct access from user space and return a user space pointer to it
 volatile unsigned *mapRegisterMemory(unsigned long base)
 {
-	static int mem_fd = 0;
-	//	char *mem, *map;
-	void *map;
+	//	static int mem_fd = 0;
+	//	//	char *mem, *map;
+	//	void *map;
+	//
+	//	/* open /dev/mem */
+	//	if (!mem_fd) {
+	//		if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
+	//			printf("can't open /dev/mem \n");
+	//			exit (-1);
+	//		}
+	//	}
+	//
+	//	/* mmap register */
+	//
+	//	//	// Allocate MAP block
+	//	//	if ((mem = (char *)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+	//	//		printf("allocation error \n");
+	//	//		exit (-1);
+	//	//	}
+	//	//
+	//	//	// Make sure pointer is on 4K boundary
+	//	//	if ((unsigned long)mem % PAGE_SIZE)
+	//	//		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
+	//
+	//
+	//	// TODO
+	//	// Added: MAP_LOCKED insted of MAP_FIXED, PROT_EXEC
+	//
+	//	// Now map it
+	//	map = (char *)mmap(
+	//			NULL , // (caddr_t)mem replaced by NULL
+	//			BLOCK_SIZE,
+	//			PROT_READ|PROT_WRITE|PROT_EXEC,
+	//			MAP_SHARED|MAP_LOCKED,
+	//			mem_fd,
+	//			base
+	//	);
+	//
+	//	if (map == MAP_FAILED) {
+	//		perror("mmap error >> ");
+	//		close(mem_fd);
+	//		exit (1);
+	//	}
+	//
+	//
+	//	if(close(mem_fd) < 0){ //No need to keep mem_fd open after mmap
+	//		//i.e. we can close /dev/mem
+	//		perror("couldn't close /dev/mem file descriptor");
+	//		exit(1);
+	//	}
+	//
+	//	// Always use volatile pointer!
+	//	return (volatile unsigned *)map;
 
-	/* open /dev/mem */
+	int mem_fd = 0;
+	void *regAddrMap = MAP_FAILED;
+
+	/* open /dev/mem.....need to run program as root i.e. use sudo or su */
 	if (!mem_fd) {
 		if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
-			printf("can't open /dev/mem \n");
-			exit (-1);
+			perror("can't open /dev/mem");
+			exit (1);
 		}
 	}
 
-	/* mmap register */
-
-	//	// Allocate MAP block
-	//	if ((mem = (char *)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
-	//		printf("allocation error \n");
-	//		exit (-1);
-	//	}
-	//
-	//	// Make sure pointer is on 4K boundary
-	//	if ((unsigned long)mem % PAGE_SIZE)
-	//		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
-
-
-	// TODO
-	// Added: MAP_LOCKED insted of MAP_FIXED, PROT_EXEC
-
-	// Now map it
-	map = (char *)mmap(
-			NULL , // (caddr_t)mem replaced by NULL
-			BLOCK_SIZE,
-			PROT_READ|PROT_WRITE|PROT_EXEC,
-			MAP_SHARED|MAP_LOCKED,
-			mem_fd,
-			base
+	/* mmap IO */
+	regAddrMap = mmap(
+			NULL,             //Any adddress in our space will do
+			BLOCK_SIZE,       //Map length
+			PROT_READ|PROT_WRITE|PROT_EXEC,// Enable reading & writting to mapped memory
+			MAP_SHARED|MAP_LOCKED,       //Shared with other processes
+			mem_fd,           //File to map
+			base         //Offset to base address
 	);
 
-	if (map == MAP_FAILED) {
-		perror("mmap error >> ");
+	if (regAddrMap == MAP_FAILED) {
+		perror("mmap error");
 		close(mem_fd);
 		exit (1);
 	}
-
 
 	if(close(mem_fd) < 0){ //No need to keep mem_fd open after mmap
 		//i.e. we can close /dev/mem
 		perror("couldn't close /dev/mem file descriptor");
 		exit(1);
 	}
-
-	// Always use volatile pointer!
-	return (volatile unsigned *)map;
+	return (volatile unsigned *)regAddrMap;
 }
 
 // set up a memory regions to access GPIO, PWM and the clock manager
