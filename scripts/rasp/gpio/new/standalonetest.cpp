@@ -294,13 +294,16 @@ int main(int argc, char **argv)
 
 	printf("Position: 90\n");
 	setServo(90);
-	sleep(1);
+	sleep(2);
 
 
-	printf("Position: 100\n");
-	setServo(100);
-	sleep(1);
+	printf("Position: 180\n");
+	setServo(180);
+	sleep(2);
 
+	printf("Position: 360\n");
+	setServo(360);
+	sleep(2);
 
 	close();
 
