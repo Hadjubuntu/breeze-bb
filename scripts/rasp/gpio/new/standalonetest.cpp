@@ -26,6 +26,7 @@
 
 #define	PWMCLK_CNTL 40
 #define	PWMCLK_DIV  41
+#define COUNTS 3600
 
 #include <stdio.h>
 #include <string.h>
@@ -59,7 +60,8 @@ volatile unsigned *clk;
 volatile unsigned *mapRegisterMemory(int base)
 {
 	static int mem_fd = 0;
-	char *mem, *map;
+	//	char *mem, *map;
+	void *map;
 
 	/* open /dev/mem */
 	if (!mem_fd) {
@@ -71,23 +73,23 @@ volatile unsigned *mapRegisterMemory(int base)
 
 	/* mmap register */
 
-	// Allocate MAP block
-	if ((mem = (char *)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
-		printf("allocation error \n");
-		exit (-1);
-	}
+	//	// Allocate MAP block
+	//	if ((mem = (char *)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+	//		printf("allocation error \n");
+	//		exit (-1);
+	//	}
+	//
+	//	// Make sure pointer is on 4K boundary
+	//	if ((unsigned long)mem % PAGE_SIZE)
+	//		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
 
-	// Make sure pointer is on 4K boundary
-	if ((unsigned long)mem % PAGE_SIZE)
-		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
 
-
-    // TODO
-    // Added: MAP_LOCKED insted of MAP_FIXED, PROT_EXEC
+	// TODO
+	// Added: MAP_LOCKED insted of MAP_FIXED, PROT_EXEC
 
 	// Now map it
 	map = (char *)mmap(
-			(caddr_t)mem , // replaced by NULL
+			NULL , // (caddr_t)mem replaced by NULL
 			BLOCK_SIZE,
 			PROT_READ|PROT_WRITE|PROT_EXEC,
 			MAP_SHARED|MAP_FIXED,
@@ -112,27 +114,27 @@ void setupRegisterMemoryMappings()
 	pwm = mapRegisterMemory(PWM_BASE);
 }
 
-void setServo(int percent)
+void setServo(const unsigned int &percent)
 {
 	// TODO replace by percent directly
-//	int bitCount;
-//	unsigned int bits = 0;
-//
-//	// 32 bits = 2 milliseconds
-//	bitCount = 16 + 16 * percent / 100;
-//	if (bitCount > 32) bitCount = 32;
-//	if (bitCount < 1) bitCount = 1;
-//	bits = 0;
-//	while (bitCount) {
-//		bits <<= 1;
-//		bits |= 1;
-//		bitCount--;
-//	}
+	//	int bitCount;
+	//	unsigned int bits = 0;
+	//
+	//	// 32 bits = 2 milliseconds
+	//	bitCount = 16 + 16 * percent / 100;
+	//	if (bitCount > 32) bitCount = 32;
+	//	if (bitCount < 1) bitCount = 1;
+	//	bits = 0;
+	//	while (bitCount) {
+	//		bits <<= 1;
+	//		bits |= 1;
+	//		bitCount--;
+	//	}
 	*(pwm + PWM_DAT1) = percent;
 }
 
 // init hardware
-void initHardware()
+void initHardware(double pFrequencyHz)
 {
 	// mmap register space
 	setupRegisterMemoryMappings();
@@ -143,20 +145,34 @@ void initHardware()
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(18, 5);
 
+	/*GPIO 18 in ALT5 mode for PWM0 */
+	// Let's first set pin 18 to input
+	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+	*(gpio+1) &= ~(7 << 24);
+	//then set it to ALT5 function PWM0
+	//taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+	*(gpio+1) |= (2<<24);
+
+	// ------------------------
+
 	// stop clock and waiting for busy flag doesn't work, so kill clock
 	*(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
 	usleep(10);
 
-	// set frequency
-	// DIVI is the integer part of the divisor
-	// the fractional part (DIVF) drops clock cycles to get the output frequency, bad for servo motors
-	// 320 bits for one cycle of 20 milliseconds = 62.5 us per bit = 16 kHz
-	int idiv = (int) (19200000.0f / 16000.0f);
-	if (idiv < 1 || idiv > 0x1000) {
-		printf("idiv out of range: %x\n", idiv);
+	// wait until busy flag is set
+	while ( (*(clk + PWMCLK_CNTL)) & 0x00000080){}
+
+	//calculate divisor value for PWM1 clock...base frequency is 19.2MHz
+	double period = 1.0 / pFrequencyHz;
+	double countDuration = period / (COUNTS*1.0f);
+	double divisor = (int)(19200000.0f / (1.0/countDuration));
+
+	if( divisor < 0 || divisor > 4095 ) {
+		printf("divisor value must be between 0-4095\n");
 		exit(-1);
 	}
-	*(clk + PWMCLK_DIV)  = 0x5A000000 | (idiv<<12);
+
+	*(clk + PWMCLK_DIV)  = 0x5A000000 | (divisor << 12);
 
 	// source=osc and enable clock
 	*(clk + PWMCLK_CNTL) = 0x5A000011;
@@ -169,24 +185,24 @@ void initHardware()
 
 	// filled with 0 for 20 milliseconds = 320 bits
 	// TODO 320 replaced by 3600
-	*(pwm + PWM_RNG1) = 3600;
+	  *(pwm + PWM_RNG1) = COUNTS; usleep(10);
 
 	// 32 bits = 2 milliseconds, init with 1 millisecond
-//	setServo(0); TODO replaced by
-	*(pwm + PWM_DAT1) = (int) ((10.0/100.0) * 3600); usleep(10);
+	//	setServo(0); TODO replaced by
+	*(pwm + PWM_DAT1) = (int) ((10.0/100.0) * COUNTS); usleep(10);
 
 	// start PWM1 in serializer mode
-//	*(pwm + PWM_CTL) = 3; TODO previous
+	//	*(pwm + PWM_CTL) = 3; TODO previous
 	// Replace with
 
-//	printf("Value of pwm_ctl: %d\n\n", ( (1 << 7) | (1 << 0) ))
+	//	printf("Value of pwm_ctl: %d\n\n", ( (1 << 7) | (1 << 0) ))
 	*(pwm + PWM_CTL) |= ( (1 << 7) | (1 << 0) );
 }
 
 int main(int argc, char **argv)
 {
 	// init PWM module for GPIO pin 18 with 50 Hz frequency
-	initHardware();
+	initHardware(50.0);
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
 
