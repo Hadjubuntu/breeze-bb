@@ -97,10 +97,12 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 			base
 	);
 
-	if ((long)map < 0) {
-		printf("mmap error %d\n", (int)map);
-		exit (-1);
+	if (map == -1) {
+		perror("mmap error");
+		close(mem_fd);
+		exit (1);
 	}
+
 
 	if(close(mem_fd) < 0){ //No need to keep mem_fd open after mmap
 		//i.e. we can close /dev/mem
