@@ -165,7 +165,7 @@ void initHardware(double pFrequencyHz)
 	//calculate divisor value for PWM1 clock...base frequency is 19.2MHz
 	double period = 1.0 / pFrequencyHz;
 	double countDuration = period / (COUNTS*1.0f);
-	double divisor = (int)(19200000.0f / (1.0/countDuration));
+	int divisor = (int)(19200000.0f / (1.0/countDuration));
 
 	if( divisor < 0 || divisor > 4095 ) {
 		printf("divisor value must be between 0-4095\n");
