@@ -98,7 +98,7 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 	);
 
 	if (map == MAP_FAILED) {
-		perror("mmap error");
+		perror("mmap error >> ");
 		close(mem_fd);
 		exit (1);
 	}
