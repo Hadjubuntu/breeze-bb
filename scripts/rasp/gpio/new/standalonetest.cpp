@@ -137,7 +137,7 @@ void initHardware()
 	setupRegisterMemoryMappings();
 
 	// Set input
-	INP_GPIO(18, 5);
+	INP_GPIO(18);
 
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(18, 5);
