@@ -67,11 +67,14 @@ bool Pin::init()
 
     uint32_t address = getRaspberryPiVersion() == 1? GPIO_BASE(BCM2708_PERI_BASE): GPIO_BASE(BCM2709_PERI_BASE);
 
+    // TODO
+    // Added: MAP_LOCKED, PROT_EXEC
+
     void *gpio_map = mmap(
         NULL,                 /* any adddress in our space will do */
         BLOCK_SIZE,           /* map length */
-        PROT_READ|PROT_WRITE, /* enable reading & writting to mapped memory */
-        MAP_SHARED,           /* shared with other processes */
+        PROT_READ|PROT_WRITE|PROT_EXEC, /* enable reading & writting to mapped memory */
+        MAP_SHARED|MAP_LOCKED,           /* shared with other processes */
         mem_fd,               /* file to map */
         address               /* offset to GPIO peripheral */
     );

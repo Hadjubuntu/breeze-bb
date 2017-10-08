@@ -81,12 +81,16 @@ volatile unsigned *mapRegisterMemory(int base)
 	if ((unsigned long)mem % PAGE_SIZE)
 		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
 
+
+    // TODO
+    // Added: MAP_LOCKED insted of MAP_FIXED, PROT_EXEC
+
 	// Now map it
 	map = (char *)mmap(
 			(caddr_t)mem,
 			BLOCK_SIZE,
-			PROT_READ|PROT_WRITE,
-			MAP_SHARED|MAP_FIXED,
+			PROT_READ|PROT_WRITE|PROT_EXEC,
+			MAP_SHARED|MAP_LOCKED,
 			mem_fd,
 			base
 	);
@@ -132,8 +136,25 @@ void initHardware()
 	// mmap register space
 	setupRegisterMemoryMappings();
 
+	// Set input
+	INP_GPIO(18, 5);
+
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(18, 5);
+
+	/**
+	 * Equivalent to
+	 */
+
+	  /*GPIO 18 in ALT5 mode for PWM0 */
+	  // Let's first set pin 18 to input
+	  //taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+	  *(gpio+1) &= ~(7 << 24);
+	  //then set it to ALT5 function PWM0
+	  //taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+	  *(gpio+1) |= (2<<24);
+
+	  // -----
 
 	// stop clock and waiting for busy flag doesn't work, so kill clock
 	*(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
@@ -166,7 +187,9 @@ void initHardware()
 	setServo(0);
 
 	// start PWM1 in serializer mode
-	*(pwm + PWM_CTL) = 3;
+//	*(pwm + PWM_CTL) = 3; TODO previous
+	// Replace with
+	*(pwm + PWM_CTL) |= ( (1 << 7) | (1 << 0) );
 }
 
 int main(int argc, char **argv)
@@ -176,12 +199,12 @@ int main(int argc, char **argv)
 
 	// servo test, position in percent: 0 % = 1 ms, 100 % = 2 ms
 
-	printf("Position: 0");
+	printf("Position: 0\n");
 	setServo(0);
 	sleep(1);
 
 
-	printf("Position: 100");
+	printf("Position: 100\n");
 	setServo(100);
 	sleep(1);
 
