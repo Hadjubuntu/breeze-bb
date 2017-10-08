@@ -92,7 +92,7 @@ volatile unsigned *mapRegisterMemory(int base)
 			NULL , // (caddr_t)mem replaced by NULL
 			BLOCK_SIZE,
 			PROT_READ|PROT_WRITE|PROT_EXEC,
-			MAP_SHARED|MAP_FIXED,
+			MAP_SHARED|MAP_LOCKED,
 			mem_fd,
 			base
 	);
@@ -199,6 +199,50 @@ void initHardware(double pFrequencyHz)
 	*(pwm + PWM_CTL) |= ( (1 << 7) | (1 << 0) );
 }
 
+void close()
+{
+
+	//lets put the PWM peripheral registers in their original state
+	*(pwm + PWM_CTL) = 0;
+	*(pwm + PWM_RNG1) = 0x20;
+	*(pwm + PWM_DAT1) = 0;
+    // unmap the memory block containing PWM registers
+    if(munmap((void*)pwm, BLOCK_SIZE) < 0){
+		perror("munmap (pwm) failed");
+		exit(1);
+	}
+	//lets put the PWM Clock peripheral registers in their original state
+    //kill PWM clock
+    *(clk + PWMCLK_CNTL) = 0x5A000000 | (1 << 5);
+    usleep(10);
+
+    // wait until busy flag is set
+    while ( (*(clk + PWMCLK_CNTL)) & 0x00000080){}
+
+    //reset divisor
+    *(clk + PWMCLK_DIV) = 0x5A000000;
+    usleep(10);
+
+    // source=osc and enable clock
+    *(clk + PWMCLK_CNTL) = 0x5A000011;
+
+    // unmap the memory block containing PWM Clock registers
+    if(munmap((void*)clk, BLOCK_SIZE) < 0){
+		perror("munmap (clk) failed");
+		exit(1);
+	}
+
+   //lets put the GPIO peripheral registers in their original state
+   //first put it in input mode (default)
+   //taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+   *(gpio+1) &= ~(7 << 24);
+   //then munmap
+    if(munmap((void*)gpio, BLOCK_SIZE) < 0){
+		perror("munmap (gpio) failed");
+		exit(1);
+	}
+}
+
 int main(int argc, char **argv)
 {
 	// init PWM module for GPIO pin 18 with 50 Hz frequency
@@ -214,6 +258,9 @@ int main(int argc, char **argv)
 	printf("Position: 100\n");
 	setServo(100);
 	sleep(1);
+
+
+	close();
 
 	return 0;
 }
