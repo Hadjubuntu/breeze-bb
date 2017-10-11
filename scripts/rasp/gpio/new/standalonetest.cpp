@@ -14,7 +14,7 @@
 // compile with "gcc pwm.c -o pwm", test with "./pwm" (needs to be root for /dev/mem access)
 //
 
-#define PIN_NUMBER 16
+#define PIN_NUMBER 23
 
 #define BCM2708_PERI_BASE	0x20000000
 #define GPIO_BASE		(BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
