@@ -115,7 +115,7 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 	//	return (volatile unsigned *)map;
 
 	int mem_fd = 0;
-	char *regAddrMap = MAP_FAILED;
+	char *regAddrMap;
 
 	//	/* open /dev/mem.....need to run program as root i.e. use sudo or su */
 	//	if (!mem_fd) {
@@ -167,7 +167,7 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 			base
 	);
 
-	if (regAddrMap == MAP_FAILED) {
+	if ((long)regAddrMap == 0) {
 		perror("mmap error");
 		close(mem_fd);
 		exit (1);
