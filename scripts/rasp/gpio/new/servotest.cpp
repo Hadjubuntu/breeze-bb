@@ -35,23 +35,23 @@ int main()
 		return 1;
 	}
 
-//
-//	PCA9685 pwm;
-//
-//	pwm.initialize();
-//	pwm.setFrequency(50);
-//
-//	while (true) {
-//		for (int i=0; i <= 15; i ++) {
-//			printf("channel:%d\n", i);
-//			pwm.setPWMmS(i, SERVO_MIN);
-//		}
-//		sleep(1);
-//		for (int i=0; i <= 15; i ++) {
-//			pwm.setPWMmS(i, SERVO_MAX);
-//		}
-//		sleep(1);
-//	}
+
+	PCA9685 pwm;
+
+	pwm.initialize();
+	pwm.setFrequency(50);
+
+	while (true) {
+		for (int i=0; i <= 15; i ++) {
+			printf("channel:%d\n", i);
+			pwm.setPWMmS(i, SERVO_MIN);
+		}
+		sleep(1);
+		for (int i=0; i <= 15; i ++) {
+			pwm.setPWMmS(i, SERVO_MAX);
+		}
+		sleep(1);
+	}
 
 	return 0;
 }
