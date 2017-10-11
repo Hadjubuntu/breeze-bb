@@ -158,7 +158,7 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
 
 	// Now map it
-	map = (char *)mmap(
+	regAddrMap = (char *)mmap(
 			(caddr_t)mem,
 			BLOCK_SIZE,
 			PROT_READ|PROT_WRITE,
