@@ -117,22 +117,54 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 	int mem_fd = 0;
 	void *regAddrMap = MAP_FAILED;
 
-	/* open /dev/mem.....need to run program as root i.e. use sudo or su */
+	//	/* open /dev/mem.....need to run program as root i.e. use sudo or su */
+	//	if (!mem_fd) {
+	//		if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
+	//			perror("can't open /dev/mem");
+	//			exit (1);
+	//		}
+	//	}
+	//
+	//	/* mmap IO */
+	//	regAddrMap = mmap(
+	//			NULL,             //Any adddress in our space will do
+	//			BLOCK_SIZE,       //Map length
+	//			PROT_READ|PROT_WRITE|PROT_EXEC,// Enable reading & writting to mapped memory
+	//			MAP_SHARED|MAP_LOCKED,       //Shared with other processes
+	//			mem_fd,           //File to map
+	//			base         //Offset to base address
+	//	);
+
+	char *mem;
+
+	/* open /dev/mem */
 	if (!mem_fd) {
 		if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
-			perror("can't open /dev/mem");
-			exit (1);
+			printf("can't open /dev/mem \n");
+			exit (-1);
 		}
 	}
 
-	/* mmap IO */
-	regAddrMap = mmap(
-			NULL,             //Any adddress in our space will do
-			BLOCK_SIZE,       //Map length
-			PROT_READ|PROT_WRITE|PROT_EXEC,// Enable reading & writting to mapped memory
-			MAP_SHARED|MAP_LOCKED,       //Shared with other processes
-			mem_fd,           //File to map
-			base         //Offset to base address
+	/* mmap register */
+
+	// Allocate MAP block
+	if ((mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+		printf("allocation error \n");
+		exit (-1);
+	}
+
+	// Make sure pointer is on 4K boundary
+	if ((unsigned long)mem % PAGE_SIZE)
+		mem += PAGE_SIZE - ((unsigned long)mem % PAGE_SIZE);
+
+	// Now map it
+	map = (char *)mmap(
+			(caddr_t)mem,
+			BLOCK_SIZE,
+			PROT_READ|PROT_WRITE,
+			MAP_SHARED|MAP_FIXED,
+			mem_fd,
+			base
 	);
 
 	if (regAddrMap == MAP_FAILED) {
@@ -188,13 +220,13 @@ void initHardware(double pFrequencyHz)
 	// set PWM alternate function for GPIO18
 	SET_GPIO_ALT(PIN_NUMBER, 5);
 
-//	/*GPIO 18 in ALT5 mode for PWM0 */
-//	// Let's first set pin 18 to input
-//	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
-//	*(gpio+1) &= ~(7 << 24);
-//	//then set it to ALT5 function PWM0
-//	//taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
-//	*(gpio+1) |= (2<<24);
+	//	/*GPIO 18 in ALT5 mode for PWM0 */
+	//	// Let's first set pin 18 to input
+	//	//taken from #define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+	//	*(gpio+1) &= ~(7 << 24);
+	//	//then set it to ALT5 function PWM0
+	//	//taken from #define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+	//	*(gpio+1) |= (2<<24);
 
 	// ------------------------
 
