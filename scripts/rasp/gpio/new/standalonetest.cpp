@@ -61,7 +61,7 @@ volatile unsigned *clk;
 volatile unsigned *mapRegisterMemory(unsigned long base)
 {
 	static int mem_fd = 0;
-	void *mem;
+	char *mem;
 	char *map;
 
 	/* open /dev/mem */
@@ -75,7 +75,7 @@ volatile unsigned *mapRegisterMemory(unsigned long base)
 	/* mmap register */
 
 	// Allocate MAP block
-	if ((mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+	if ((mem = (char*)malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
 		printf("allocation error \n");
 		exit (-1);
 	}
