@@ -14,7 +14,7 @@
 // compile with "gcc pwm.c -o pwm", test with "./pwm" (needs to be root for /dev/mem access)
 //
 
-#define PIN_NUMBER 18
+#define PIN_NUMBER 17
 
 #define BCM2708_PERI_BASE	0x20000000
 #define GPIO_BASE		(BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
@@ -264,8 +264,8 @@ int main(int argc, char **argv)
 	setServo(450);
 	sleep(2);
 
-	printf("Position: 480\n");
-	setServo(480);
+	printf("Position: 465\n");
+	setServo(465);
 	sleep(2);
 
 	close();
