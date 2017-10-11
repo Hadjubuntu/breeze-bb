@@ -11,7 +11,6 @@
 // PWM example, based on code from http://elinux.org/RPi_Low-level_peripherals for the mmap part
 // and http://www.raspberrypi.org/phpBB3/viewtopic.php?t=8467&p=124620 for PWM initialization
 //
-// compile with "gcc pwm.c -o pwm", test with "./pwm" (needs to be root for /dev/mem access)
 //
 
 #define PIN_NUMBER 23
@@ -169,6 +168,7 @@ void initHardware(double pFrequencyHz)
 		printf("divisor value must be between 0-4095\n");
 		exit(-1);
 	}
+	printf("Divisor: %d\n", divisor);
 
 	*(clk + PWMCLK_DIV)  = 0x5A000000 | (divisor << 12);
 
