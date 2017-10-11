@@ -13,7 +13,8 @@
 //
 //
 
-#define PIN_NUMBER 23
+#define PIN_NUMBER 17 // 18
+#define ALT_MODE 3 // 5
 
 #define BCM2708_PERI_BASE	0x20000000
 #define GPIO_BASE		(BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
@@ -140,7 +141,7 @@ void initHardware(double pFrequencyHz)
 	INP_GPIO(PIN_NUMBER);
 
 	// set PWM alternate function for GPIO18
-	SET_GPIO_ALT(PIN_NUMBER, 5);
+	SET_GPIO_ALT(PIN_NUMBER, ALT_MODE);
 
 	//	/*GPIO 18 in ALT5 mode for PWM0 */
 	//	// Let's first set pin 18 to input
