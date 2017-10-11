@@ -61,7 +61,8 @@ volatile unsigned *clk;
 volatile unsigned *mapRegisterMemory(unsigned long base)
 {
 	static int mem_fd = 0;
-	char *mem, *map;
+	void *mem;
+	char *map;
 
 	/* open /dev/mem */
 	if (!mem_fd) {
